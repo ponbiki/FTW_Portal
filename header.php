@@ -15,7 +15,7 @@ if (isset($_SESSION['admin'])) {
     $admin = FALSE;
 }
 
-function htmlheader($title, $meta, $scripts = array()) {
+function htmlHeader($title, $meta, $scripts = array()) {
     echo <<<END
 <!DOCTYPE html>
 <html>
@@ -23,10 +23,18 @@ function htmlheader($title, $meta, $scripts = array()) {
         <meta http-equiv="Content-Type" content="text/html" charset=UTF-8">
 
         <title>$title</title>
+            
+        <meta name="viewport" content="width=device-width, initial-scale=1.0">
+            
+        
 
-        <meta name="robots" content="7chanradio, 7chan, Radio, $meta" />
+        <meta name="robots" content="FTW, FTW Portal, $meta" />
 
-        <link rel="shortcut icon" href="img/favicon.ico" type="image/vnd.microsoft.icon" />
+        <link rel="shortcut icon" href="img/favicon.ico" type="mage/vnd.microsoft.icon" />
+            
+        <script src="http://code.jquery.com/jquery.js"></script>
+            
+        <script src="js/bootstrap.min.js"></script>
 
 END;
 
@@ -35,8 +43,6 @@ END;
     }
 
 echo <<<_END
-       <link rel="stylesheet" href="css/burichan.css" type="text/css" />\n
-
     </head>
 
     <body>
