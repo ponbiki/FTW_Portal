@@ -26,15 +26,12 @@ function htmlHeader($title, $meta, $scripts = array()) {
             
         <meta name="viewport" content="width=device-width, initial-scale=1.0">
             
-        
+        <link href="css/bootstrap.min.css" rel="stylesheet" media="screen">
 
         <meta name="robots" content="FTW, FTW Portal, $meta" />
 
         <link rel="shortcut icon" href="img/favicon.ico" type="mage/vnd.microsoft.icon" />
             
-        <script src="http://code.jquery.com/jquery.js"></script>
-            
-        <script src="js/bootstrap.min.js"></script>
 
 END;
 
@@ -46,7 +43,9 @@ echo <<<_END
     </head>
 
     <body>
-
+        <script src="http://code.jquery.com/jquery.js"></script>
+            
+        <script src="js/bootstrap.min.js"></script>
 _END;
 }
 
