@@ -1,18 +1,18 @@
 <?php
 /*
-$dbhost = '';
-$dbname = '';
-$dbuser = '';
-$dbpass = '';
+$dbhost = 'localhost';
+$dbname = 'radio';
+$dbuser = 'radio';
+$dbpass = 'password';
 
 mysql_connect($dbhost, $dbuser, $dbpass) or die(mysql_error());
 mysql_select_db($dbname) or die(mysql_error());
-*/
+
 function queryMysql($query) {
     $result = mysql_query($query) or die(mysql_error());
     return $result;
 }
-
+*/
 function destroySession() {
     $_SESSION=array();
 
@@ -27,5 +27,9 @@ function sanitizeString($var) {
     $var = htmlentities($var);
     $var = stripslashes($var);
     return mysql_real_escape_string($var);
+}
+
+function exec_ssh2($cmd) {
+    
 }
 ?>

@@ -1,34 +1,58 @@
 <?php
-require_once('header.php');
-htmlHeader("FTW Portal");
+require 'header.php';
+
+if ($loggedin) header("Location: x.php");
+
+$page = "FTW Log In";
+
+htmlheader($page, $page, array());
+
+echo $navigation; echo $logo;
+
+bar($page);
+
+        $salt1 = "qm&h*";
+        $salt2 = "pg!@";
+
+        $error = $user = $pass = '';
+
+        if (isset($_POST['user'])) {
+            $user = sanitizeString($_POST['user']);
+            $pass = sanitizeString($_POST['pass']);
+
+            if ($user == "" || $pass == "") {
+                $error = "Not all fields were entered<br />";
+            } else {
+                $token = md5("$salt1$pass$salt2");
+                $query = "SELECT username,password FROM djs
+                    WHERE username='$user' AND password='$token'";
+
+                if (mysql_num_rows(queryMysql($query)) == 0) {
+                    $error = "Username/Password invalid<br />";
+                } else {
+                    $_SESSION['user'] = $user;
+                    $_SESSION['pass'] = $token;
+                    $query2 = "SELECT admin FROM djs WHERE username='$user'";
+                    $sql = queryMysql($query2);
+                    $isadmin = mysql_fetch_row($sql);
+                    if ($isadmin[0] == "Y")
+                        $_SESSION['admin'] = $admin;
+                    die(header("Location: djpanel.php"));
+                }
+            }
+        }
 ?>
-<div class="row">
-<div class="span12"><img src="img/ftw_logo.png" name="FTW Portal logo" title="FTW Portal logo" /></div>
-</div>
-<div class="row">
-    <div class="span4"></div>
-<div class="span4">
-<form method="post" action="" class="table-hover">
-    <h1><img src="img/NYI.png" class="loginlogo" alt="NYI" title="NYI" />
-        Control Panel Log In
-        <span><?php echo $error; ?></span>
-    </h1>
-    <label>
-        <span>Username :</span>
-        <input id='user' type='text' maxlength='24' name='user' value="" />
-    </label>
-    <label>
-        <span>Password :</span>
-        <input id='pass' type='password' maxlength='24' name='pass' value="" />
-    </label>
-    <label>
-        <span>&nbsp;</span>
-        <input type='submit' class='button' value='Login' />
-    </label>
-</form>
-</div>
-    <div class="span4"></div>
-</div>
-<?php
-tail();
-?>
+        <form method='post' action='login.php'><?php echo $error ?>
+            <table style="float: left;">
+                <tr>
+                    <td style="text-align: left;">Username</td><td style="text-align: right;">
+                        <input type='text' maxlength='24' name='user' value="<?php echo $user; ?>" /></td>
+                </tr><tr>
+                    <td style="text-align: left;">Password</td><td style="text-align: right;">
+                        <input type='password' maxlength='24' name='pass' value="<?php echo $pass; ?>" /></td>
+                </tr><tr>
+                    <td></td><td style="text-align: right;"><input type="submit" value="Login" /></td>
+            </tr>
+            </table>
+        </form>
+<?php tail(); ?>

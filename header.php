@@ -3,7 +3,7 @@ require 'functions.php';
 session_start();
 
 if (isset($_SESSION['user'])) {
-    $djname = $_SESSION['user'];
+    $username = $_SESSION['user'];
     $loggedin = TRUE;
 } else {
     $loggedin = FALSE;
@@ -15,7 +15,7 @@ if (isset($_SESSION['admin'])) {
     $admin = FALSE;
 }
 
-function htmlHeader($title, $meta, $scripts = array()) {
+function htmlheader($title, $meta, $scripts = array()) {
     echo <<<END
 <!DOCTYPE html>
 <html>
@@ -23,15 +23,10 @@ function htmlHeader($title, $meta, $scripts = array()) {
         <meta http-equiv="Content-Type" content="text/html" charset=UTF-8">
 
         <title>$title</title>
-            
-        <meta name="viewport" content="width=device-width, initial-scale=1.0">
-            
-        <link href="css/bootstrap.min.css" rel="stylesheet" media="screen">
 
-        <meta name="robots" content="FTW, FTW Portal, $meta" />
+        <meta name="robots" content="FTW, FTW Portal, $meta">
 
-        <link rel="shortcut icon" href="img/favicon.ico" type="mage/vnd.microsoft.icon" />
-            
+        <link rel="icon" href="img/favicon.ico" type="image/x-icon">
 
 END;
 
@@ -40,12 +35,23 @@ END;
     }
 
 echo <<<_END
+       <link rel="stylesheet" href="css/base.css" type="text/css" />\n
+
     </head>
 
     <body>
-        <script src="http://code.jquery.com/jquery.js"></script>
-            
-        <script src="js/bootstrap.min.js"></script>
+
+_END;
+}
+
+function bar($page) {
+
+    echo <<<_END
+
+        <div class="replymode">
+            <h2>$page</h2>
+        </div>
+
 _END;
 }
 
@@ -56,4 +62,21 @@ function tail() {
 
 _END;
 }
+/*
+if ($loggedin) {
+    $navigation = "<div class='navbar'>
+        [<a href='index.php' title='7chan Radio'>7chan Radio</a> / <a href='schedule.php' title='Schedule'>Schedule</a> / <a href='djs.php' title='DJ Lineup'>DJ Lineup</a>]
+        [<a href='https://7chan.org/ch7/' title='Channel 7'>ch7</a> / <a href='https://7chan.org' title='7chan'>7chan</a>]
+        [<a href='djpanel.php' title='DJ Panel'>DJ Panel</a> / <a href='logout.php' title='Logout'>Logout</a>]
+        </div>\n";
+} else {
+    $navigation = "<div class='navbar'>
+        [<a href='index.php' title='7chan Radio'>7chan Radio</a> / <a href='schedule.php' title='Schedule'>Schedule</a> / <a href='djs.php' title='DJ Lineup'>DJ Lineup</a>]
+        [<a href='https://7chan.org/ch7/' title='Channel 7'>ch7</a> / <a href='https://7chan.org' title='7chan'>7chan</a>]
+        [<a href='login.php' title='DJ Panel'>DJ Panel</a>]
+        </div>\n";
+}
+ */
+
+$logo = "<div class='logo'><img src='img/ftw_logo.png' title='FTW Logo' name='FTW Logo' /></div>";
 ?>
