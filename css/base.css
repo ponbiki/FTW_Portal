@@ -1,9 +1,10 @@
 body {
     font-size: 12 pt;
-    background-color: #EEF2FF;
+    /*background-color: #EEF2FF;
     background-image: url('../img/blue-grad.png');
     background-repeat: repeat-x;
-    background-position: top;
+    background-position: top;*/
+    background-color: gray;
     color: #000000;
 }
 
@@ -83,13 +84,16 @@ hr {
     font-family:sans-serif;
 }
 
+
 .replymode {
-    clear: both;
-    background:#0010E0;
-    color:#FFFFFF;
+    background: #EB813B;
+    color: lightgray !important;
     width:100%;
-    font-size: 0.7em;
+    border: 1px solid black;
+    padding: 8px;
+    margin-bottom: 5px;
 }
+
 #playing {
     width: 75%;
 }
@@ -168,15 +172,6 @@ ol, li {
     list-style-position:inside;
 }
 
-.replymode {
-    background:#D6DFF0;
-    color:#4F5260 !important;
-    width:100%;
-    border: 1px solid #C5C8D2;
-    padding: 5px;
-    margin-bottom: 5px;
-}
-
 .logo {
     margin-top: 10px;
     margin-bottom: 10px;
@@ -192,10 +187,12 @@ ol, li {
 table {
     float: right;
     padding: 10px;
-    color: #4F5260;
+    /* color: #4F5260; */
+    background-color: #EB813B;
+    color: lightgray !important;
     text-align: top;
-    border: 1px solid #C5C8D2;
-    background-color: #D6DFF0;
+    border: 1px solid black;
+    /* background-color: #D6DFF0;*/
 }
 
 

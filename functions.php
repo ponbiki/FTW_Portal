@@ -1,5 +1,4 @@
 <?php
-require_once('conninfo.php');
 /*
 $dbhost = 'localhost';
 $dbname = 'radio';
@@ -30,24 +29,4 @@ function sanitizeString($var) {
     return mysql_real_escape_string($var);
 }
 
-function exec_ssh2($cmd) {
-    if (!($con = ssh2_connect($server, $port))) {
-        die('Failed to establish connection');
-    } else {
-        if (!ssh2_auth_password($con, $ssh_user, $ssh_pass)) {
-            die('Failed to authenticate');
-        } else {
-            if (!($stream = ssh2_exec($con, $cmd))) {
-                die('Unable to execute command');
-            } else {
-                stream_set_blocking($stream, true);
-                $data = "";
-                while ($buf = fread($stream,4096)) {
-                    $data .= $buf;
-                }
-                fclose($stream);
-            }
-        }
-    }
-}
 ?>
