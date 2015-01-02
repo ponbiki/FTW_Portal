@@ -34,30 +34,50 @@ foreach ($ini_array as $category => $value) {
         }
     }
 }
+
+if (isset($_POST['formid'])) {
+    if ($_POST['formid'] == 'delform') {
+        echo "Oh no!  Are you sure you want to remove ".$_POST['deldomain']."?<br />";
+    }
+}
+
 ?>
-<form method='post' action='domaindel.php'>
+
+<form method='post' action='confedit.php'>
     <table style="float:left;">
 <?php
 foreach ($domains as $domain) {
-    //echo <<<_END ?>
+?>
         <tr>
-            <td><label><span style="float:left;"><?php echo $domain ?></span>
-            <span style="float:right;">
-                <input type="radio" name="deldomain" value="<?php echo $domain ?>" /></span>
-            </label></td>
-        </tr> <?php
-//_END;
+            <td>
+                <label>
+                    <span style="float:left;"><?php echo $domain ?></span>
+                    <span style="float:right;">
+                        <input type="radio" name="deldomain" value="<?php echo $domain ?>" />
+                    </span>
+                </label>
+            </td>
+        </tr>
+ <?php
 }
 ?>
         <tr>
-            <td><label><span style="float:left;"><?php echo $error; ?></span>
-                    <span style="float:right;"><input type="submit" value="Remove" /></span>
-                </label></td>
+            <td>
+                <label>
+                    <span style="float:left;">
+                        <?php echo $error; ?>
+                    </span>
+                    <span style="float:right;">
+                        <input type="submit" value="Remove" />
+                    </span>
+                </label>
+            </td>
         </tr>
     </table>
+    <input type='hidden' name='formid' value='delform' />
 </form>
 
-<form method='post' action='domainadd.php'>
+<form method='post' action='confedit.php'>
     <table style='float:right;'>
         <tr>
             <td>
@@ -70,7 +90,7 @@ foreach ($domains as $domain) {
             <td>
                 <label>
                     <span style='float:right;'>
-                        <input type='text' maxlength='24' name='newhost' value="" />
+                        <input type='text' maxlength='253' name='newhost' value="" />
                     </span>
                 </label>
             </td>
@@ -79,11 +99,7 @@ foreach ($domains as $domain) {
             <td>
                 <label>
                     <span style='float:left;'>
-                        <?php
-                        if (isset($_SESSION['hostadderror'])) {
-                            echo $_SESSION['hostadderror'];
-                        }
-                        ?>
+                        <?php echo $hosterror ?>
                     </span>
                 </label>
             </td>
@@ -95,9 +111,12 @@ foreach ($domains as $domain) {
                 </label>
             </td>
         </tr>
-
     </table>
+    <input type='hidden' name='formid' value='addform' />
 </form>
 <?php
+
+
+
 tail();
 ?>

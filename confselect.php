@@ -43,16 +43,22 @@ foreach($list as $file) {
 <form method='post' action=''><?php echo $error ?>
     <table style="float: left;">
         <tr>
-             <td style="text-align: left;">Edit: </td><td style="text-align: right;">
-                 <select name='conf'>
+            <td style="text-align: left;">Edit: </td>
+            <td style="text-align: right;">
+                <select name='conf'>
 <?php
 foreach ($ini as $choice) {
     echo "<option>$choice</option>\n";
 }
-?>              </select>
+?>
+                </select>
              </td>
-        </tr><tr>
-            <td></td><td style="text-align: right;"><input type="submit" value="Submit" /></td>
+        </tr>
+        <tr>
+            <td></td>
+            <td style="text-align: right;">
+                <input type="submit" value="Submit" />
+            </td>
         </tr>
     </table>
 </form>
