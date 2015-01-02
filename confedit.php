@@ -58,7 +58,7 @@ if (isset($_POST['formid'])) {
         if ($_POST['formid'] == 'addform') {
             $newhost = filter_input(INPUT_POST, 'newhost', FILTER_SANITIZE_STRING);
             $host_validate = '/([0-9a-z-]+\.)?[0-9a-z-]+\.[a-z]{2,7}/';
-            if (false === preg_match($host_validate, $newhost)) {
+            if (!preg_match($host_validate, $newhost)) {
                 echo "$newhost is not a valid domain name<br />";
             } else {
                 //addition logic
