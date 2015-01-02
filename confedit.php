@@ -125,7 +125,7 @@ foreach ($domains as $domain) {
             <td>
                 <label>
                     <span style='float:left;'>
-                        <?php echo $hosterror ?>
+                        <?php echo $error ?>
                     </span>
                 </label>
             </td>
