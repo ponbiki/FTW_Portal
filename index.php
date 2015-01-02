@@ -30,7 +30,7 @@ $error = $user = $pass = '';
 <?php
 if (isset($_POST['user'])) {
     $user = filter_input(INPUT_POST, 'user', FILTER_SANITIZE_STRING);
-    $pass = filter_input(INPUT_POST, 'pass', FILTER_SANITIZE_STRING);;
+    $pass = filter_input(INPUT_POST, 'pass', FILTER_SANITIZE_STRING);
     if ($user == "" || $pass == "") {
         $error = "Not all fields were entered";
     }  else {
