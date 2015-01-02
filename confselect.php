@@ -9,6 +9,9 @@ htmlheader("Conf Select", $meta);
 echo $logo;
 
 bar($page);
+
+$error = $conf = "";
+
 $dir = "/home/ftwportal/conf";
 $command = "ls $dir";
 
@@ -64,7 +67,7 @@ foreach ($ini as $choice) {
 </form>
 <?php
 if (isset($_POST['conf'])) {
-    $conf = $_POST['conf'];
+    $conf = filter_input(INPUT_POST, 'conf', FILTER_SANITIZE_STRING);
     if (!in_array($conf, $ini)) {
         echo "You must select a valid choice!<br />";
     } else {

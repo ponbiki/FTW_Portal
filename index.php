@@ -29,8 +29,8 @@ $error = $user = $pass = '';
         </form>
 <?php
 if (isset($_POST['user'])) {
-    $user = $_POST['user'];
-    $pass = $_POST['pass'];
+    $user = filter_input(INPUT_POST, 'user', FILTER_SANITIZE_STRING);
+    $pass = filter_input(INPUT_POST, 'pass', FILTER_SANITIZE_STRING);;
     if ($user == "" || $pass == "") {
         $error = "Not all fields were entered";
     }  else {

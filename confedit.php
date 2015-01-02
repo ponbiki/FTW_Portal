@@ -10,6 +10,8 @@ echo $logo;
 
 bar($page);
 
+$error = $deldomain = $newhost = "";
+
 $command = "cat ".$_SESSION['confpath'];
 
 if (!($con = ssh2_connect($server, $port))) {
@@ -37,10 +39,34 @@ foreach ($ini_array as $category => $value) {
 
 if (isset($_POST['formid'])) {
     if ($_POST['formid'] == 'delform') {
-        echo "Oh no!  Are you sure you want to remove ".$_POST['deldomain']."?<br />";
+        $deldomain = filter_input(INPUT_POST, 'deldomain', FILTER_SANITIZE_STRING);
+        if (!in_array($deldomain, $domains)) {
+            echo "Please choose an exisitng hostname<br />";
+        } else {
+            /*
+             * Deletion logic goes here
+             * Javascript warn
+             * parse form and del line
+             * ssh2remote cp to bak
+             * scp, run lb commands
+             * offer reversion
+             */
+            echo "$deldomain has been deleted. Please visit the revert"
+                    . " page if you need to undo this action<br />";
+        }
+    } else {
+        if ($_POST['formid'] == 'addform') {
+            $newhost = filter_input(INPUT_POST, 'newhost', FILTER_SANITIZE_STRING);
+            $host_validate = '/([0-9a-z-]+\.)?[0-9a-z-]+\.[a-z]{2,7}/';
+            if (false === preg_match($host_validate, $newhost)) {
+                echo "$newhost is not a valid domain name<br />";
+            } else {
+                //addition logic
+                echo "$newhost has been added!<br />";
+            }
+        }
     }
 }
-
 ?>
 
 <form method='post' action='confedit.php'>
