@@ -9,8 +9,8 @@ htmlheader("Conf Select", $meta);
 echo $logo;
 
 bar($page);
-
-$command = "ls /home/ftwportal/conf";
+$dir = "/home/ftwportal/conf";
+$command = "ls $dir";
 
 if (!($con = ssh2_connect($server, $port))) {
     die('Failed to establish connection');
@@ -36,7 +36,7 @@ $list = explode("\n",$data);
 foreach($list as $file) {
     $extension = pathinfo($file);
     if ($extension['extension'] === "ini") {
-        $ini[] = $file;
+        $ini[] = $extension['filename'];
     }
 }
 ?>
@@ -58,9 +58,14 @@ foreach ($ini as $choice) {
 </form>
 <?php
 if (isset($_POST['conf'])) {
-    echo $_POST['conf']."<br />";
-} else {
-    echo "not yet<br />";
+    $conf = $_POST['conf'];
+    if (!in_array($conf, $ini)) {
+        echo "You must select a valid choice!<br />";
+    } else {
+        $_SESSION['confpath'] = "$dir/$conf.ini";
+        $_SESSION['conffile'] = "$conf.ini";
+        header('Location: confedit.php');
+    }
 }
 
 tail();

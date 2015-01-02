@@ -25,7 +25,7 @@ if (isset($_POST['user'])) {
         $error = "Not all fields were entered<br />";
     } else {
         $token = md5("$salt1$pass$salt2");
-        $query = "SELECT username,password FROM djs
+        $query = "SELECT username,password FROM users
             WHERE username='$user' AND password='$token'";
 
         if (mysql_num_rows(queryMysql($query)) == 0) {
@@ -33,12 +33,12 @@ if (isset($_POST['user'])) {
         } else {
             $_SESSION['user'] = $user;
             $_SESSION['pass'] = $token;
-            $query2 = "SELECT admin FROM djs WHERE username='$user'";
+            $query2 = "SELECT admin FROM users WHERE username='$user'";
             $sql = queryMysql($query2);
             $isadmin = mysql_fetch_row($sql);
             if ($isadmin[0] == "Y")
                 $_SESSION['admin'] = $admin;
-            die(header("Location: djpanel.php"));
+            die(header("Location: "));
         }
     }
 }
