@@ -1,9 +1,9 @@
 <?php
 /*
-$dbhost = 'localhost';
-$dbname = 'radio';
-$dbuser = 'radio';
-$dbpass = 'password';
+$dbhost = '';
+$dbname = '';
+$dbuser = '';
+$dbpass = '';
 
 mysql_connect($dbhost, $dbuser, $dbpass) or die(mysql_error());
 mysql_select_db($dbname) or die(mysql_error());

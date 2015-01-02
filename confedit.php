@@ -18,24 +18,44 @@ if (!($con = ssh2_connect($server, $port))) {
     if (!ssh2_auth_password($con, $ssh_user, $ssh_pass)) {
         die('Failed to authenticate');
     } else {
-        // if (!($inifile = ssh2_scp_recv($con, $_SESSION[;configpath', /tmp/], )))
-        if (!($stream = ssh2_exec($con, $command))) {
-            die('Unable to execute command');
-        } else {
-            stream_set_blocking($stream, true);
-            $data = "";
-            while ($buf = fread($stream,4096)) {
-                $data .= $buf;
-            }
-            fclose($stream);
+        if (!($inifile = ssh2_scp_recv($con, $_SESSION['confpath'], '/tmp/'.$_SESSION['conffile'] ))) {
+            die('Unable to get file');
         }
+        fclose($stream);
     }
 }
 
+$ini_array = parse_ini_file('/tmp/'.$_SESSION['conffile'], true);
 
-
-echo nl2br($data);
-echo "<h1>".$_SESSION['confpath']."</h1>";
-echo "<h1>".$_SESSION['conffile']."</h1>";
+foreach ($ini_array as $category => $value) {
+    if ($category == "hostname") {
+        foreach ($value as $domain_name) {
+            $domains[] = $domain_name;
+        }
+    }
+}
+?>
+<form method='post' action='domaindel.php'>
+    <table style="float:left;">
+<?php
+foreach ($domains as $domain) {
+    echo <<<_END
+        <tr>
+            <td><label><span style="float:left;">$domain</span>
+            <span style="float:right;">
+                <input type="radio" name="deldomain" value="$domain" /></span>
+            </label></td>
+        </tr>    
+_END;
+}
+?>
+        <tr>
+            <td><label><span style="float:left;"><?php echo $error; ?></span>
+                    <span style="float:right;"><input type="submit" value="Remove" /></span>
+                </label></td>
+        </tr>
+    </table>
+</form>
+<?php
 tail();
 ?>
