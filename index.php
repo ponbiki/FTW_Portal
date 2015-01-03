@@ -1,7 +1,13 @@
 <?php
 require 'header.php';
 
-if ($loggedin) header("Location: x.php");
+if ($loggedin) {
+    if ($admin) {
+        header('Location: adminconfselect.php');
+    } else {
+        header('location: confselect.php');
+    }
+}
 
 $page = "FTW Log In";
 
