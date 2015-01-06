@@ -42,7 +42,8 @@ if (isset($_POST['user'])) {
         $error = "Not all fields were entered";
     } else {
         $token = md5("$salt1$pass$salt2");
-        $res = $mysqli->query("SELECT username,password,admin,company FROM users WHERE username='$user' AND password='$token'");
+        $res = $mysqli->query("SELECT username,password,admin,company FROM users "
+                . "WHERE username='$user' AND password='$token'");
         if ($res->num_rows < 1) {
             $res->free();
             $error = "Username/Password invalid";
