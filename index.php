@@ -44,23 +44,23 @@ if (isset($_POST['user'])) {
         $token = md5("$salt1$pass$salt2");
         $res = $mysqli->query("SELECT username,password,admin,company FROM users WHERE username='$user' AND password='$token'");
         if ($res->num_rows < 1) {
-            $res->free;
+            $res->free();
             $error = "Username/Password invalid";
         } else {
             $_SESSION['user'] = $user;
             $_SESSION['pass'] = $token;
-            $row = $res->fetch_row;
-            if ($row[2] !== 'Y') {
+            $row = $res->fetch_array(MYSQLI_ASSOC);
+            if ($row['admin'] !== 'Y') {
                 $_SESSION['company'] = $row['company'];
                 header('Location: confselect.php');
             } else {
+                $res->free();
                 $_SESSION['admin'] = $user;
                 header('Location: manage.php');
             }
         }
     }
-    $res->free;
-    $mysqli->close;
+    $mysqli->close();
 }
 
 echo "<br /><br />&nbsp;&nbsp;&nbsp;&nbsp;<span"
