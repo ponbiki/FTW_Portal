@@ -4,7 +4,7 @@ require_once 'header.php';
 
 $page = "Configuration Edit";
 
-htmlheader("Conf Edit", $meta);
+htmlheader($page, $page, array());
 
 echo $logo;
 

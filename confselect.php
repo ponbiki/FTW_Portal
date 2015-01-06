@@ -4,7 +4,7 @@ require_once 'header.php';
 
 $page = "Configuration Selection";
 
-htmlheader("Conf Select", $meta);
+htmlheader($page, $page, array());
 
 echo $logo;
 

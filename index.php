@@ -1,11 +1,12 @@
 <?php
-require 'header.php';
+require_once 'header.php';
+require_once 'conninfo.php';
 
 if ($loggedin) {
     if ($admin) {
-        header('Location: adminconfselect.php');
+        header('Location: manage.php');
     } else {
-        header('location: confselect.php');
+        header('Location: confselect.php');
     }
 }
 
@@ -38,10 +39,28 @@ if (isset($_POST['user'])) {
     $user = filter_input(INPUT_POST, 'user', FILTER_SANITIZE_STRING);
     $pass = filter_input(INPUT_POST, 'pass', FILTER_SANITIZE_STRING);
     if ($user == "" || $pass == "") {
-        $error = "Not all fields were entered";
-    }  else {
-        die(header("Location: confselect.php"));
+        $error = "Not all fields were entered<br />";
+    } else {
+        $token = md5("$salt1$pass$salt2");
+        $res = $mysqli->query("SELECT username,password,admin,company FROM users WHERE username='$user' AND password='$token'");
+        if ($res->num_rows < 1) {
+            $res->free;
+            $error = "Username/Password invalid<br />";
+        } else {
+            $_SESSION['user'] = $user;
+            $_SESSION['pass'] = $token;
+            $row = $res->fetch_assoc;
+            if ($row['admin'] !== 'Y') {
+                $_SESSION['company'] = $row['company'];
+                $res->free;
+                $mysqli->close;
+                header('Location: confselect.php');
+            } else {
+                $_SESSION['admin'] = $user;
+                header('Location: manage.php');
+            }
+        }
     }
-} 
+}
 tail();
 ?>

@@ -1,6 +1,5 @@
 <?php
-$salt1 = "qm&h*";
-$salt2 = "pg!@";
+require_once 'conninfo.php';
 
 function destroySession() {
     $_SESSION=array();
@@ -11,4 +10,8 @@ function destroySession() {
     session_destroy();
 }
 
+$mysqli = mysqli_connect($db_host, $db_user, $db_pass, $db_name);
+if ($mysqli->connect_errno) {
+    echo "Failed to connect to MySQL: (" . $mysqli->connect_errno . ") " . $mysqli->connect_error;
+}
 ?>
