@@ -42,7 +42,7 @@ $list = explode("\n",$data);
 
 foreach($list as $file) {
     $extension = pathinfo($file);
-    if ($extension['extension'] === "ini") {
+    if (@$extension['extension'] === "ini") {
         $ini[] = $extension['filename'];
     }
 }

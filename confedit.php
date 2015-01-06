@@ -27,7 +27,6 @@ if (!($con = ssh2_connect($server, $port))) {
         if (!($inifile = ssh2_scp_recv($con, $_SESSION['confpath'], 'tmp/'.$_SESSION['conffile'] ))) {
             die('Unable to get file');
         }
-        fclose($stream);
     }
 }
 

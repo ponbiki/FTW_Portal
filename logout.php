@@ -9,6 +9,8 @@ echo $logo;
 
 bar($page);
 
+$error = '';
+
 if (isset($_SESSION['user'])) {
     destroySession();
     header("Location: index.php");

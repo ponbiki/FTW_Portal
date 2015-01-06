@@ -17,6 +17,8 @@ echo $logo;
 
 bar($page);
 
+$error = '';
+
 echo "<br /><br />&nbsp;&nbsp;&nbsp;&nbsp;<span"
     . " style='color:BurlyWood;font-size:12pt;font-weight:bold'>$error</span><br />";
 
