@@ -2,6 +2,10 @@
 require_once 'conninfo.php';
 require_once 'header.php';
 
+if (!$loggedin) {
+    header("Location: index.php");
+}
+
 $page = "Configuration Edit";
 
 htmlheader($page, $page, array());
@@ -91,7 +95,6 @@ foreach ($domains as $domain) {
             <td>
                 <label>
                     <span style="float:left;">
-                        <?php echo $error; ?>
                     </span>
                     <span style="float:right;">
                         <input type="submit" value="Remove" />
@@ -142,7 +145,8 @@ foreach ($domains as $domain) {
 </form>
 <?php
 
-
+echo "<br /><br />&nbsp;&nbsp;&nbsp;&nbsp;<span"
+    . " style='color:BurlyWood;font-size:12pt;font-weight:bold'>$error</span><br />";
 
 tail();
 ?>

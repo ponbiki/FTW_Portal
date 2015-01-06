@@ -29,7 +29,7 @@ $error = $user = $pass = '';
                     <td style="text-align: left;">Password</td><td style="text-align: right;">
                         <input type='password' maxlength='24' name='pass' value="" /></td>
                 </tr><tr>
-                    <td style="text-align: left;"><?php echo $error; ?></td>
+                    <td style="text-align: left;"></td>
                     <td style="text-align: right;"><input type="submit" value="Login" /></td>
             </tr>
             </table>
@@ -39,21 +39,19 @@ if (isset($_POST['user'])) {
     $user = filter_input(INPUT_POST, 'user', FILTER_SANITIZE_STRING);
     $pass = filter_input(INPUT_POST, 'pass', FILTER_SANITIZE_STRING);
     if ($user == "" || $pass == "") {
-        $error = "Not all fields were entered<br />";
+        $error = "Not all fields were entered";
     } else {
         $token = md5("$salt1$pass$salt2");
         $res = $mysqli->query("SELECT username,password,admin,company FROM users WHERE username='$user' AND password='$token'");
         if ($res->num_rows < 1) {
             $res->free;
-            $error = "Username/Password invalid<br />";
+            $error = "Username/Password invalid";
         } else {
             $_SESSION['user'] = $user;
             $_SESSION['pass'] = $token;
-            $row = $res->fetch_assoc;
-            if ($row['admin'] !== 'Y') {
+            $row = $res->fetch_row;
+            if ($row[2] !== 'Y') {
                 $_SESSION['company'] = $row['company'];
-                $res->free;
-                $mysqli->close;
                 header('Location: confselect.php');
             } else {
                 $_SESSION['admin'] = $user;
@@ -61,6 +59,12 @@ if (isset($_POST['user'])) {
             }
         }
     }
+    $res->free;
+    $mysqli->close;
 }
+
+echo "<br /><br />&nbsp;&nbsp;&nbsp;&nbsp;<span"
+    . " style='color:BurlyWood;font-size:12pt;font-weight:bold'>$error</span><br />";
+
 tail();
 ?>

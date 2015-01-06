@@ -2,6 +2,10 @@
 require_once 'conninfo.php';
 require_once 'header.php';
 
+if (!$loggedin) {
+    header("Location: index.php");
+}
+
 $page = "Configuration Selection";
 
 htmlheader($page, $page, array());
@@ -43,7 +47,7 @@ foreach($list as $file) {
     }
 }
 ?>
-<form method='post' action=''><?php echo $error ?>
+<form method='post' action=''>
     <table style="float: left;">
         <tr>
             <td style="text-align: left;">Edit: </td>
@@ -76,6 +80,9 @@ if (isset($_POST['conf'])) {
         header('Location: confedit.php');
     }
 }
+
+echo "<br /><br />&nbsp;&nbsp;&nbsp;&nbsp;<span"
+    . " style='color:BurlyWood;font-size:12pt;font-weight:bold'>$error</span><br />";
 
 tail();
 ?>
