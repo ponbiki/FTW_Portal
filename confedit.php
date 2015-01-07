@@ -41,7 +41,7 @@ foreach ($ini_array as $category => $value) {
 }
 
 if (isset($_POST['formid'])) {
-    if ($_POST['formid'] == 'delform') {
+    if ($_POST['formid'] === 'delform') {
         $deldomain = filter_input(INPUT_POST, 'deldomain', FILTER_SANITIZE_STRING);
         if (!in_array($deldomain, $domains)) {
             echo "Please choose an exisitng hostname<br />";
@@ -49,15 +49,16 @@ if (isset($_POST['formid'])) {
             if (!($con = ssh2_connect($server, $port))) {
                 die('Failed to establish connection');
             } else {
-                if(!ssh2_auth_password($con, $ssh_user, $ssh_pass)) {
+                if(!(ssh2_auth_password($con, $ssh_user, $ssh_pass))) {
                     die('Failed to authenticate');
                 } else {
                     $dir = "/home/ftwportal/conf";
-                    $command = "cp $dir/$deldomain.ini $dir/$deldomain.ini.bak";
+                    $time = mktime();
+                    $command = "cp $dir/$deldomain.ini $dir/$deldomain.$time.bak";
                     if (!($stream = ssh2_exec($con, $command))) {
                         die('Unable to execute command');
                     } else {
-                        stream_set_blocking($steam, true);
+                        stream_set_blocking($stream, true);
                         $data ='';
                         while ($buf = fread($stream,4096)) {
                             $data .= $buf;
@@ -70,15 +71,35 @@ if (isset($_POST['formid'])) {
                     . " page if you need to undo this action<br />";
         }
     } else {
-        if ($_POST['formid'] == 'addform') {
+        if ($_POST['formid'] === 'addform') {
             $newhost = filter_input(INPUT_POST, 'newhost', FILTER_SANITIZE_STRING);
             $host_validate = '/([0-9a-z-]+\.)?[0-9a-z-]+\.[a-z]{2,7}/';
             if (!preg_match($host_validate, $newhost)) {
                 echo "$newhost is not a valid domain name<br />";
             } else {
-                //addition logic
-                echo "$newhost has been added!<br />";
+                if (!($con = ssh2_connect($server, $port))) {
+                    die('Failed to establish connection');
+                } else {
+                    if (!(ssh2_auth_password($con, $ssh_user, $ssh_pass))) {
+                        die('Failed to authenticate');
+                    } else {
+                        $dir = "/home/ftwportal/conf";
+                        $time = mktime();
+                        $command = "cp $dir/$deldomain.ini $dir/$deldomain.$time.bak";
+                        if (!($stream = ssh2_exec($con, $command))) {
+                            die('Unable to execute command');
+                        } else {
+                            stream_set_blocking($stream, true);
+                            $data ='';
+                            while ($buf = fread($stream,4096)) {
+                                $data .= $buf;
+                            }
+                            fclose($stream);
+                        }
+                    }
+                }
             }
+            echo "$newhost has been added!<br />";
         }
     }
 }
