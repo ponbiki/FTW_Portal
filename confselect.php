@@ -46,6 +46,24 @@ foreach($list as $file) {
         $ini[] = $extension['filename'];
     }
 }
+
+$res = $mysqli->query("SELECT conf FROM confs WHERE username='".$_SESSION['user']."'");
+$dbiniarray = $res->fetch_all();
+$res->free();
+$mysqli->close();
+
+foreach ($dbiniarray as $dbia) {
+    foreach ($dbia as $ia) {
+        $dbini[] = $ia;
+    }
+}
+
+$confavail = array_intersect($dbini, $ini);
+
+echo "<pre>";print_r($dbini);echo "</pre>";
+echo "<pre>";print_r($ini);echo "</pre>";
+echo "<pre>";print_r($confavail);echo "</pre>";
+
 ?>
 <form method='post' action=''>
     <table style="float: left;">
@@ -54,7 +72,7 @@ foreach($list as $file) {
             <td style="text-align: right;">
                 <select name='conf'>
 <?php
-foreach ($ini as $choice) {
+foreach ($confavail as $choice) {
     echo "<option>$choice</option>\n";
 }
 ?>
