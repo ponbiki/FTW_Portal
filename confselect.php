@@ -10,6 +10,8 @@ $page = "Configuration Selection";
 
 htmlheader($page, $page, array());
 
+echo $navigation;
+
 echo $logo;
 
 bar($page);

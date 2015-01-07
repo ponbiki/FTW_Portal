@@ -14,13 +14,13 @@ form {
 
 a[href], a[href]:visited {
     /*background:inherit;*/
-    color:#34345C;
+    color:#dc9d01;
     text-decoration:none;
     font-family:sans-serif;
 }
 
 a[href]:hover {
-    color:#DD0000;
+    color:#f5deb3;
     /*background:inherit;*/
     font-family:sans-serif;
 }
@@ -161,11 +161,12 @@ ol li small {
 }
 
 .navbar {
-    background-color:#f1f1fa;
-    border:1px solid #C5C8D2;
+    background-color:#393636;
+    border:1px solid black;
     margin-top:5px;
     padding: .5em;
     text-align:center;
+    color: #dc9d01;
 }
 
 ol, li {
@@ -193,15 +194,4 @@ table {
     text-align: top;
     border: 1px solid black;
     /* background-color: #D6DFF0;*/
-}
-
-
-
-.djprofile {
-    width: 85%;
-    margin: 5px;
-}
-
-.utc {
-    font-size: 8pt;
 }
