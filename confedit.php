@@ -46,14 +46,26 @@ if (isset($_POST['formid'])) {
         if (!in_array($deldomain, $domains)) {
             echo "Please choose an exisitng hostname<br />";
         } else {
-            /*
-             * Deletion logic goes here
-             * Javascript warn
-             * parse form and del line
-             * ssh2remote cp to bak
-             * scp, run lb commands
-             * offer reversion
-             */
+            if (!($con = ssh2_connect($server, $port))) {
+                die('Failed to establish connection');
+            } else {
+                if(!ssh2_auth_password($con, $ssh_user, $ssh_pass)) {
+                    die('Failed to authenticate');
+                } else {
+                    $dir = "/home/ftwportal/conf";
+                    $command = "cp $dir/$deldomain.ini $dir/$deldomain.ini.bak";
+                    if (!($stream = ssh2_exec($con, $command))) {
+                        die('Unable to execute command');
+                    } else {
+                        stream_set_blocking($steam, true);
+                        $data ='';
+                        while ($buf = fread($stream,4096)) {
+                            $data .= $buf;
+                        }
+                        fclose($stream);
+                    }
+                }
+            }
             echo "$deldomain has been deleted. Please visit the revert"
                     . " page if you need to undo this action<br />";
         }
