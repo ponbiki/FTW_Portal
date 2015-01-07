@@ -60,10 +60,6 @@ foreach ($dbiniarray as $dbia) {
 
 $confavail = array_intersect($dbini, $ini);
 
-echo "<pre>";print_r($dbini);echo "</pre>";
-echo "<pre>";print_r($ini);echo "</pre>";
-echo "<pre>";print_r($confavail);echo "</pre>";
-
 ?>
 <form method='post' action=''>
     <table style="float: left;">
