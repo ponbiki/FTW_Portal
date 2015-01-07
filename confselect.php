@@ -90,7 +90,7 @@ foreach ($confavail as $choice) {
 <?php
 if (isset($_POST['conf'])) {
     $conf = filter_input(INPUT_POST, 'conf', FILTER_SANITIZE_STRING);
-    if (!in_array($conf, $ini)) {
+    if (!in_array($conf, $confavail)) {
         echo "You must select a valid choice!<br />";
     } else {
         $_SESSION['confpath'] = "$dir/$conf.ini";
