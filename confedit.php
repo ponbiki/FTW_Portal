@@ -18,8 +18,6 @@ bar($page);
 
 $error = $deldomain = $newhost = "";
 
-$command = "cat ".$_SESSION['confpath'];
-
 if (!($con = ssh2_connect($server, $port))) {
     die('Failed to establish connection');
 } else {
@@ -111,6 +109,26 @@ if (isset($_POST['formid'])) {
             echo "$deldomain has been deleted. Please visit the revert"
                     . " page if you need to undo this action<br />";
             unset($_POST);
+            //header('Refresh: 5');
+        }
+        if(!($con = ssh2_connect($server, $port))) {
+            die('Failed to establish connection');
+        } else {
+            if(!(ssh2_auth_password($con, $ssh_user, $ssh_pass))) {
+                die('Failed to authenticate');
+            } else {
+                $command = "touch $dir/boogieboogie";
+                if(!($stream = ssh2_exec($con, $command))) {
+                    die('Unable to execute command');
+                } else {
+                    stream_set_blocking($stream, true);
+                    $data = '';
+                    while ($buf = fread($stream,4096)) {
+                        $data .= $buf;
+                    }
+                    fclose($stream);
+                }
+            }
             header('Refresh: 5');
         }
     } else {
