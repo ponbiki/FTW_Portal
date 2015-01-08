@@ -106,8 +106,7 @@ if (isset($_POST['formid'])) {
             if (!unlink("tmp/{$_SESSION['conffile']}")) {
                 die('Could not clean up temp file');
             }
-            echo "$deldomain has been deleted. Please visit the revert"
-                    . " page if you need to undo this action<br />";
+            echo "$deldomain has been deleted.<br />";
             unset($_POST);
         }
         if(!($con = ssh2_connect($server, $port))) {
