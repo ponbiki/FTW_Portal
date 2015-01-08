@@ -49,7 +49,7 @@ foreach($list as $file) {
     }
 }
 
-$res = $mysqli->query("SELECT conf FROM confs WHERE username='".$_SESSION['user']."'");
+$res = $mysqli->query("SELECT conf FROM confs WHERE username='{$_SESSION['user']}'");
 $dbiniarray = $res->fetch_all();
 $res->free();
 $mysqli->close();

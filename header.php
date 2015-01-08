@@ -73,7 +73,8 @@ $logo = "<div class='logo'><img src='img/ftw_logo.png' title='FTW Logo' name='FT
 
 if ($loggedin) {
     $navigation = "<div class='navbar'>
-        [<a href='confselect.php' title='Configuration Selection'>Configuration Selection</a> / <a href='logout.php' title='Logout'>Logout</a>]
+        [<a href='confselect.php' title='Configuration Selection'>Configuration Selection</a>
+        / <a href='logout.php' title='Logout'>Logout</a>]
         </div>\n";
 }
 ?>
