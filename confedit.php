@@ -82,7 +82,7 @@ if (isset($_POST['formid'])) {
                                 $text .= $key."[] = $value2\n";
                             } else {
                                 foreach ($value2 as $key3 => $value3) {
-                                    $text .= $key2."[] = $value3\n";
+                                    $text .= $key."[".$key2."][] = $value3\n";
                                 }
                             }
                         }
@@ -144,7 +144,7 @@ if (isset($_POST['formid'])) {
                     } else {
                         $dir = "/home/ftwportal/conf";
                         $time = mktime();
-                        $command = "cp $dir/$deldomain.ini $dir/$deldomain.$time.bak";
+                        $command = "cp $dir/{$_SESSION['conffile']} $dir/{$_SESSION['conffile']}.bak";
                         if (!($stream = ssh2_exec($con, $command))) {
                             die('Unable to execute command');
                         } else {
@@ -155,11 +155,70 @@ if (isset($_POST['formid'])) {
                             }
                             fclose($stream);
                         }
-                        $ini_array['hostname'] = array_diff($ini_array['hostname'], array($deldomain));
                     }
                 }
+                array_push($ini_array['hostname'], $newhost);
+                if(!unlink("tmp/{$_SESSION['conffile']}")) {
+                    die('Unable to delete temp file');
+                } else {
+                    $fh = fopen("tmp/{$_SESSION['conffile']}", 'w') or die('Cannot create file');
+                    $text = '';
+                    foreach ($ini_array as $key => $value) {
+                        if (!is_array($value)) {
+                            $text .= "$key = $value\n";
+                        } else {
+                            foreach ($value as $key2 => $value2) {
+                                if (!is_array($value2)) {
+                                    $text .= $key."[] = $value2\n";
+                                } else {
+                                    foreach ($value2 as $key3 => $value3) {
+                                        $text .= $key."[".$key2."][] = $value3\n";
+                                    }
+                                }
+                            }
+                        }
+                    }
+                    fwrite($fh, $text) or die('Could not write file');
+                    fclose($fh);
+                }
+                if(!($con = ssh2_connect($server, $port))) {
+                    die('Failed to establish connection');
+                } else {
+                    if(!(ssh2_auth_password($con, $ssh_user, $ssh_pass))) {
+                        die('Failed to authenticate');
+                    } else {
+                        if(!(ssh2_scp_send($con, "tmp/{$_SESSION['conffile']}", "$dir/"
+                                . "{$_SESSION['conffile']}", 0644))) {
+                            die('Unable to send file');
+                        }
+                    }
+                }
+                if (!unlink("tmp/{$_SESSION['conffile']}")) {
+                    die('Could not clean up temp file');
+                }
+                echo "$newhost has been added.<br />";
+                unset($_POST);
             }
-            echo "$newhost has been added!<br />";
+            if(!($con = ssh2_connect($server, $port))) {
+                die('Failed to establish connection');
+            } else {
+                if(!(ssh2_auth_password($con, $ssh_user, $ssh_pass))) {
+                    die('Failed to authenticate');
+                } else { //placeholder exec for the lb reload commands
+                    $command = "touch $dir/stinkypinky";
+                    if(!($stream = ssh2_exec($con, $command))) {
+                        die('Unable to execute command');
+                    } else {
+                        stream_set_blocking($stream, true);
+                        $data = '';
+                        while ($buf = fread($stream,4096)) {
+                            $data .= $buf;
+                        }
+                        fclose($stream);
+                    }
+                }
+                header('Refresh: 5');
+            }
         }
     }
 }
