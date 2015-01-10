@@ -155,7 +155,7 @@ if (isset($_POST['formid'])) {
                             }
                             fclose($stream);
                         }
-                        //more add crap incoming
+                        $ini_array['hostname'] = array_diff($ini_array['hostname'], array($deldomain));
                     }
                 }
             }
