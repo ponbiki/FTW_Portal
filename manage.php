@@ -13,6 +13,8 @@ $page = "Manage Interface";
 
 htmlheader($page, $page, array());
 
+echo $navigation;
+
 echo $logo;
 
 bar($page);
