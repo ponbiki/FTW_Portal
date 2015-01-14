@@ -63,8 +63,9 @@ foreach ($dbiniarray as $dbia) {
 $confavail = array_intersect($dbini, $ini);
 
 ?>
-<form method='post' action=''>
-    <table style="float: left;">
+<div style="clear: both;">
+<form method='post' action='confselect.php' style="float: right;">
+    <table>
         <tr>
             <td style="text-align: left;">Edit: </td>
             <td style="text-align: right;">
@@ -85,6 +86,7 @@ foreach ($confavail as $choice) {
         </tr>
     </table>
 </form>
+</div>
 <?php
 if (isset($_POST['conf'])) {
     $conf = filter_input(INPUT_POST, 'conf', FILTER_SANITIZE_STRING);

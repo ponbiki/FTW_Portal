@@ -224,9 +224,9 @@ if (isset($_POST['formid'])) {
     }
 }
 ?>
-
-<form method='post' action='confedit.php'>
-    <table style="float:left;">
+<div style="clear: both;">
+<form method='post' action='confedit.php' style="float:left;">
+    <table>
 <?php
 foreach ($domains as $domain) {
 ?>
@@ -258,8 +258,8 @@ foreach ($domains as $domain) {
     <input type='hidden' name='formid' value='delform' />
 </form>
 
-<form method='post' action='confedit.php'>
-    <table style='float:right;'>
+<form method='post' action='confedit.php' style='float:right;'>
+    <table>
         <tr>
             <td>
                 <label>
@@ -295,6 +295,7 @@ foreach ($domains as $domain) {
     </table>
     <input type='hidden' name='formid' value='addform' />
 </form>
+</div>
 <?php
 
 echo "<br /><br />&nbsp;&nbsp;&nbsp;&nbsp;<span"

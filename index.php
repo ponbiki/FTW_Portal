@@ -20,8 +20,9 @@ bar($page);
 
 $error = $user = $pass = '';
 ?>
-        <form method='post' action='<?php echo $_SERVER['PHP_SELF']; ?>'>
-            <table style="float: left;">
+    <div style="clear: both;">
+        <form method='post' action='index.php' style="float: left;">
+            <table>
                 <tr>
                     <td style="text-align: left;">Username</td><td style="text-align: right;">
                         <input type='text' maxlength='24' name='user' value="" /></td>
@@ -34,6 +35,7 @@ $error = $user = $pass = '';
             </tr>
             </table>
         </form>
+    </div>
 <?php
 if (isset($_POST['user'])) {
     $user = filter_input(INPUT_POST, 'user', FILTER_SANITIZE_STRING);
