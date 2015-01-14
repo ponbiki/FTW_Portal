@@ -115,6 +115,7 @@ if (isset($_POST['formid'])) {
             if(!(ssh2_auth_password($con, $ssh_user, $ssh_pass))) {
                 die('Failed to authenticate');
             } else { //placeholder exec for the lb reload commands
+                $dir = "/home/ftwportal/conf";
                 $command = "touch $dir/boogieboogie";
                 if(!($stream = ssh2_exec($con, $command))) {
                     die('Unable to execute command');

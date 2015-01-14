@@ -79,8 +79,8 @@ if (($loggedin)&&(!$admin)) {
 } else {
     if ($admin) {
         $navigation = "<div class='navbar'>
-            [<a href='logout.php' title='Logout'>Logout</a>]
-            </div>\n";        
+            [<a href='manage.php' title='User Management'>User Management</a> / <a href='logout.php' title='Logout'>Logout</a>]
+            </div>\n";
     }
 }
 ?>
