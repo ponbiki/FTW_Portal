@@ -24,8 +24,31 @@ $error = '';
 $res = $mysqli->query("SELECT username FROM users");
 $cguser_array = $res->fetch_all();
 $res->free();
-$mysqli->close();
 
+if (isset($_POST['formid'])) {
+    if ($_POST['formid'] === 'adduser') {
+        $addusername = filter_input(INPUT_POST, 'addusername', FILTER_SANITIZE_STRING);
+        $pass1 = filter_input(INPUT_POST, 'pass1', FILTER_SANITIZE_STRING);
+        $pass2 = filter_input(INPUT_POST, 'pass2', FILTER_SANITIZE_STRING);
+        if (($addusername == '')||($pass1 == '')||($pass2 == '')) {
+            $error = "Not all fields were entered.<br />";
+        } else {
+            if ($pass1 !== $pass2) {
+                $error = "Password entered do not match!<br />";
+            } else {
+                $token = md5("$salt1$pass1$salt2");
+                $res = $mysqli->query("INSERT INTO users (username, password) VALUES ('$addusername', '$token')");
+                if (!$res) {
+                    die('Error: ('.$mysqli->errno.') '.$mysqli->error);
+                } else {
+                    echo "$addusername has been added!<br />";
+                    unset($_POST);
+                }
+            }
+        }
+        header('Refresh:5');
+    }
+}
 ?>
 <div style="clear: both;">
 <form method='post' action='manage.php' style="float:left;">
@@ -41,7 +64,7 @@ $mysqli->close();
             <td>
                 <label>
                     <span style='float:right;'>
-                        <input type='text' maxlength='253' name='username' value="" />
+                        <input type='text' maxlength='253' name='addusername' value="" />
                     </span>
                 </label>
             </td>
