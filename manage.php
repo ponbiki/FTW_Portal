@@ -34,7 +34,7 @@ if (isset($_POST['formid'])) {
             $error = "Not all fields were entered.<br />";
         } else {
             if ($pass1 !== $pass2) {
-                $error = "Password entered do not match!<br />";
+                $error = "Passwords entered do not match!<br />";
             } else {
                 $token = md5("$salt1$pass1$salt2");
                 $res = $mysqli->query("INSERT INTO users (username, password) VALUES ('$addusername', '$token')");
