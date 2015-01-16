@@ -52,7 +52,9 @@ if (isset($_POST['formid'])) {
             if (!in_array($cguser, $cgusers)) {
                 $error = "Please enter a valid username.<br />";
             } else {
-                //do stuff
+                //do stuff   on web5cp....password filter relax
+                //addnewsite script
+                //on this no domain message for del box
             }
         }
     }
