@@ -47,6 +47,14 @@ if (isset($_POST['formid'])) {
             }
         }
         header('Refresh:5');
+    } else {
+        if ($_POST[formid === 'changepass']) {
+            if (!in_array($cguser, $cgusers)) {
+                $error = "Please enter a valid username.<br />";
+            } else {
+                
+            }
+        }
     }
 }
 ?>
