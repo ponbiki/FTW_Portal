@@ -52,7 +52,7 @@ if (isset($_POST['formid'])) {
             if (!in_array($cguser, $cgusers)) {
                 $error = "Please enter a valid username.<br />";
             } else {
-                
+                //do stuff
             }
         }
     }
