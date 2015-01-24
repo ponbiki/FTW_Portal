@@ -11,7 +11,21 @@ if (!$admin) {
 
 $page = "User Management";
 
-htmlheader($page, $page, array());
+htmlheader($page, $page, array('
+             <script src="js/jquery.js"></script>
+        <script src="js/jquery-ui.js"></script>
+        <script>
+            $(function() {
+                $( "#tabs" ).tabs({
+                    event: "mouseover"
+                });
+            });
+            $(function() {
+                $( "input[type=submit], a, button" )
+                .button()
+            });
+        </script>
+'));
 
 echo $navigation;
 
@@ -60,91 +74,99 @@ if (isset($_POST['formid'])) {
     }
 }
 ?>
-<div style="clear: both;">
-<form method='post' action='manage.php' style="float:left;">
-    <table>
-        <tr>
-            <td>
-                <label>
-                    <span style='float:left;'>
-                        Add a new user: 
-                    </span>
-                </label>
-            </td>
-            <td>
-                <label>
-                    <span style='float:right;'>
-                        <input type='text' maxlength='253' name='addusername' value="" />
-                    </span>
-                </label>
-            </td>
-        </tr>
-        <tr>
-            <td>
-                <label>
-                    <span style='float:left;'>
-                        Password: 
-                    </span>
-                </label>
-            </td>
-            <td>
-                <label>
-                    <span style='float:right;'>
-                        <input type='password' maxlength='253' name='pass1' value="" />
-                    </span>
-                </label>
-            </td>
-        </tr>
-        <tr>
-            <td>
-                <label>
-                    <span style='float:left;'>
-                        Re-Enter Password: 
-                    </span>
-                </label>
-            </td>
-            <td>
-                <label>
-                    <span style='float:right;'>
-                        <input type='password' maxlength='253' name='pass2' value="" />
-                    </span>
-                </label>
-            </td>
-        </tr>
-        <tr>
-            <td>
-                <label>
-                    <span style='float:left;'>
-                        <?php echo $error ?>
-                    </span>
-                </label>
-            </td>
-            <td>
-                <label>
-                    <span style='float:right;'>
-                        <input type="submit" value="Add" />
-                    </span>
-                </label>
-            </td>
-        </tr>
-    </table>
-    <input type='hidden' name='formid' value='adduser' />
-</form>
-
-<form method='post' action='manage.php' style="float:right;">
-    <table>
-        <tr>
-            <td>
-                <label>
-                    <span style="float:left;">
-                        Change Password For: 
-                    </span>
-                </label>
-            </td>
-            <td>
-                <label>
-                    <span style="float:right;">
-                        <select name='cguser'>
+<div id="tabs">
+    <ul>
+        <li><a href="#tabs-addusr">Add User</a></li>
+        <li><a href="#tabs-delusr">Delete User</a></li>
+        <li><a href="#tabs-chgpwd">Change Password</a></li>
+    </ul>
+    <div id="tabs-addusr">
+        <form method='post' action='manage.php'>
+            <table>
+                <tr>
+                    <td>
+                        <label>
+                            <span style='float:left;'>
+                                Add a new user: 
+                            </span>
+                        </label>
+                    </td>
+                    <td>
+                        <label>
+                            <span style='float:right;'>
+                                <input type='text' maxlength='253' name='addusername' value="" />
+                            </span>
+                        </label>
+                    </td>
+                </tr>
+                <tr>
+                    <td>
+                        <label>
+                            <span style='float:left;'>
+                                Password: 
+                            </span>
+                        </label>
+                    </td>
+                    <td>
+                        <label>
+                            <span style='float:right;'>
+                                <input type='password' maxlength='253' name='pass1' value="" />
+                            </span>
+                        </label>
+                    </td>
+                </tr>
+                <tr>
+                    <td>
+                        <label>
+                            <span style='float:left;'>
+                                Re-Enter Password: 
+                            </span>
+                        </label>
+                    </td>
+                    <td>
+                        <label>
+                            <span style='float:right;'>
+                                <input type='password' maxlength='253' name='pass2' value="" />
+                            </span>
+                        </label>
+                    </td>
+                </tr>
+                <tr>
+                    <td>
+                        <label>
+                            <span style='float:left;'>
+                                <?php echo $error ?>
+                            </span>
+                        </label>
+                    </td>
+                    <td>
+                        <label>
+                            <span style='float:right;'>
+                                <input type="submit" value="Add" />
+                            </span>
+                        </label>
+                    </td>
+                </tr>
+            </table>
+            <input type='hidden' name='formid' value='adduser' />
+        </form>
+    </div>
+    <div id="tabs-delusr"></div>
+    <div id="tabs-chgpwd">
+        <form method='post' action='manage.php'>
+            <table>
+                <tr>
+                    <td>
+                        <label>
+                            <span style="float:left;">
+                                Change Password For: 
+                            </span>
+                        </label>
+                    </td>
+                    <td>
+                        <label>
+                            <span style="float:right;">
+                                <select name='cguser'>
 <?php
 foreach ($cguser_array as $cgusers) {
     foreach ($cgusers as $cguser) {
@@ -152,52 +174,53 @@ foreach ($cguser_array as $cgusers) {
     }
 }
 ?>
-                        </select>
-                    </span>
-                </label>
-             </td>
-        </tr>
-        <tr>
-            <td>
-                <label>
-                    <span style='float:left;'>
-                        Password: 
-                    </span>
-                </label>
-            </td>
-            <td>
-                <label>
-                    <span style='float:right;'>
-                        <input type='password' maxlength='253' name='cgpass1' value="" />
-                    </span>
-                </label>
-            </td>
-        </tr>
-        <tr>
-            <td>
-                <label>
-                    <span style='float:left;'>
-                        Re-Enter Password: 
-                    </span>
-                </label>
-            </td>
-            <td>
-                <label>
-                    <span style='float:right;'>
-                        <input type='password' maxlength='253' name='cgpass2' value="" />
-                    </span>
-                </label>
-            </td>
-        </tr>
-        <tr>
-            <td></td>
-            <td style="text-align: right;">
-                <input type="submit" value="Submit" />
-            </td>
-        </tr>
-    </table>
-    <input type='hidden' name='formid' value='changepass' />
-</form>
+                                </select>
+                            </span>
+                        </label>
+                     </td>
+                </tr>
+                <tr>
+                    <td>
+                        <label>
+                            <span style='float:left;'>
+                                Password: 
+                            </span>
+                        </label>
+                    </td>
+                    <td>
+                        <label>
+                            <span style='float:right;'>
+                                <input type='password' maxlength='253' name='cgpass1' value="" />
+                            </span>
+                        </label>
+                    </td>
+                </tr>
+                <tr>
+                    <td>
+                        <label>
+                            <span style='float:left;'>
+                                Re-Enter Password: 
+                            </span>
+                        </label>
+                    </td>
+                    <td>
+                        <label>
+                            <span style='float:right;'>
+                                <input type='password' maxlength='253' name='cgpass2' value="" />
+                            </span>
+                        </label>
+                    </td>
+                </tr>
+                <tr>
+                    <td></td>
+                    <td style="text-align: right;">
+                        <input type="submit" value="Submit" />
+                    </td>
+                </tr>
+            </table>
+            <input type='hidden' name='formid' value='changepass' />
+        </form>
+    </div>
 </div>
 <?php
 

@@ -8,7 +8,16 @@ if (!$loggedin) {
 
 $page = "Configuration Selection";
 
-htmlheader($page, $page, array());
+htmlheader($page, $page, array('
+             <script src="js/jquery.js"></script>
+        <script src="js/jquery-ui.js"></script>
+        <script>
+            $(function() {
+                $( "input[type=submit], a, button" )
+                .button()
+            });
+        </script>'
+    ));
 
 echo $navigation;
 

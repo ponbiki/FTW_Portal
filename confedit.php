@@ -8,8 +8,8 @@ if (!$loggedin) {
 
 $page = "Configuration Edit";
 
-htmlheader($page, $page, array(
-    '        <script src="js/jquery.js"></script>
+htmlheader($page, $page, array('
+             <script src="js/jquery.js"></script>
         <script src="js/jquery-ui.js"></script>
         <script>
             $(function() {
@@ -17,8 +17,12 @@ htmlheader($page, $page, array(
                     event: "mouseover"
                 });
             });
-        </script>'
-));
+            $(function() {
+                $( "input[type=submit], a, button" )
+                .button()
+            });
+        </script>
+'));
 
 echo $navigation;
 
@@ -264,7 +268,7 @@ foreach ($domains as $domain) {
                             <span style="float:left;">
                             </span>
                             <span style="float:right;">
-                                <input class="ui-button" type="submit" value="Remove" id='button' />
+                                <input type="submit" value="Remove" />
                             </span>
                         </label>
                     </td>
@@ -303,7 +307,7 @@ foreach ($domains as $domain) {
                     <td>
                         <label>
                             <span style='float:right;'>
-                                <input class="ui-button" type="submit" value="Add" id='button' />
+                                <input type="submit" value="Add" />
                             </span>
                         </label>
                     </td>

@@ -14,10 +14,6 @@ $page = "FTW Log In";
 
 htmlheader($page, $page, array());
 
-//echo $logo ."<br /><br />";
-
-//bar($page);
-
 $error = $user = $pass = '';
 ?>
     <div style="clear: both;">
