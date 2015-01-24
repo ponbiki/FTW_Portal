@@ -31,6 +31,8 @@ function htmlheader($title, $meta, $scripts = array()) {
         <title>$title</title>
 
         <meta name="robots" content="FTW, FTW Portal, $meta">
+            
+        <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
         <link rel="icon" href="img/favicon.ico" type="image/x-icon">
 
@@ -41,7 +43,10 @@ END;
     }
 
 echo <<<_END
-       <link rel="stylesheet" href="css/base.css" type="text/css" />\n
+        <!--<link rel="stylesheet" href="css/base.css" type="text/css" />\n-->
+        <link rel="stylesheet" href="css/main.css" type="text/css" />\n
+        <link rel="stylesheet" href="css/menu.css" type="text/css" />\n
+        <link rel="stylesheet" href="css/jquery-ui.css" type="text/css" />\n
 
     </head>
 
@@ -54,7 +59,7 @@ function bar($page) {
 
     echo <<<_END
 
-        <div class="replymode">
+        <div class="pagebar">
             <h2>$page</h2>
         </div>
 

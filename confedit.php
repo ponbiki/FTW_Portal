@@ -8,7 +8,17 @@ if (!$loggedin) {
 
 $page = "Configuration Edit";
 
-htmlheader($page, $page, array());
+htmlheader($page, $page, array(
+    '        <script src="js/jquery.js"></script>
+        <script src="js/jquery-ui.js"></script>
+        <script>
+            $(function() {
+                $( "#tabs" ).tabs({
+                    event: "mouseover"
+                });
+            });
+        </script>'
+));
 
 echo $navigation;
 
@@ -224,77 +234,84 @@ if (isset($_POST['formid'])) {
     }
 }
 ?>
-<div style="clear: both;">
-<form method='post' action='confedit.php' style="float:left;">
-    <table>
+<div id="tabs">
+    <ul>
+        <li><a href="#tabs-del">Remove Domain</a></li>
+        <li><a href="#tabs-add">Add Domain</a></li>
+    </ul>
+    <div id="tabs-del">
+        <form method='post' action='confedit.php'>
+            <table>
 <?php
 foreach ($domains as $domain) {
 ?>
-        <tr>
-            <td>
-                <label>
-                    <span style="float:left;"><?php echo $domain ?></span>
-                    <span style="float:right;">
-                        <input type="radio" name="deldomain" value="<?php echo $domain ?>" />
-                    </span>
-                </label>
-            </td>
-        </tr>
+                <tr>
+                    <td>
+                        <label>
+                            <span style="float:left;"><?php echo $domain ?></span>
+                            <span style="float:right;">
+                                <input type="radio" name="deldomain" value="<?php echo $domain ?>" />
+                            </span>
+                        </label>
+                    </td>
+                </tr>
  <?php
 }
 ?>
-        <tr>
-            <td>
-                <label>
-                    <span style="float:left;">
-                    </span>
-                    <span style="float:right;">
-                        <input type="submit" value="Remove" />
-                    </span>
-                </label>
-            </td>
-        </tr>
-    </table>
-    <input type='hidden' name='formid' value='delform' />
-</form>
-
-<form method='post' action='confedit.php' style='float:right;'>
-    <table>
-        <tr>
-            <td>
-                <label>
-                    <span style='float:left;'>
-                        Add a new hostname
-                    </span>
-                </label>
-            </td>
-            <td>
-                <label>
-                    <span style='float:right;'>
-                        <input type='text' maxlength='253' name='newhost' value="" />
-                    </span>
-                </label>
-            </td>
-        </tr>
-        <tr>
-            <td>
-                <label>
-                    <span style='float:left;'>
-                        <?php echo $error ?>
-                    </span>
-                </label>
-            </td>
-            <td>
-                <label>
-                    <span style='float:right;'>
-                        <input type="submit" value="Add" />
-                    </span>
-                </label>
-            </td>
-        </tr>
-    </table>
-    <input type='hidden' name='formid' value='addform' />
-</form>
+                <tr>
+                    <td>
+                        <label>
+                            <span style="float:left;">
+                            </span>
+                            <span style="float:right;">
+                                <input class="ui-button" type="submit" value="Remove" id='button' />
+                            </span>
+                        </label>
+                    </td>
+                </tr>
+            </table>
+            <input type='hidden' name='formid' value='delform' />
+        </form>
+    </div>
+    <div id="tabs-add">
+        <form method='post' action='confedit.php'>
+            <table>
+                <tr>
+                    <td>
+                        <label>
+                            <span style='float:left;'>
+                                Add a new hostname
+                            </span>
+                        </label>
+                    </td>
+                    <td>
+                        <label>
+                            <span style='float:right;'>
+                                <input type='text' maxlength='253' name='newhost' value="" />
+                            </span>
+                        </label>
+                    </td>
+                </tr>
+                <tr>
+                    <td>
+                        <label>
+                            <span style='float:left;'>
+                                <?php echo $error ?>
+                            </span>
+                        </label>
+                    </td>
+                    <td>
+                        <label>
+                            <span style='float:right;'>
+                                <input class="ui-button" type="submit" value="Add" id='button' />
+                            </span>
+                        </label>
+                    </td>
+                </tr>
+            </table>
+            <input type='hidden' name='formid' value='addform' />
+        </form>
+    </div>
 </div>
 <?php
 
