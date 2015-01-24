@@ -13,8 +13,16 @@ htmlheader($page, $page, array('
         <script src="js/jquery-ui.js"></script>
         <script>
             $(function() {
+                $( "#tabs" ).tabs({
+                    event: "mouseover"
+                });
+            });        
+            $(function() {
                 $( "input[type=submit], a, button" )
                 .button()
+            });
+            $(function() {
+                $( "#conf" ).selectmenu();
             });
         </script>'
     ));
@@ -72,30 +80,36 @@ foreach ($dbiniarray as $dbia) {
 $confavail = array_intersect($dbini, $ini);
 
 ?>
-<div style="clear: both;">
-<form method='post' action='confselect.php' style="float: right;">
-    <table>
-        <tr>
-            <td style="text-align: left;">Edit: </td>
-            <td style="text-align: right;">
-                <select name='conf'>
+<div id="tabs">
+    <ul>
+        <li><a href="#tabs-conf">Select Conf File</a></li>
+    </ul>
+    <div id="tabs-conf">
+        <form method='post' action='confselect.php'>
+            <table>
+                <tr>
+                    <td style="text-align: left;">Edit: </td>
+                    <td style="text-align: right;">
+                        <select name='conf' id="conf" style="width:200px;">
 <?php
 foreach ($confavail as $choice) {
     echo "<option>$choice</option>\n";
 }
 ?>
-                </select>
-             </td>
-        </tr>
-        <tr>
-            <td></td>
-            <td style="text-align: right;">
-                <input type="submit" value="Submit" />
-            </td>
-        </tr>
-    </table>
-</form>
+                        </select>
+                     </td>
+                </tr>
+                <tr>
+                    <td></td>
+                    <td style="text-align: right;">
+                        <input type="submit" value="Submit" />
+                    </td>
+                </tr>
+            </table>
+        </form>
+    </div>
 </div>
+
 <?php
 if (isset($_POST['conf'])) {
     $conf = filter_input(INPUT_POST, 'conf', FILTER_SANITIZE_STRING);

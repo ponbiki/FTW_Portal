@@ -24,6 +24,9 @@ htmlheader($page, $page, array('
                 $( "input[type=submit], a, button" )
                 .button()
             });
+            $(function() {
+                $( "#user" ).selectmenu();
+            });
         </script>
 '));
 
@@ -166,7 +169,7 @@ if (isset($_POST['formid'])) {
                     <td>
                         <label>
                             <span style="float:right;">
-                                <select name='cguser'>
+                                <select name='cguser' id="user" style="width:200px;">
 <?php
 foreach ($cguser_array as $cgusers) {
     foreach ($cgusers as $cguser) {

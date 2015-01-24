@@ -245,36 +245,38 @@ if (isset($_POST['formid'])) {
     </ul>
     <div id="tabs-del">
         <form method='post' action='confedit.php'>
-            <table>
+            <div id="radio">
+                <table>
 <?php
 foreach ($domains as $domain) {
 ?>
-                <tr>
-                    <td>
-                        <label>
-                            <span style="float:left;"><?php echo $domain ?></span>
-                            <span style="float:right;">
-                                <input type="radio" name="deldomain" value="<?php echo $domain ?>" />
-                            </span>
-                        </label>
-                    </td>
-                </tr>
+                    <tr>
+                        <td>
+                            <label >
+                                <span style="float:left;"><?php echo $domain ?></span>
+                                <span style="float:right;">
+                                <input type='radio' name='deldomain' value='<?php echo $domain ?>' />
+                                </span>
+                            </label>
+                        </td>
+                    </tr>
  <?php
 }
 ?>
-                <tr>
-                    <td>
-                        <label>
-                            <span style="float:left;">
-                            </span>
-                            <span style="float:right;">
-                                <input type="submit" value="Remove" />
-                            </span>
-                        </label>
-                    </td>
-                </tr>
-            </table>
-            <input type='hidden' name='formid' value='delform' />
+                    <tr>
+                        <td>
+                            <label>
+                                <span style="float:left;">
+                                </span>
+                                <span style="float:right;">
+                                    <input type="submit" value="Remove" />
+                                </span>
+                            </label>
+                        </td>
+                    </tr>
+                </table>
+                <input type='hidden' name='formid' value='delform' />
+            </div>
         </form>
     </div>
     <div id="tabs-add">

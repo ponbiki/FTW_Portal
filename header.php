@@ -43,7 +43,6 @@ END;
     }
 
 echo <<<_END
-        <!--<link rel="stylesheet" href="css/base.css" type="text/css" />\n-->
         <link rel="stylesheet" href="css/main.css" type="text/css" />\n
         <link rel="stylesheet" href="css/menu.css" type="text/css" />\n
         <link rel="stylesheet" href="css/jquery-ui.css" type="text/css" />\n
