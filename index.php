@@ -23,14 +23,14 @@ $error = $user = $pass = '';
                 <span><?php echo $error; ?></span>
             </h1>
             <label>
-                <span>Username :</span>
+                <span>Username: </span>
                 <input id='user' type='text' maxlength='24' name='user' value='' />
             </label>
             <label>
                 <span>Password: </span>
                 <input id='pass' type='password' maxlength='24' name='pass' value='' />
             </label>
-            <label>
+            <label class="nyicp">
                 <span>&nbsp;</span>
                 <input type='submit' id='button' value='Login' />
             </label>
