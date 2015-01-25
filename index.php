@@ -32,7 +32,7 @@ $error = $user = $pass = '';
             </label>
             <label class="nyicp">
                 <span>&nbsp;</span>
-                <input type='submit' id='button' value='Login' />
+                <input type='submit' value='Login' id="button" />
             </label>
         </form>
     </div>

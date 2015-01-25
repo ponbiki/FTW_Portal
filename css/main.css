@@ -102,7 +102,7 @@ ul {
     -moz-box-shadow: inset 0 1px 1px rgba(0, 0, 0, 0.075);
     background: #DFDFDF;
 }
-.nyicp .button {
+.nyicp #button {
     background: #EF9E09;
     border: none;
     padding: 10px 25px 10px 25px;
@@ -117,7 +117,7 @@ ul {
     -moz-box-shadow:1px 1px 1px #3D3D3D;
 }
 
-.nyicp .button:hover {
+.nyicp #button:hover {
     color: #333;
     background: #FFB629;
 }
