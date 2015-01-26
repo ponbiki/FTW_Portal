@@ -44,7 +44,6 @@ END;
 
 echo <<<_END
         <link rel="stylesheet" href="css/main.css" type="text/css" />\n
-        <!--<link rel="stylesheet" href="css/menu.css" type="text/css" />\n-->
         <link rel="stylesheet" href="css/jquery-ui.css" type="text/css" />\n
 
     </head>
@@ -73,7 +72,7 @@ function tail() {
 _END;
 }
 
-$logo = "<div class='logo'><img src='img/ftw_logo.png' title='FTW Logo' name='FTW Logo' /></div>";
+$logo = "<div class='logo'><img src='img/ftw_logo.png' title='FTW Logo' name='FTW Logo' style='max-width:100%;height:auto;width:auto\9;' /></div>";
 
 if (($loggedin)&&(!$admin)) {
     $navigation = "<div class='navbar'>
