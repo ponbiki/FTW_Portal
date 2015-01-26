@@ -242,6 +242,7 @@ if (isset($_POST['formid'])) {
     <ul>
         <li><a href="#tabs-del">Remove Domain</a></li>
         <li><a href="#tabs-add">Add Domain</a></li>
+        <li><a href="#tabs-cookie">Cookie Exceptions</a></li>
     </ul>
     <div id="tabs-del">
         <form method='post' action='confedit.php'>
@@ -267,6 +268,7 @@ foreach ($domains as $domain) {
                         <td>
                             <label>
                                 <span style="float:left;">
+                                    <?php echo $error ?>
                                 </span>
                                 <span style="float:right;">
                                     <input type="submit" value="Remove" />
@@ -316,6 +318,109 @@ foreach ($domains as $domain) {
                 </tr>
             </table>
             <input type='hidden' name='formid' value='addform' />
+        </form>
+    </div>
+    <div id="tabs-cookie">
+        <form method="post" action="confedit.php">
+            <table>
+                <tr>
+                    <td>
+                        <label>
+                            <span style="float:left;">
+                                 Pass Cookie
+                            </span>
+                        </label>
+                    </td>
+                    <td>
+                        <label>
+                            <span style="float:right;">
+                                &nbsp;
+                            </span>
+                        </label>
+                    </td>
+                </tr>
+                <tr>
+                    <td>
+                        <label>
+                            <span style="float:left;">
+                                Name: 
+                            </span>
+                        </label>
+                    </td>
+                    <td>
+                        <label>
+                            <span style="float:right;">
+                                <input type='text' maxlength='253' name='cookiename' value="" />
+                            </span>
+                        </label>
+                    </td>
+                </tr>
+                <tr>
+                    <td>
+                        <label>
+                            <span style="float:left;">
+                                Path: 
+                            </span>
+                        </label>
+                    </td>
+                    <td>
+                        <label>
+                            <span style="float:right;">
+                                <input type='text' maxlength='253' name='cookiepath' value="" />
+                            </span>
+                        </label>
+                    </td>
+                </tr>
+                <tr>
+                    <td>
+                        <label>
+                            <span style="float:left;">
+                                Domain: 
+                            </span>
+                        </label>
+                    </td>
+                    <td>
+                        <label>
+                            <span style="float:right;">
+                                <input type='text' maxlength='253' name='cookiedomain' value="" />
+                            </span>
+                        </label>
+                    </td>
+                </tr>
+                <tr>
+                    <td>
+                        <label>
+                            <span style="float:left;">
+                                Other Info: 
+                            </span>
+                        </label>
+                    </td>
+                    <td>
+                        <label>
+                            <span style="float:right;">
+                                <input type='text' maxlength='253' name='cookiedaddinfo' value="" />
+                            </span>
+                        </label>
+                    </td>
+                </tr>
+                <tr>
+                    <td>
+                        <label>
+                            <span style='float:left;'>
+                                <?php echo $error ?>
+                            </span>
+                        </label>
+                    </td>
+                    <td>
+                        <label>
+                            <span style='float:right;'>
+                                <input type="submit" value="Request" />
+                            </span>
+                        </label>
+                    </td>
+                </tr>
+            </table>
+            <input type='hidden' name='formid' value='exceptform' />
         </form>
     </div>
 </div>
