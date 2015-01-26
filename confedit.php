@@ -142,7 +142,7 @@ if (isset($_POST['formid'])) {
                     fclose($stream);
                 }
             }
-            header('Refresh: 5');
+            header('Refresh: 3');
         }
     } else {
         if ($_POST['formid'] === 'addform') {
@@ -232,7 +232,7 @@ if (isset($_POST['formid'])) {
                         fclose($stream);
                     }
                 }
-                header('Refresh: 5');
+                header('Refresh: 3');
             }
         }
     }
