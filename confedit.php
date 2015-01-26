@@ -95,7 +95,7 @@ if (isset($_POST['formid'])) {
                             if (!is_array($value2)) {
                                 $text .= $key."[] = $value2\n";
                             } else {
-                                foreach ($value2 as $key3 => $value3) {
+                                foreach ($value2 as $key3 => $value3) { // 3rd iteration untested, and not currently used
                                     $text .= $key."[".$key2."][] = $value3\n";
                                 }
                             }
@@ -231,6 +231,26 @@ if (isset($_POST['formid'])) {
                         }
                         fclose($stream);
                     }
+                }
+                header('Refresh: 3');
+            }
+        } else {
+            if ($_POST['formid'] === 'exceptform') {
+                $cookiename = filter_input(INPUT_POST, 'cookiename', FILTER_SANITIZE_STRING);
+                $cookiepath = filter_input(INPUT_POST, 'cookiepath', FILTER_SANITIZE_STRING);
+                $cookiedomain = filter_input(INPUT_POST, 'cookiedomain', FILTER_SANITIZE_STRING);
+                $cookieinfo = filter_input(INPUT_POST, 'cookieinfo', FILTER_SANITIZE_STRING);
+                if ($cookiename == "" || $cookiedomain == "") {
+                    echo "At a minimum, rule name and cookie domain need to be enetered.<br />";
+                } else {
+                    $to = 'jcandroscavage@hotmail.com';
+                    $subject = "New caching exception request for {$_SESSION['user']}";
+                    $message = "Client: {$_SESSION['user']} \n\nName: $cookiename"
+                            . " \n\nPath: $cookiepath \n\nDomain: $cookiedomain"
+                            . " \n\nExtra Info: $cookieinfo \n\nYour FTWPortal\n";
+                    $from = "From: ftwportal@nyi.net\r";
+                    mail($to, $subject, $message, $from);
+                    echo "Request sent!";
                 }
                 header('Refresh: 3');
             }
@@ -398,7 +418,7 @@ foreach ($domains as $domain) {
                     <td>
                         <label>
                             <span style="float:right;">
-                                <input type='text' maxlength='253' name='cookiedaddinfo' value="" />
+                                <input type='text' maxlength='253' name='cookiedinfo' value="" />
                             </span>
                         </label>
                     </td>
