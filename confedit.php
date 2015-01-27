@@ -13,9 +13,9 @@ htmlheader($page, $page, array('
         <script src="js/jquery-ui.js"></script>
         <script>
             $(function() {
-                $( "#tabs" ).tabs({
+                $( "#tabs" ).tabs(/*{
                     event: "mouseover"
-                });
+                }*/);
             });
             $(function() {
                 $( "input[type=submit], a, button" )
@@ -243,16 +243,47 @@ if (isset($_POST['formid'])) {
                 if ($cookiename == "" || $cookiedomain == "") {
                     echo "At a minimum, rule name and cookie domain need to be enetered.<br />";
                 } else {
-                    $to = 'jcandroscavage@hotmail.com';
+                    $to = 'supportteam@nyi.net';
                     $subject = "New caching exception request for {$_SESSION['user']}";
                     $message = "Client: {$_SESSION['user']} \n\nName: $cookiename"
                             . " \n\nPath: $cookiepath \n\nDomain: $cookiedomain"
-                            . " \n\nExtra Info: $cookieinfo \n\nYour FTWPortal\n";
+                            . " \n\nExtra Info: $cookieinfo \n\nYour friendly neighborhood FTWPortal\n";
                     $from = "From: ftwportal@nyi.net\r";
                     mail($to, $subject, $message, $from);
                     echo "Request sent!";
                 }
                 header('Refresh: 3');
+            } else {
+                if ($_POST['formid'] === 'purgeform') {
+                    $purgecache = filter_input(INPUT_POST, 'purgecache', FILTER_SANITIZE_STRING);
+                    if (!in_array($purgecache, $domains)) {
+                        echo "Please choose an existing hostname<br />";
+                    } else {
+                        if (!($con = ssh2_connect($server, $port))) {
+                            die('Failed to establish connection');
+                        } else {
+                            if(!(ssh2_auth_password($con, $ssh_user, $ssh_pass))) {
+                                die('Failed to authenticate');
+                            } else {
+                                $dir = "/home/ftwportal/conf";
+                                $command = "sudo touch $dir/muhaha.txt"; // place holder
+                                // $command = "sudo lbrun ban host $purgecache"; /* real command */
+                                if(!($stream = ssh2_exec($con, $command))) {
+                                    die('Unable to execute command');
+                                } else {
+                                    stream_set_blocking($stream, true);
+                                    $data = '';
+                                    while ($buf = fread($stream,4096)) {
+                                        $data .= $buf;
+                                    }
+                                    fclose($stream);
+                                }
+                                echo "The cache for $purgecache is being cleared<br />";
+                            }
+                            header('Refresh: 3');
+                        }
+                    }
+                }
             }
         }
     }
@@ -260,9 +291,10 @@ if (isset($_POST['formid'])) {
 ?>
 <div id="tabs">
     <ul>
-        <li><a href="#tabs-del">Remove Domain</a></li>
         <li><a href="#tabs-add">Add Domain</a></li>
         <li><a href="#tabs-cookie">Cookie Exceptions</a></li>
+        <li><a href="#tabs-purge">Clear Cache</a></li>
+        <li><a href="#tabs-del">Remove Domain</a></li>
     </ul>
     <div id="tabs-del">
         <form method='post' action='confedit.php'>
@@ -418,7 +450,7 @@ foreach ($domains as $domain) {
                     <td>
                         <label>
                             <span style="float:right;">
-                                <input type='text' maxlength='253' name='cookiedinfo' value="" />
+                                <input type='text' maxlength='253' name='cookieinfo' value="" />
                             </span>
                         </label>
                     </td>
@@ -441,6 +473,43 @@ foreach ($domains as $domain) {
                 </tr>
             </table>
             <input type='hidden' name='formid' value='exceptform' />
+        </form>
+    </div>
+    <div id="tabs-purge">
+        <form method='post' action='confedit.php'>
+            <div id="radio">
+                <table>
+<?php
+foreach ($domains as $domain) {
+?>
+                    <tr>
+                        <td>
+                            <label >
+                                <span style="float:left;"><?php echo $domain ?></span>
+                                <span style="float:right;">
+                                <input type='radio' name='purgecache' value='<?php echo $domain ?>' />
+                                </span>
+                            </label>
+                        </td>
+                    </tr>
+ <?php
+}
+?>
+                    <tr>
+                        <td>
+                            <label>
+                                <span style="float:left;">
+                                    <?php echo $error ?>
+                                </span>
+                                <span style="float:right;">
+                                    <input type="submit" value="Purge" />
+                                </span>
+                            </label>
+                        </td>
+                    </tr>
+                </table>
+                <input type='hidden' name='formid' value='purgeform' />
+            </div>
         </form>
     </div>
 </div>

@@ -16,9 +16,9 @@ htmlheader($page, $page, array('
         <script src="js/jquery-ui.js"></script>
         <script>
             $(function() {
-                $( "#tabs" ).tabs({
+                $( "#tabs" ).tabs(/*{
                     event: "mouseover"
-                });
+                }*/);
             });
             $(function() {
                 $( "input[type=submit], a, button" )
