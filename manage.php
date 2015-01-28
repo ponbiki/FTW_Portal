@@ -65,13 +65,18 @@ if (isset($_POST['formid'])) {
         }
         header('Refresh:5');
     } else {
-        if ($_POST[formid === 'changepass']) {
+        if ($_POST[formid] === 'changepass') {
             if (!in_array($cguser, $cgusers)) {
                 $error = "Please enter a valid username.<br />";
             } else {
-                //do stuff   on web5cp....password filter relax
-                //addnewsite script
-                //on this no domain message for del box
+                $token = md5("$salt1$pass1$salt2");
+                $res = $mysqli->query("UPDATE users SET password='$token' WHERE username='$cguser'");
+                if (!$res) {
+                    die('Error: ('.$mysqli->errno.') '.$mysqli->error);
+                } else {
+                    echo "Password for $cguser has been changed!<br />";
+                    unset($_POST);
+                }
             }
         }
     }

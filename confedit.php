@@ -128,9 +128,10 @@ if (isset($_POST['formid'])) {
         } else {
             if(!(ssh2_auth_password($con, $ssh_user, $ssh_pass))) {
                 die('Failed to authenticate');
-            } else { //placeholder exec for the lb reload commands
+            } else {
                 $dir = "/home/ftwportal/conf";
-                $command = "touch $dir/boogieboogie";
+                // $command = "sudo lbconfig && lbsync local && lbsync";
+                $command = "touch $dir/boogieboogie"; /* temp placeholder command */
                 if(!($stream = ssh2_exec($con, $command))) {
                     die('Unable to execute command');
                 } else {
@@ -219,8 +220,9 @@ if (isset($_POST['formid'])) {
             } else {
                 if(!(ssh2_auth_password($con, $ssh_user, $ssh_pass))) {
                     die('Failed to authenticate');
-                } else { //placeholder exec for the lb reload commands
-                    $command = "touch $dir/stinkypinky";
+                } else {
+                    // $command = "sudo lbconfig && lbsync local && lbsync";
+                    $command = "touch $dir/stinkypinky"; /* temp placeholder */
                     if(!($stream = ssh2_exec($con, $command))) {
                         die('Unable to execute command');
                     } else {
