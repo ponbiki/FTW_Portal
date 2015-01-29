@@ -34,11 +34,16 @@ echo $logo;
 
 bar($page);
 
-$error = '';
+$error = $addusername = $pass1 = $pass2 = $cguserpost = $cgpass1 = $cgpass2 = '';
 
 $res = $mysqli->query("SELECT username FROM users");
 $cguser_array = $res->fetch_all();
 $res->free();
+foreach ($cguser_array as $cguser_element) {
+    foreach ($cguser_element as $cgusers) {
+        $cgusers_array[] = $cgusers;
+    }
+}
 
 if (isset($_POST['formid'])) {
     if ($_POST['formid'] === 'adduser') {
@@ -52,7 +57,8 @@ if (isset($_POST['formid'])) {
                 $error = "Passwords entered do not match!<br />";
             } else {
                 $token = md5("$salt1$pass1$salt2");
-                $res = $mysqli->query("INSERT INTO users (username, password) VALUES ('$addusername', '$token')");
+                $res = $mysqli->query("INSERT INTO users (username, password)"
+                        . " VALUES ('$addusername', '$token')");
                 if (!$res) {
                     die('Error: ('.$mysqli->errno.') '.$mysqli->error);
                 } else {
@@ -64,16 +70,28 @@ if (isset($_POST['formid'])) {
         header('Refresh:5');
     } else {
         if ($_POST[formid] === 'changepass') {
-            if (!in_array($cguser, $cgusers)) {
+            $cguserpost = filter_input(INPUT_POST, 'cguser', FILTER_SANITIZE_STRING);
+            $cgpass1 = filter_input(INPUT_POST, 'cgpass1', FILTER_SANITIZE_STRING);
+            $cgpass2 = filter_input(INPUT_POST, 'cgpass2', FILTER_SANITIZE_STRING);
+            if (!in_array($cguserpost, $cgusers_array)) {
                 $error = "Please enter a valid username.<br />";
             } else {
-                $token = md5("$salt1$pass1$salt2");
-                $res = $mysqli->query("UPDATE users SET password='$token' WHERE username='$cguser'");
-                if (!$res) {
-                    die('Error: ('.$mysqli->errno.') '.$mysqli->error);
+                if (($cgpass1 == '')||($cgpass2 == '')) {
+                    $error = "Please enter the new password two times.<br />";
                 } else {
-                    echo "Password for $cguser has been changed!<br />";
-                    unset($_POST);
+                    if ($cgpass1 !== $cgpass2) {
+                        $error = "Passwords do not match!<br />";
+                    } else {
+                        $token = md5("$salt1$cgpass1$salt2");
+                        $res = $mysqli->query("UPDATE users SET password='$token'"
+                                . " WHERE username='$cguserpost'");
+                        if (!$res) {
+                            die('Error: ('.$mysqli->errno.') '.$mysqli->error);
+                        } else {
+                            echo "Password for $cguserpost has been changed!<br />";
+                            unset($_POST);
+                        }
+                    }
                 }
             }
         }
@@ -174,10 +192,8 @@ if (isset($_POST['formid'])) {
                             <span style="float:right;">
                                 <select name='cguser' id="user" style="width:200px;">
 <?php
-foreach ($cguser_array as $cgusers) {
-    foreach ($cgusers as $cguser) {
-        echo "<option>$cguser</option>\n";
-    }
+foreach ($cgusers_array as $cguser_post) {
+       echo "<option>$cguser_post</option>\n";
 }
 ?>
                                 </select>
