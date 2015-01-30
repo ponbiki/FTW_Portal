@@ -42,13 +42,14 @@ if (!($con = ssh2_connect($server, $port))) {
     }
 }
 
-$ini_array = parse_ini_file("tmp/{$_SESSION['conffile']}", true);
+$ini_array = (parse_ini_file("tmp/{$_SESSION['conffile']}", true));
 
 foreach ($ini_array as $category => $value) {
     if ($category == "hostname") {
         foreach ($value as $domain_name) {
             $domains[] = $domain_name;
         }
+        sort($domains);
     }
 }
 
