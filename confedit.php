@@ -484,7 +484,7 @@ foreach ($domains as $domain) {
 ?>
                     <tr>
                         <td>
-                            <label >
+                            <label>
                                 <span style="float:left;"><?php echo $domain ?></span>
                                 <span style="float:right;">
                                 <input type='radio' name='purgecache' value='<?php echo $domain ?>' />
