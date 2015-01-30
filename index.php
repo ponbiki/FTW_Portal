@@ -43,7 +43,7 @@ if (isset($_POST['user'])) {
     if ($user == "" || $pass == "") {
         $error = "Not all fields were entered";
     } else {
-        $token = md5("$salt1$pass$salt2");
+        $token = hash('sha512', "$salt1$pass$salt2");
         $res = $mysqli->query("SELECT username,password,admin,company FROM users "
                 . "WHERE username='$user' AND password='$token'");
         if ($res->num_rows < 1) {

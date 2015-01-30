@@ -56,7 +56,7 @@ if (isset($_POST['formid'])) {
             if ($pass1 !== $pass2) {
                 $error = "Passwords entered do not match!<br />";
             } else {
-                $token = md5("$salt1$pass1$salt2");
+                $token = hash('sha512', "$salt1$pass1$salt2");
                 $res = $mysqli->query("INSERT INTO users (username, password)"
                         . " VALUES ('$addusername', '$token')");
                 if (!$res) {
@@ -82,7 +82,7 @@ if (isset($_POST['formid'])) {
                     if ($cgpass1 !== $cgpass2) {
                         $error = "Passwords do not match!<br />";
                     } else {
-                        $token = md5("$salt1$cgpass1$salt2");
+                        $token = hash('sha512', "$salt1$cgpass1$salt2");
                         $res = $mysqli->query("UPDATE users SET password='$token'"
                                 . " WHERE username='$cguserpost'");
                         if (!$res) {
