@@ -62,14 +62,18 @@ if (isset($_POST['formid'])) {
             if ($pass1 !== $pass2) {
                 $error = "Passwords entered do not match!<br />";
             } else {
-                $token = hash('sha512', "$salt1$pass1$salt2");
-                $res = $mysqli->query("INSERT INTO users (username, password)"
-                        . " VALUES ('$addusername', '$token')");
-                if (!$res) {
-                    die('Error: ('.$mysqli->errno.') '.$mysqli->error);
-                } else {
-                    echo "$addusername has been added!<br />";
-                    unset($_POST);
+                if (in_array($addusername, $cgusers_array)) {
+                    $error = "This username is already in use!<br />";
+                } else {    
+                    $token = hash('sha512', "$salt1$pass1$salt2");
+                    $res = $mysqli->query("INSERT INTO users (username, password)"
+                            . " VALUES ('$addusername', '$token')");
+                    if (!$res) {
+                        die('Error: ('.$mysqli->errno.') '.$mysqli->error);
+                    } else {
+                        echo "$addusername has been added!<br />";
+                        unset($_POST);
+                    }
                 }
             }
             header('Refresh: 3');
