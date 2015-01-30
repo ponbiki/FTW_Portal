@@ -79,7 +79,7 @@ if (isset($_POST['formid'])) {
                     }
                 }
             }
-            $ini_array['hostname'] = array_diff($ini_array['hostname'], array($deldomain));          
+            $ini_array['hostname'] = array_diff($ini_array['hostname'], array($deldomain));
             if (!unlink("tmp/{$_SESSION['conffile']}")) {
                 die('Unable to delete temp file');
             } else {
@@ -484,7 +484,7 @@ foreach ($domains as $domain) {
 ?>
                     <tr>
                         <td>
-                            <label >
+                            <label>
                                 <span style="float:left;"><?php echo $domain ?></span>
                                 <span style="float:right;">
                                 <input type='radio' name='purgecache' value='<?php echo $domain ?>' />
