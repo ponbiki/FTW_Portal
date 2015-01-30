@@ -79,7 +79,7 @@ if (isset($_POST['formid'])) {
                     }
                 }
             }
-            $ini_array['hostname'] = array_diff($ini_array['hostname'], array($deldomain));          
+            $ini_array['hostname'] = array_diff($ini_array['hostname'], array($deldomain));
             if (!unlink("tmp/{$_SESSION['conffile']}")) {
                 die('Unable to delete temp file');
             } else {
