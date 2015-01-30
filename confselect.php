@@ -100,7 +100,7 @@ foreach ($confavail as $choice) {
                 <tr>
                     <td><?php echo $error ?></td>
                     <td style="text-align: right;">
-                        <input type="submit" value="Submit" />
+                        <input type="submit" value="Select" />
                     </td>
                 </tr>
             </table>
