@@ -19,18 +19,18 @@ $error = $user = $pass = '';
     <div style="clear: both;">
         <form method='post' action='index.php' class='nyicp'>
             <h1><img src='img/NYI.png' class='nyiloginlogo' alt='NYI' title='NYI' />
-                <img src='img/ftw_logo.png' class='ftwloginlogo' alt='NYI' title='NYI' />
+                <img src='img/ftw_logo.png' class='ftwloginlogo' alt='NYI' title='FTW Portal' />
                 <span><?php echo $error; ?></span>
             </h1>
-            <label>
+            <label title="Username">
                 <span>Username: </span>
                 <input id='user' type='text' maxlength='24' name='user' value='' />
             </label>
-            <label>
+            <label title="Password">
                 <span>Password: </span>
                 <input id='pass' type='password' maxlength='24' name='pass' value='' />
             </label>
-            <label class="nyicp">
+            <label class="nyicp" title="Login">
                 <span>&nbsp;</span>
                 <input type='submit' value='Login' id="button" />
             </label>

@@ -132,14 +132,14 @@ if (isset($_POST['formid'])) {
 ?>
 <div id="tabs">
     <ul>
-        <li><a href="#tabs-addusr">Add User</a></li>
-        <li><a href="#tabs-delusr">Delete User</a></li>
-        <li><a href="#tabs-chgpwd">Change Password</a></li>
+        <li><a href="#tabs-addusr" title="Add User">Add User</a></li>
+        <li><a href="#tabs-delusr" title="Delete User">Delete User</a></li>
+        <li><a href="#tabs-chgpwd" title="Change Password">Change Password</a></li>
     </ul>
     <div id="tabs-addusr">
         <form method='post' action='manage.php'>
             <table>
-                <tr>
+                <tr title="New Username">
                     <td>
                         <label>
                             <span style='float:left;'>
@@ -155,7 +155,7 @@ if (isset($_POST['formid'])) {
                         </label>
                     </td>
                 </tr>
-                <tr>
+                <tr title="New User Password">
                     <td>
                         <label>
                             <span style='float:left;'>
@@ -171,7 +171,7 @@ if (isset($_POST['formid'])) {
                         </label>
                     </td>
                 </tr>
-                <tr>
+                <tr title="Re-enter Password">
                     <td>
                         <label>
                             <span style='float:left;'>
@@ -187,7 +187,7 @@ if (isset($_POST['formid'])) {
                         </label>
                     </td>
                 </tr>
-                <tr>
+                <tr title="Add User">
                     <td>
                         <label>
                             <span style='float:left;'>
@@ -210,7 +210,7 @@ if (isset($_POST['formid'])) {
     <div id="tabs-delusr">
         <form method="post" action="manage.php">
             <table>
-                <tr>
+                <tr title="Delete Username">
                     <td>
                         <label>
                             <span style="float:left;">
@@ -232,7 +232,7 @@ foreach ($cgusers_array as $deluser_post) {
                         </label>
                     </td>
                 </tr>
-                <tr>
+                <tr title="Confirm Selection">
                     <td>
                         <label>
                             <span style="float:left;">
@@ -247,7 +247,7 @@ foreach ($cgusers_array as $deluser_post) {
                             </span>
                     </td>
                 </tr>
-                <tr>
+                <tr title="Delete">
                     <td></td>
                     <td style="text-align: right;">
                         <input type="submit" value="Delete" />
@@ -260,7 +260,7 @@ foreach ($cgusers_array as $deluser_post) {
     <div id="tabs-chgpwd">
         <form method='post' action='manage.php'>
             <table>
-                <tr>
+                <tr title="Select User">
                     <td>
                         <label>
                             <span style="float:left;">
@@ -282,7 +282,7 @@ foreach ($cgusers_array as $cguser_post) {
                         </label>
                      </td>
                 </tr>
-                <tr>
+                <tr title="New Password">
                     <td>
                         <label>
                             <span style='float:left;'>
@@ -298,7 +298,7 @@ foreach ($cgusers_array as $cguser_post) {
                         </label>
                     </td>
                 </tr>
-                <tr>
+                <tr title="Re-enter New Password">
                     <td>
                         <label>
                             <span style='float:left;'>
@@ -314,7 +314,7 @@ foreach ($cgusers_array as $cguser_post) {
                         </label>
                     </td>
                 </tr>
-                <tr>
+                <tr title="Change Password">
                     <td></td>
                     <td style="text-align: right;">
                         <input type="submit" value="Change" />

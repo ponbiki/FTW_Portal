@@ -57,7 +57,7 @@ function bar($page) {
 
     echo <<<_END
 
-        <div class="pagebar">
+        <div class="pagebar" title="$page">
             <h2>$page</h2>
         </div>
 

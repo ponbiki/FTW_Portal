@@ -296,10 +296,10 @@ if (isset($_POST['formid'])) {
 ?>
 <div id="tabs">
     <ul>
-        <li><a href="#tabs-add">Add Domain</a></li>
-        <li><a href="#tabs-cookie">Cookie Exceptions</a></li>
-        <li><a href="#tabs-purge">Clear Cache</a></li>
-        <li><a href="#tabs-del">Remove Domain</a></li>
+        <li><a href="#tabs-add" title="Add Domain">Add Domain</a></li>
+        <li><a href="#tabs-cookie" title="Cookie Exceptions">Cookie Exceptions</a></li>
+        <li><a href="#tabs-purge" title="Clear Cache">Clear Cache</a></li>
+        <li><a href="#tabs-del" title="Remove Domain">Remove Domain</a></li>
     </ul>
     <div id="tabs-del">
         <form method='post' action='confedit.php'>
@@ -308,7 +308,7 @@ if (isset($_POST['formid'])) {
 <?php
 foreach ($domains as $domain) {
 ?>
-                    <tr>
+                    <tr title="<?php echo $domain ?>">
                         <td>
                             <label >
                                 <span style="float:left;"><?php echo $domain ?></span>
@@ -321,7 +321,7 @@ foreach ($domains as $domain) {
  <?php
 }
 ?>
-                    <tr>
+                    <tr title="Remove Domain">
                         <td>
                             <label>
                                 <span style="float:left;">
@@ -341,11 +341,11 @@ foreach ($domains as $domain) {
     <div id="tabs-add">
         <form method='post' action='confedit.php'>
             <table>
-                <tr>
+                <tr title="New Domain">
                     <td>
                         <label>
                             <span style='float:left;'>
-                                Add a new hostname
+                                Domain Name: 
                             </span>
                         </label>
                     </td>
@@ -357,7 +357,7 @@ foreach ($domains as $domain) {
                         </label>
                     </td>
                 </tr>
-                <tr>
+                <tr title="Add Domain">
                     <td>
                         <label>
                             <span style='float:left;'>
@@ -380,7 +380,7 @@ foreach ($domains as $domain) {
     <div id="tabs-cookie">
         <form method="post" action="confedit.php">
             <table>
-                <tr>
+                <tr title="Pass Cookie">
                     <td>
                         <label>
                             <span style="float:left;">
@@ -396,7 +396,7 @@ foreach ($domains as $domain) {
                         </label>
                     </td>
                 </tr>
-                <tr>
+                <tr title="Cookie Name">
                     <td>
                         <label>
                             <span style="float:left;">
@@ -412,7 +412,7 @@ foreach ($domains as $domain) {
                         </label>
                     </td>
                 </tr>
-                <tr>
+                <tr title="Cookie Path">
                     <td>
                         <label>
                             <span style="float:left;">
@@ -428,7 +428,7 @@ foreach ($domains as $domain) {
                         </label>
                     </td>
                 </tr>
-                <tr>
+                <tr title="Cookie Domain">
                     <td>
                         <label>
                             <span style="float:left;">
@@ -444,7 +444,7 @@ foreach ($domains as $domain) {
                         </label>
                     </td>
                 </tr>
-                <tr>
+                <tr title="Other Info">
                     <td>
                         <label>
                             <span style="float:left;">
@@ -460,7 +460,7 @@ foreach ($domains as $domain) {
                         </label>
                     </td>
                 </tr>
-                <tr>
+                <tr title="Request">
                     <td>
                         <label>
                             <span style='float:left;'>
@@ -487,7 +487,7 @@ foreach ($domains as $domain) {
 <?php
 foreach ($domains as $domain) {
 ?>
-                    <tr>
+                    <tr title="<?php echo $domain ?>">
                         <td>
                             <label>
                                 <span style="float:left;"><?php echo $domain ?></span>
@@ -500,7 +500,7 @@ foreach ($domains as $domain) {
  <?php
 }
 ?>
-                    <tr>
+                    <tr title="Purge Cache">
                         <td>
                             <label>
                                 <span style="float:left;">

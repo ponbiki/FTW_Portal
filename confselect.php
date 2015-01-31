@@ -80,12 +80,12 @@ $confavail = array_intersect($dbini, $ini);
 ?>
 <div id="tabs">
     <ul>
-        <li><a href="#tabs-conf">Select Conf File</a></li>
+        <li><a href="#tabs-conf" title="Select Configuration File">Select Conf File</a></li>
     </ul>
     <div id="tabs-conf">
         <form method='post' action='confselect.php'>
             <table>
-                <tr>
+                <tr title="Configuration File">
                     <td style="text-align: left;">Edit: </td>
                     <td style="text-align: right;">
                         <select name='conf' id="conf" style="width:200px;">
@@ -97,7 +97,7 @@ foreach ($confavail as $choice) {
                         </select>
                      </td>
                 </tr>
-                <tr>
+                <tr title="Select">
                     <td><?php echo $error ?></td>
                     <td style="text-align: right;">
                         <input type="submit" value="Select" />
