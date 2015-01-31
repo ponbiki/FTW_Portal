@@ -19,6 +19,9 @@ htmlheader($page, $page, array('
                 $( "input[type=submit], a, button" )
                 .button()
             });
+            $(function() {
+                $( "#radio" ).buttonset();
+            });
         </script>
 '));
 
@@ -300,10 +303,10 @@ if (isset($_POST['formid'])) {
         <li><a href="#tabs-cookie" title="Cookie Exceptions">Cookie Exceptions</a></li>
         <li><a href="#tabs-purge" title="Clear Cache">Clear Cache</a></li>
         <li><a href="#tabs-del" title="Remove Domain">Remove Domain</a></li>
+        <li><a href="#tabs-err" title="Pretty Error Pages">Error Pages</a></li>
     </ul>
     <div id="tabs-del">
         <form method='post' action='confedit.php'>
-            <div id="radio">
                 <table>
 <?php
 foreach ($domains as $domain) {
@@ -335,7 +338,6 @@ foreach ($domains as $domain) {
                     </tr>
                 </table>
                 <input type='hidden' name='formid' value='delform' />
-            </div>
         </form>
     </div>
     <div id="tabs-add">
@@ -482,7 +484,6 @@ foreach ($domains as $domain) {
     </div>
     <div id="tabs-purge">
         <form method='post' action='confedit.php'>
-            <div id="radio">
                 <table>
 <?php
 foreach ($domains as $domain) {
@@ -514,7 +515,42 @@ foreach ($domains as $domain) {
                     </tr>
                 </table>
                 <input type='hidden' name='formid' value='purgeform' />
-            </div>
+        </form>
+    </div>
+    <div id="tabs-err">
+        <form method="post" action="confedit.php">
+            <table>
+                <tr title="Error Pages Select">
+                    <td>
+                        <span style="float:left;">Pretty Error Pages: </span>
+                    </td>
+                    <td>
+                        <div id="radio" style="float:right;">
+                            <input type="radio" id="radio1" name="on"
+                                   title="On"><label for="radio1">On</label>
+                            <input type="radio" id="radio2" name="on"
+                                   title="Off" checked="checked"><label for="radio2">Off</label>
+                        </div>
+                    </td>
+                </tr>
+                <tr title="Set Error Pages">
+                    <td>
+                        <label>
+                            <span style='float:left;'>
+                                <?php echo $error ?>
+                            </span>
+                        </label>
+                    </td>
+                    <td>
+                        <label>
+                            <span style='float:right;'>
+                                <input type="submit" value="Set" />
+                            </span>
+                        </label>
+                    </td>
+                </tr>
+            </table>
+            <input type="hidden" name="formid" value="errpages" />
         </form>
     </div>
 </div>
