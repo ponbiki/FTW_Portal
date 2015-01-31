@@ -72,7 +72,7 @@ function tail() {
 _END;
 }
 
-$logo = "<div class='logo'><img src='img/ftw_logo.png' title='FTW Logo' name='FTW Logo' style='max-width:100%;height:auto;width:auto\9;' /></div>";
+$logo = "<div class='logo'><img src='img/ftw_logo.png' title='FTW Logo' name='FTW Logo' style='max-width:100%;height:80px;width:auto\9;' /></div>";
 
 if (($loggedin)&&(!$admin)) {
     $navigation = "<div class='navbar'>
