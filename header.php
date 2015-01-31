@@ -76,13 +76,14 @@ $logo = "<div class='logo'><img src='img/ftw_logo.png' title='FTW Logo' name='FT
 
 if (($loggedin)&&(!$admin)) {
     $navigation = "<div class='navbar'>
-        <a href='confselect.php' title='Config Selection'>Config Selection</a>
+        <a href='confselect.php' title='Config Selection'>Select Config</a>
          <a href='logout.php' title='Logout'>Logout</a>
         </div>\n";
 } else {
     if ($admin) {
         $navigation = "<div class='navbar'>
-            <a href='manage.php' title='User Management'>User Management</a>
+            <a href='manage.php' title='User Management'>Users</a>
+            <a href='confmanage.php' title='Config File Management'>Configs</a>
             <a href='logout.php' title='Logout'>Logout</a>
             </div>\n";
     }
