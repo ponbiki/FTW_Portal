@@ -1,4 +1,9 @@
 <?php
+/*
+ * a programmer walks into a bar and says "give me 2.3 root beers."
+ * the bartender says, "that's a root beer float."
+ * the programmer say, "make it a double."
+ */
 require_once 'header.php';
 require_once 'conninfo.php';
 
