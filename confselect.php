@@ -122,7 +122,7 @@ foreach ($confavail as $choice) {
 if (isset($_POST['conf'])) {
     $conf = filter_input(INPUT_POST, 'conf', FILTER_SANITIZE_STRING);
     if (!in_array($conf, $confavail)) {
-        echo "You must select a valid choice!<br />";
+        echo "You must select a valid configuration!<br />";
     } else {
         $_SESSION['confpath'] = "$dir/$conf.ini";
         $_SESSION['conffile'] = "$conf.ini";

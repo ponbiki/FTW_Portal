@@ -71,6 +71,13 @@ foreach($list as $file) {
 if (isset($_POST['formid'])) {
     if ($_POST['formid'] === 'confselect') {
         $conf = filter_input(INPUT_POST, 'conf', FILTER_SANITIZE_STRING);
+        if (!in_array($conf, $ini)) {
+            echo "You must select a valid configuration<br />";
+        } else {
+            $_SESSION['confpath'] = "$dir/$conf.ini";
+            $_SESSION['conffile'] = "$conf.ini";
+            header('Location: adminconfedit.php');
+        }
     }
 }
 ?>
@@ -135,21 +142,29 @@ if (isset($_POST['formid'])) {
         <form method='post' action='confmanage.php'>
             <table>
                 <tr title="Configuration File">
-                    <td style="float:left;">Edit: </td>
-                    <td style="float:right;">
-                        <select name="conf" id="conf" style="width:200px;">
+                    <td>
+                        <span style="float:left;">Edit: </span>
+                    </td>
+                    <td>
+                        <span style="float:right;">
+                            <select name="conf" id="conf" style="width:200px;">
 <?php
 foreach ($ini as $choice) {
     echo "<option>$choice</option>\n";
 }
 ?>
-                        </select>
+                            </select>
+                        </span>
                     </td>
                 </tr>
                 <tr title="Select">
-                    <td style="float:left;"><?php echo $error ?></td>
-                    <td style="float:right;">
-                        <input type="submit" value="Select" />
+                    <td>
+                        <span style="float:left;"><?php echo $error ?></span>
+                    </td>
+                    <td>
+                        <span style="float:right;">
+                            <input type="submit" value="Select" />
+                        </span>
                     </td>
                 </tr>
             </table>
