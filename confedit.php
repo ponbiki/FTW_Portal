@@ -313,7 +313,7 @@ foreach ($domains as $domain) {
 ?>
                     <tr title="<?php echo $domain ?>">
                         <td>
-                            <label >
+                            <label>
                                 <span style="float:left;"><?php echo $domain ?></span>
                                 <span style="float:right;">
                                 <input type='radio' name='deldomain' value='<?php echo $domain ?>' />

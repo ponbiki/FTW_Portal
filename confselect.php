@@ -86,21 +86,31 @@ $confavail = array_intersect($dbini, $ini);
         <form method='post' action='confselect.php'>
             <table>
                 <tr title="Configuration File">
-                    <td style="text-align: left;">Edit: </td>
-                    <td style="text-align: right;">
-                        <select name='conf' id="conf" style="width:200px;">
+                    <td>
+                        <span style="float:left;">
+                            Edit: 
+                        </span>
+                    </td>
+                    <td>
+                        <span style="float:right;">
+                            <select name='conf' id="conf" style="width:200px;">
 <?php
 foreach ($confavail as $choice) {
     echo "<option>$choice</option>\n";
 }
 ?>
-                        </select>
+                            </select>
+                        </span>
                      </td>
                 </tr>
                 <tr title="Select">
-                    <td><?php echo $error ?></td>
-                    <td style="text-align: right;">
-                        <input type="submit" value="Select" />
+                    <td>
+                        <span style="float:left;"><?php echo $error ?></span>
+                    </td>
+                    <td>
+                        <span style="float:right;">
+                            <input type="submit" value="Select" />
+                        </span>
                     </td>
                 </tr>
             </table>
