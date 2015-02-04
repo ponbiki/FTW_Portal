@@ -34,7 +34,7 @@ echo $logo;
 
 bar($page);
 
-$error = $deldomain = $newhost = '';
+$error = $deldomain = $newhost = $cookiename = $cookiepath = $cookiedomain = $cookieinfo = $purgecache = "";
 
 if (!($con = ssh2_connect($server, $port))) {
     die('Failed to establish connection');

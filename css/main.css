@@ -7,12 +7,77 @@ a:hover, a:active {
     color: #fff;
     text-decoration: none;
 }
+@-webkit-keyframes rotateInLeft {
+    from {
+        transform-origin: 0% 0%;
+        transform: rotateY(90deg);
+    }
+    to {
+        transform-origin: 0% 0%;
+        transform: rotateY(0deg);
+    }
+}
+@keyframes rotateInLeft {
+    from {
+        transform-origin: 0% 0%;
+        transform: rotateY(90deg);
+    }
+    to {
+        transform-origin: 0% 0%;
+        transform: rotateY(0deg);
+    }
+}
+@-webkit-keyframes rotateInRight {
+    from {
+        transform-origin: 100% 100%;
+        transform: rotateY(90deg);
+    }
+    to {
+        transform-origin: 0% 0%;
+        transform: rotateY(0deg);
+    }
+}
+@keyframes rotateInRight {
+    from {
+        transform-origin: 100% 100%;
+        transform: rotateY(90deg);
+    }
+    to {
+        transform-origin: 0% 0%;
+        transform: rotateY(0deg);
+    }
+}
+@-webkit-keyframes rotateInTop {
+    from {
+        transform-origin: 0% 0%;
+        transform: rotateX(90deg);
+    }
+    to {
+        transform-origin: 0% 0%;
+        transform: rotateX(0deg);
+    }
+}
+@keyframes rotateInTop {
+    from {
+        transform-origin: 0% 0%;
+        transform: rotateX(90deg);
+    }
+    to {
+        transform-origin: 0% 0%;
+        transform: rotateX(0deg);
+    }
+}
+html {
+    /*perspective: 500px;*/
+}
 body {
     font-family: Arial;
     font-size: 9pt;
     margin: 20px;
     margin-top: 20px;
     background: #999;
+    /*transform-origin: 50% 100%;*/
+    /*transform: rotateX(45deg);*/
 }
 ul {
     margin: 5px;
@@ -40,6 +105,8 @@ ul {
     display: block;
     height: 50px;
     width: auto;
+    -webkit-animation: rotateInLeft 1s; /*Chrome Safari Opera*/
+    animation: rotateInLeft 1s;
 }
 .nyiloginlogo {
     padding: 0;
@@ -47,6 +114,8 @@ ul {
     display: block;
     height: 20px;
     width: auto;
+    -webkit-animation: rotateInLeft 1s; /*Chrome Safari Opera*/
+    animation: rotateInLeft 1s;
 }
 .nyicp {
     box-shadow: 3px 3px 3px #555555;
@@ -179,11 +248,15 @@ ul {
     text-align:center;
     color: #dc9d01;
     border-radius: 5px;
+    -webkit-animation: rotateInLeft 1.5s; /*Chrome Safari Opera*/
+    animation: rotateInLeft 1.5s;
 }
 .logo {
     margin-top: 5px;
     margin-bottom: 5px;
     padding: 5px;
+    -webkit-animation: rotateInTop .5s; /*Chrome Safari Opera*/
+    animation: rotateInTop .5s;
 }
 .pagebar {
     /*background: #D86D26;*/
@@ -197,4 +270,6 @@ ul {
     padding: 8px;
     margin-bottom: 15px;
     border-radius: 5px;
+    -webkit-animation: rotateInRight 2s; /*Chrome Safari Opera*/
+    animation: rotateInRight 2s;
 }
