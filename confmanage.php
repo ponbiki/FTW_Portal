@@ -130,7 +130,7 @@ if (isset($_POST['formid'])) {
                     </td>
                     <td>
                         <span style='float:right;'>
-                            <input title='Example: eccouncil.org (optionnal - multiples space separated)' type='text'
+                            <input title='Example: eccouncil.org (optional - multiples space separated)' type='text'
                                    maxlength='253' name='confsslhostnames' value='' />
                         </span>
                     </td>
