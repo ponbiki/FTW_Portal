@@ -84,11 +84,11 @@ if (isset($_POST['formid'])) {
 
 <div id="tabs">
     <ul>
-        <!--<li><a href="#tabs-new" title="New Config File">New Config</a></li>-->
+        <li><a href="#tabs-new" title="New Config File">New Config</a></li>
         <li><a href="#tabs-mng" title="Manage Config File">Manage Conf</a></li>
         <li><a href="#tabs-assoc" title="Associate Conf With User">Associate Conf</a></li>
     </ul>
-    <!--<div id="tabs-new">
+    <div id="tabs-new">
         <form method="post" action="confmanage.php">
             <table>
                 <tr title="Configuration Name">
@@ -137,7 +137,7 @@ if (isset($_POST['formid'])) {
                 </tr>
             </table>
         </form>
-    </div>-->
+    </div>
     <div id='tabs-mng'>
         <form method='post' action='confmanage.php'>
             <table>
