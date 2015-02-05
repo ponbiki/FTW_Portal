@@ -291,6 +291,10 @@ if (isset($_POST['formid'])) {
                             header('Refresh: 3');
                         }
                     }
+                } else {
+                    if ($_POST['formid'] === 'ssldomains') {
+                        
+                    }
                 }
             }
         }
@@ -523,7 +527,9 @@ foreach ($domains as $domain) {
             <table>
                 <tr title="Error Pages Select">
                     <td>
-                        <span style="float:left;">Pretty Error Pages: </span>
+                        <span style="float:left;">
+                            Pretty Error Pages: 
+                        </span>
                     </td>
                     <td>
                         <div id="radio" style="float:right;">
@@ -555,9 +561,56 @@ foreach ($domains as $domain) {
         </form>
     </div>
     <div id="tabs-ssl">
-        <form method="post" action="confedit.php">
+        <form method="post" action="confedit.php" enctype="multipart/form-data">
             <table>
-                
+                <tr title="Add SSL Domain">
+                    <td>
+                        <label>
+                            <span style="float:left;">
+                                Add SSL Domain: 
+                            </span>
+                        </label>
+                    </td>
+                    <td>
+                        <label>
+                            <span style="float:right;">
+                                <input type='text' maxlength='253' name='ssldomain' value="" />
+                            </span>
+                        </label>
+                    </td>
+                </tr>
+                <tr title="Add PEM">
+                    <td>
+                        <label>
+                            <span style="float:left;">
+                                Paste PEM: 
+                            </span>
+                        </label>
+                    </td>
+                    <td>
+                        <label>
+                            <span style="float:right;">
+                                <textarea cols="25" rows="10" name="pem"></textarea>
+                            </span>
+                        </label>
+                    </td>
+                </tr>
+                <tr title="Add SSL Domain">
+                    <td>
+                        <label>
+                            <span style="float:left;">
+                                <!--<input type="file" name="pemul" />-->
+                            </span>
+                        </label>
+                    </td>
+                    <td>
+                        <label>
+                            <span style="float:right;">
+                                <input type="submit" value="Submit" />
+                            </span>
+                        </label>
+                    </td>
+                </tr>
             </table>
             <input type="hidden" name="formid" value="ssldomains" />
         </form>

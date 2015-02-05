@@ -248,15 +248,15 @@ ul {
     text-align:center;
     color: #dc9d01;
     border-radius: 5px;
-    -webkit-animation: rotateInLeft 1.5s; /*Chrome Safari Opera*/
-    animation: rotateInLeft 1.5s;
+    /*-webkit-animation: rotateInLeft 1.5s;*/ /*Chrome Safari Opera*/
+    /*animation: rotateInLeft 1.5s;*/
 }
 .logo {
     margin-top: 5px;
     margin-bottom: 5px;
     padding: 5px;
-    -webkit-animation: rotateInTop .5s; /*Chrome Safari Opera*/
-    animation: rotateInTop 1s;
+    -webkit-animation: rotateInTop 1.5s; /*Chrome Safari Opera*/
+    animation: rotateInTop 1.5s;
 }
 .pagebar {
     /*background: #D86D26;*/
@@ -270,6 +270,6 @@ ul {
     padding: 8px;
     margin-bottom: 15px;
     border-radius: 5px;
-    -webkit-animation: rotateInRight 2s; /*Chrome Safari Opera*/
-    animation: rotateInRight 2s;
+    /*-webkit-animation: rotateInRight 3s;*/ /*Chrome Safari Opera*/
+    /*animation: rotateInRight 3s;*/
 }
