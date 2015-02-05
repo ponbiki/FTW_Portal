@@ -256,7 +256,7 @@ ul {
     margin-bottom: 5px;
     padding: 5px;
     -webkit-animation: rotateInTop .5s; /*Chrome Safari Opera*/
-    animation: rotateInTop .5s;
+    animation: rotateInTop 1s;
 }
 .pagebar {
     /*background: #D86D26;*/

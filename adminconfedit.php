@@ -66,6 +66,7 @@ foreach ($ini_array as $category => $value) {
         <li><a href="#tabs-purge" title="Clear Cache">Clear Cache</a></li>
         <li><a href="#tabs-del" title="Remove Domain">Remove Domain</a></li>
         <li><a href="#tabs-err" title="Pretty Error Pages">Error Pages</a></li>
+        <li><a href="#tabs-ssl" title="Add SSL Domain">SSL Domains</a>
     </ul>
     <div id="tabs-del">
         <form method='post' action='confedit.php'>

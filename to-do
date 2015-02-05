@@ -1,0 +1,11 @@
+I have one general feature request that should be on the "Configuration Edit" page.
+
+We need to have a way to add or identify SSL-enabled domains, and a place to paste the PEM for each.
+
+So, it could be a separate tab (SSL Domains), or the check-box as mentioned above.
+
+I also think consolidating the "Add domain" and "Remove Domain" tabs could be consolidated with a multi-select radio button and action (delete), with an "add domain" button that pops up a window with a field that allows multiple line-separated domains.
+
+We'll also need a parser for the PEM file to, at a minimum, check for the appropriate BEGIN and END lines in the correct order within the PEM file before posting.
+
+Also within domain edit, the check-boxes should be toggles and not single entry, so that for example, multiple domains can be deleted or purged.
