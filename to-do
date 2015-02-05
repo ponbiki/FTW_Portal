@@ -9,3 +9,11 @@ I also think consolidating the "Add domain" and "Remove Domain" tabs could be co
 We'll also need a parser for the PEM file to, at a minimum, check for the appropriate BEGIN and END lines in the correct order within the PEM file before posting.
 
 Also within domain edit, the check-boxes should be toggles and not single entry, so that for example, multiple domains can be deleted or purged.
+
+
+
+
+
+in sudoers
+
+backupuser ALL=(ALL) NOPASSWD: /full/command/paths arg
