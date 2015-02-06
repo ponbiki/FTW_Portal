@@ -16,8 +16,7 @@ htmlheader($page, $page, array('
                 $( "#tabs" ).tabs();
             });
             $(function() {
-                $( "input[type=submit], a, button" )
-                .button()
+                $( "input[type=submit], a, button" ).button()
             });
             $(function() {
                 $( "#radio" ).buttonset();
@@ -58,28 +57,32 @@ foreach ($ini_array as $category => $value) {
 
 if (isset($_POST['formid'])) {
     if ($_POST['formid'] === 'delform') {
-        $deldomain = filter_input(INPUT_POST, 'deldomain', FILTER_SANITIZE_STRING);
-        if (!in_array($deldomain, $domains)) {
-            echo "Please choose an exisitng hostname<br />";
-        } else {
-            if (!($con = ssh2_connect($server, $port))) {
-                die('Failed to establish connection');
+        foreach ($_POST['deldomain'] as $deldomain_dirty) {
+            $deldomains[] = filter_var($deldomain_dirty, FILTER_SANITIZE_STRING);
+        }
+        foreach ($deldomains as $deldomain){
+            if (!in_array($deldomain, $domains)) {
+                echo "$delomain is not an exisitng hostname<br />";
             } else {
-                if(!(ssh2_auth_password($con, $ssh_user, $ssh_pass))) {
-                    die('Failed to authenticate');
+                if (!($con = ssh2_connect($server, $port))) {
+                    die('Failed to establish connection');
                 } else {
-                    $dir = "/home/ftwportal/conf";
-                    $time = mktime();
-                    $command = "cp $dir/{$_SESSION['conffile']} $dir/{$_SESSION['conffile']}.bak";
-                    if (!($stream = ssh2_exec($con, $command))) {
-                        die('Unable to execute command');
+                    if(!(ssh2_auth_password($con, $ssh_user, $ssh_pass))) {
+                        die('Failed to authenticate');
                     } else {
-                        stream_set_blocking($stream, true);
-                        $data ='';
-                        while ($buf = fread($stream,4096)) {
-                            $data .= $buf;
+                        $dir = "/home/ftwportal/conf";
+                        $time = mktime();
+                        $command = "cp $dir/{$_SESSION['conffile']} $dir/{$_SESSION['conffile']}.bak";
+                        if (!($stream = ssh2_exec($con, $command))) {
+                            die('Unable to execute command');
+                        } else {
+                            stream_set_blocking($stream, true);
+                            $data ='';
+                            while ($buf = fread($stream,4096)) {
+                                $data .= $buf;
+                            }
+                            fclose($stream);
                         }
-                        fclose($stream);
                     }
                 }
             }
@@ -314,14 +317,16 @@ if (isset($_POST['formid'])) {
         <form method='post' action='confedit.php'>
                 <table>
 <?php
+$x =0;
 foreach ($domains as $domain) {
+    ++$x; $check = "check$x";
 ?>
                     <tr title="<?php echo $domain ?>">
                         <td>
                             <label>
-                                <span style="float:left;"><?php echo $domain ?></span>
+                                <span style="float:left;"><?php echo $domain; ?></span>
                                 <span style="float:right;">
-                                <input type='radio' name='deldomain' value='<?php echo $domain ?>' />
+                                    <input type='checkbox' name="deldomain[]" value="<?php echo $domain; ?>"/>
                                 </span>
                             </label>
                         </td>
@@ -498,7 +503,7 @@ foreach ($domains as $domain) {
                             <label>
                                 <span style="float:left;"><?php echo $domain ?></span>
                                 <span style="float:right;">
-                                <input type='radio' name='purgecache' value='<?php echo $domain ?>' />
+                                    <input type='checkbox' name='purgecache[]' value='<?php echo $domain ?>' />
                                 </span>
                             </label>
                         </td>
