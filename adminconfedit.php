@@ -62,7 +62,7 @@ foreach ($ini_array as $category => $value) {
 if (isset($_POST['formid'])) {
     if ($_POST['formid'] === 'delform') {
         foreach ($_POST['deldomain'] as $deldomain_dirty) {
-            $deldomains[] = filter_car($deldomain_dirty, FILTER_SANITIZE_STRING);
+            $deldomains[] = filter_var($deldomain_dirty, FILTER_SANITIZE_STRING);
         }
         foreach ($deldomains as $deldomain) {
             if (!in_array($deldomain, $domains)) {
@@ -89,7 +89,7 @@ if (isset($_POST['formid'])) {
                     fclose($stream);
                 }
             }
-            $ini_array['hostname'] = array_diff($ini_array['hostname'], $dledomains);
+            $ini_array['hostname'] = array_diff($ini_array['hostname'], $deldomains);
             if (!unlink("tmp/{$_SESSION['conffile']}")) {
                 die('Unable to delete temp file');
             } else {
@@ -155,8 +155,6 @@ if (isset($_POST['formid'])) {
             }
             header('Refresh: 3');
         }
-    } elseif ($_POST['formid'] === 'addform') {
-        
     }
 }
 
