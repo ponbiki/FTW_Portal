@@ -255,7 +255,7 @@ foreach ($domains as $domain) {
                             <label>
                                 <span style="float:left;"><?php echo $domain ?></span>
                                 <span style="float:right;">
-                                <input type='radio' name='purgecache[]' value='<?php echo $domain ?>' />
+                                <input type='checkbox' name='purgecache[]' value='<?php echo $domain ?>' />
                                 </span>
                             </label>
                         </td>
