@@ -78,8 +78,8 @@ if (isset($_POST['formid'])) {
                     die('Unable to execute command');
                 } else {
                     stream_set_blocking($stream, true);
-                    $data ='';
-                    while ($buf = fread($stream,4096)) {
+                    $data = '';
+                    while ($buf = fread($stream, 4096)) {
                         $data .= $buf;
                     }
                     fclose($stream);
@@ -106,7 +106,7 @@ if (isset($_POST['formid'])) {
                         }
                     }
                 }
-                fwrite($fh, $text) or die('Could not write to file');
+                fwrite($fh, $text) or die('Could not write to temp file');
                 fclose($fh);
             }
             if(!($con = ssh2_connect($server, $port))) {
@@ -303,7 +303,7 @@ if (isset($_POST['formid'])) {
                         header('Refresh: 3');
                     }
                 } else {
-                    if ($_POST['formid'] === 'ssldomains') {
+                    if ($_POST['formid'] === 'sslform') {
                         
                     }
                 }
@@ -568,7 +568,7 @@ foreach ($domains as $domain) {
                     </td>
                 </tr>
             </table>
-            <input type="hidden" name="formid" value="errpages" />
+            <input type="hidden" name="formid" value="errform" />
         </form>
     </div>
     <div id="tabs-ssl">
@@ -623,7 +623,7 @@ foreach ($domains as $domain) {
                     </td>
                 </tr>
             </table>
-            <input type="hidden" name="formid" value="ssldomains" />
+            <input type="hidden" name="formid" value="sslform" />
         </form>
     </div>
 </div>

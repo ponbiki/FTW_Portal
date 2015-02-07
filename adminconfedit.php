@@ -34,7 +34,7 @@ echo $logo;
 
 bar($page);
 
-$error = $deldomain = $newhost = $cookiename = $cookiepath = $cookiedomain = $cookieinfo = $purgecache = "";
+$error = $deldomain = $newhost = $purgecache = "";
 
 if (!($con = ssh2_connect($server, $port))) {
     die('Failed to establish connection');
@@ -58,6 +58,108 @@ foreach ($ini_array as $category => $value) {
         sort($domains);
     }
 }
+
+if (isset($_POST['formid'])) {
+    if ($_POST['formid'] === 'delform') {
+        foreach ($_POST['deldomain'] as $deldomain_dirty) {
+            $deldomains[] = filter_car($deldomain_dirty, FILTER_SANITIZE_STRING);
+        }
+        foreach ($deldomains as $deldomain) {
+            if (!in_array($deldomain, $domains)) {
+                echo "$deldomain is not an existing hostname<br />";
+            }
+        }
+        if (!($con = ssh2_connect($server, $port))) {
+            die('Failed to establish connection');
+        } else {
+            if(!(ssh2_auth_password($con, $ssh_user, $ssh_pass))) {
+                die('Failed to authenticate');
+            } else {
+                $dir = "/home/ftwportal/conf";
+                $time = mktime();
+                $command = "cp $dir/{$_SESSION['conffile']} $dir/{$_SESSION['conffile']}.$time.bak";
+                if (!($stream = ssh2_exec($con, $command))) {
+                    die('Unable to execute command');
+                } else {
+                    stream_set_blocking($stream, true);
+                    $data = '';
+                    while ($buf = fread($stream, 4096)) {
+                        $data .= $buf;
+                    }
+                    fclose($stream);
+                }
+            }
+            $ini_array['hostname'] = array_diff($ini_array['hostname'], $dledomains);
+            if (!unlink("tmp/{$_SESSION['conffile']}")) {
+                die('Unable to delete temp file');
+            } else {
+                $fh = fopen("tmp/{$_SESSION['conffile']}", w) or die('Cannot create file.');
+                $text = '';
+                foreach ($ini_array as $key => $value) {
+                    if (!is_array($value)) {
+                        $text .= "$key = $value\n";
+                    } else {
+                        foreach ($value as $key2 => $value2) {
+                            if (!is_array($value2)) {
+                                $text .= $key."[] = $value2\n";
+                            } else {
+                                foreach ($value2 as $key3 => $value3) { //unused and untested 3rd iteration
+                                    $text .= $key."[".$key2."][] = $value3\n";
+                                }
+                            }
+                        }
+                    }
+                }
+                fwrite($fh, $text) or die('Could not write to temp file');
+                fclose($fh);
+            }
+            if(!($con = ssh2_connect($server, $port))) {
+                die('Failed to establish connection');
+            } else {
+                if (!(ssh2_auth_password($con, $ssh_user, $ssh_pass))) {
+                    die('Failed to authenticate');
+                } else {
+                    if (!(ssh2_scp_send($con, "tmp/{$_SESSION['conffile']}", "$dir/"
+                            . "{$_SESSION['conffile']}", 0644))) {
+                        die('Unable to send file.');
+                    }
+                }
+            }
+            if (!unlink("tmp/{$_SESSION['conffile']}")) {
+                die('Could not clean up temp file');
+            }
+            foreach ($deldomains as $deldomain) {
+                echo "$deldomain has been deleted<br />";
+            }
+            unset($_POST);
+        }
+        if(!($con = ssh2_connect($server, $port))) {
+            die('Failed to establish connection');
+        } else {
+            if (!(ssh2_auth_password($con, $ssh_user, $ssh_pass))) {
+                die('Failed to authenticate.');
+            } else {
+                $dir = "/home/ftwportal/conf";
+                // $command = "sudo lbconfig && lbsync local && lbsync";
+                $command = "touch $dir/boogieboogie"; /* temp placeholder command */
+                if(!($stream = ssh2_exec($con, $command))) {
+                    die('Unable to execute command');
+                } else {
+                    stream_set_blocking($stream, true);
+                    $data = '';
+                    while ($buf = fread($stream, 4096)) {
+                        $data .= $buf;
+                    }
+                    fclose($stream);
+                }
+            }
+            header('Refresh: 3');
+        }
+    } elseif ($_POST['formid'] === 'addform') {
+        
+    }
+}
+
 ?>
 
 <div id="tabs">
@@ -69,7 +171,7 @@ foreach ($ini_array as $category => $value) {
         <li><a href="#tabs-ssl" title="Add SSL Domain">SSL Domains</a>
     </ul>
     <div id="tabs-del">
-        <form method='post' action='confedit.php'>
+        <form method='post' action='adminconfedit.php'>
                 <table>
 <?php
 foreach ($domains as $domain) {
@@ -79,7 +181,7 @@ foreach ($domains as $domain) {
                             <label>
                                 <span style="float:left;"><?php echo $domain ?></span>
                                 <span style="float:right;">
-                                <input type='radio' name='deldomain' value='<?php echo $domain ?>' />
+                                <input type='checkbox' name='deldomain[]' value='<?php echo $domain ?>' />
                                 </span>
                             </label>
                         </td>
@@ -104,7 +206,7 @@ foreach ($domains as $domain) {
         </form>
     </div>
     <div id="tabs-add">
-        <form method='post' action='confedit.php'>
+        <form method='post' action='adminconfedit.php'>
             <table>
                 <tr title="New Domain">
                     <td>
@@ -143,7 +245,7 @@ foreach ($domains as $domain) {
         </form>
     </div>
     <div id="tabs-purge">
-        <form method='post' action='confedit.php'>
+        <form method='post' action='adminconfedit.php'>
                 <table>
 <?php
 foreach ($domains as $domain) {
@@ -153,7 +255,7 @@ foreach ($domains as $domain) {
                             <label>
                                 <span style="float:left;"><?php echo $domain ?></span>
                                 <span style="float:right;">
-                                <input type='radio' name='purgecache' value='<?php echo $domain ?>' />
+                                <input type='radio' name='purgecache[]' value='<?php echo $domain ?>' />
                                 </span>
                             </label>
                         </td>
@@ -178,7 +280,7 @@ foreach ($domains as $domain) {
         </form>
     </div>
     <div id="tabs-err">
-        <form method="post" action="confedit.php">
+        <form method="post" action="adminconfedit.php">
             <table>
                 <tr title="Error Pages Select">
                     <td>
@@ -210,7 +312,7 @@ foreach ($domains as $domain) {
                     </td>
                 </tr>
             </table>
-            <input type="hidden" name="formid" value="errpages" />
+            <input type="hidden" name="formid" value="errform" />
         </form>
     </div>
 </div>
