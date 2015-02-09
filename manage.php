@@ -78,54 +78,50 @@ if (isset($_POST['formid'])) {
             }
             header('Refresh: 3');
         }
-    } else {
-        if ($_POST['formid'] === 'changepass') {
-            $cguserpost = filter_input(INPUT_POST, 'cguser', FILTER_SANITIZE_STRING);
-            $cgpass1 = filter_input(INPUT_POST, 'cgpass1', FILTER_SANITIZE_STRING);
-            $cgpass2 = filter_input(INPUT_POST, 'cgpass2', FILTER_SANITIZE_STRING);
-            if (!in_array($cguserpost, $cgusers_array)) {
-                $error = "Please select a valid username.<br />";
-            } else {
-                if (($cgpass1 == '')||($cgpass2 == '')) {
-                    $error = "Please enter the new password two times.<br />";
-                } else {
-                    if ($cgpass1 !== $cgpass2) {
-                        $error = "Passwords do not match!<br />";
-                    } else {
-                        $token = hash('sha512', "$salt1$cgpass1$salt2");
-                        $res = $mysqli->query("UPDATE users SET password='$token'"
-                                . " WHERE username='$cguserpost'");
-                        if (!$res) {
-                            die('Error: ('.$mysqli->errno.') '.$mysqli->error);
-                        } else {
-                            echo "Password for $cguserpost has been changed!<br />";
-                            unset($_POST);
-                        }
-                    }
-                }
-                header('Refresh: 3');
-            }
+    } elseif ($_POST['formid'] === 'changepass') {
+        $cguserpost = filter_input(INPUT_POST, 'cguser', FILTER_SANITIZE_STRING);
+        $cgpass1 = filter_input(INPUT_POST, 'cgpass1', FILTER_SANITIZE_STRING);
+        $cgpass2 = filter_input(INPUT_POST, 'cgpass2', FILTER_SANITIZE_STRING);
+        if (!in_array($cguserpost, $cgusers_array)) {
+            $error = "Please select a valid username.<br />";
         } else {
-            if ($_POST['formid'] === 'delusr') {
-                $delusername = filter_input(INPUT_POST, 'delusername', FILTER_SANITIZE_STRING);
-                if (!in_array($delusername, $cgusers_array)) {
-                    $error = "Please select a valid username<br />";
+            if (($cgpass1 == '')||($cgpass2 == '')) {
+                $error = "Please enter the new password two times.<br />";
+            } else {
+                if ($cgpass1 !== $cgpass2) {
+                    $error = "Passwords do not match!<br />";
                 } else {
-                    if (!isset($_POST['confirm'])) {
-                        $error = "Please confirm your selection to continue<br />";
+                    $token = hash('sha512', "$salt1$cgpass1$salt2");
+                    $res = $mysqli->query("UPDATE users SET password='$token'"
+                            . " WHERE username='$cguserpost'");
+                    if (!$res) {
+                        die('Error: ('.$mysqli->errno.') '.$mysqli->error);
                     } else {
-                        $res = $mysqli->query("DELETE FROM users WHERE"
-                                . " username='$delusername'");
-                        if (!$res) {
-                            die('Error: ('.$mysqli->errno.') '.$mysqli->error);
-                        } else {
-                            echo "$delusername has been deleted!<br />";
-                            unset($_POST);
-                        }
+                        echo "Password for $cguserpost has been changed!<br />";
+                        unset($_POST);
                     }
                 }
-                header('Refresh: 3');
             }
+            header('Refresh: 3');
+        }
+    } elseif ($_POST['formid'] === 'delusr') {
+        $delusername = filter_input(INPUT_POST, 'delusername', FILTER_SANITIZE_STRING);
+        if (!in_array($delusername, $cgusers_array)) {
+            $error = "Please select a valid username<br />";
+        } else {
+            if (!isset($_POST['confirm'])) {
+                $error = "Please confirm your selection to continue<br />";
+            } else {
+                $res = $mysqli->query("DELETE FROM users WHERE"
+                        . " username='$delusername'");
+                if (!$res) {
+                    die('Error: ('.$mysqli->errno.') '.$mysqli->error);
+                } else {
+                    echo "$delusername has been deleted!<br />";
+                    unset($_POST);
+                }
+            }
+            header('Refresh: 3');
         }
     }
 }
