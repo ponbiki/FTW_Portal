@@ -13,6 +13,11 @@ htmlheader($page, $page, array('
         <script src="js/jquery-ui.js"></script>
         <script>
             $(function() {
+                $( "#accordion" ).accordion({
+                    heightStyle: "content"
+                });
+            });
+            $(function() {
                 $( "#tabs" ).tabs();
             });
             $(function() {
@@ -20,6 +25,9 @@ htmlheader($page, $page, array('
             });
             $(function() {
                 $( "#radio" ).buttonset();
+            });
+            $(function() {
+                $( "input[type=checkbox], a, button" ).button();
             });
         </script>
 '));
@@ -139,10 +147,11 @@ if (isset($_POST['formid'])) {
                 if(!(ssh2_auth_password($con, $ssh_user, $ssh_pass))) {
                     die('Failed to authenticate');
                 } else {
-                    $dir = "/home/ftwportal/conf";
-                    // $command = "sudo lbconfig && lbsync local && lbsync";
-                    $command = "touch $dir/boogieboogie"; /* temp placeholder command */
-                    if(!($stream = ssh2_exec($con, $command))) {
+                    // $command1 = "sudo lbconfig";
+                    // $command2 = "sudo lbsync local";
+                    // $command3 = "sudo lbsync";
+                    $command1 = "touch $dir/boogieoogie"; /* temp placeholder */
+                    if(!($stream1 = ssh2_exec($con, $command1))) {
                         die('Unable to execute command');
                     } else {
                         stream_set_blocking($stream, true);
@@ -150,7 +159,7 @@ if (isset($_POST['formid'])) {
                         while ($buf = fread($stream,4096)) {
                             $data .= $buf;
                         }
-                        fclose($stream);
+                        fclose($stream1); //repeat 2 more times
                     }
                 }
             }
@@ -234,9 +243,11 @@ if (isset($_POST['formid'])) {
                 if(!(ssh2_auth_password($con, $ssh_user, $ssh_pass))) {
                     die('Failed to authenticate');
                 } else {
-                    // $command = "sudo lbconfig && lbsync local && lbsync";
-                    $command = "touch $dir/stinkypinky"; /* temp placeholder */
-                    if(!($stream = ssh2_exec($con, $command))) {
+                    // $command1 = "sudo lbconfig";
+                    // $command2 = "sudo lbsync local";
+                    // $command3 = "sudo lbsync";
+                    $command1 = "touch $dir/stinkypinky"; /* temp placeholder */
+                    if(!($stream1 = ssh2_exec($con, $command1))) {
                         die('Unable to execute command');
                     } else {
                         stream_set_blocking($stream, true);
@@ -244,7 +255,7 @@ if (isset($_POST['formid'])) {
                         while ($buf = fread($stream,4096)) {
                             $data .= $buf;
                         }
-                        fclose($stream);
+                        fclose($stream1); //repeat 2 more times
                     }
                 }
             }
@@ -267,11 +278,11 @@ if (isset($_POST['formid'])) {
             mail($to, $subject, $message, $from);
             echo "Request sent!";
             unset($_POST);
+            header('Refresh: 3');
         }
-        header('Refresh: 3');
     } elseif ($_POST['formid'] === 'purgeform') {
         foreach ($_POST['purgecache'] as $purgecache_dirty) {
-            $purgecachearr[] = filter_var($purgecache_dirty, FILTER_SANITIZE_STRING);                        
+            $purgecachearr[] = filter_var($purgecache_dirty, FILTER_SANITIZE_STRING);
         }
         foreach ($purgecachearr as $purgecache) {
             if (!in_array($purgecache, $domains)) {
@@ -286,7 +297,7 @@ if (isset($_POST['formid'])) {
             } else {
                 $dir = "/home/ftwportal/conf";
                 $command = "sudo touch $dir/muhaha.txt"; // place holder
-                // $command = "sudo lbrun ban host $purgecache"; /* real command */
+                // $command = "sudo lbrun ban host $purgecache"; /* real command needs set for array*/
                 if(!($stream = ssh2_exec($con, $command))) {
                     die('Unable to execute command');
                 } else {
@@ -305,94 +316,80 @@ if (isset($_POST['formid'])) {
             header('Refresh: 3');
         }
     } elseif ($_POST['formid'] === 'errform') {
-        // to do
+        echo "You matter to us!<br />";
+        unset($_POST);
+        header('Refresh: 3');
     } elseif ($_POST['formid'] === 'sslform') {
-        // to do
+        echo "Secure is the way to go!<br />";
+        unset($_POST);
+        header('Refresh: 3');
     }
 }
 ?>
 <div id="tabs">
     <ul>
-        <li><a href="#tabs-add" title="Add Domain">Add Domain</a></li>
-        <li><a href="#tabs-cookie" title="Cookie Exceptions">Cookie Exceptions</a></li>
+        <li><a href="#tabs-dom" title="Manage Domains">Manage Domains</a></li>
         <li><a href="#tabs-purge" title="Clear Cache">Clear Cache</a></li>
-        <li><a href="#tabs-del" title="Remove Domain">Remove Domain</a></li>
         <li><a href="#tabs-err" title="Pretty Error Pages">Error Pages</a></li>
         <li><a href="#tabs-ssl" title="Add SSL Domain">SSL Domains</a>
+        <li><a href="#tabs-cookie" title="Cookie Exceptions">Cookie Exceptions</a></li>
     </ul>
-    <div id="tabs-del">
-        <form method='post' action='confedit.php'>
-                <table>
+    <div id="tabs-dom">
+        <div id="accordion">
+            <h3 title="Add Domains">Add Domains</h3>
+            <div id="add">
+                <form method='post' action='confedit.php'>
+                    <table>
+                        <tr title="New Domain">
+                            <td>
+                                Add Domain: 
+                            </td>
+                            <td>
+                                <input type='text' maxlength='253' name='newhost' placeholder="Enter New Domain Name" />
+                            </td>
+                        </tr>
+                        <tr title="Add Domain">
+                            <td> </td>
+                            <td>
+                                <input type="submit" value="Add" />
+                            </td>
+                        </tr>
+                    </table>
+                    <input type='hidden' name='formid' value='addform' />
+                </form>
+            </div>
+            <h3 title="Delete Domains">Delete Domains</h3>
+            <div id="del">
+                <form method='post' action='confedit.php'>
+                    <table>
 <?php
+$x =0;
 foreach ($domains as $domain) {
+    $check = "check" .++$x;
 ?>
-                    <tr title="<?php echo $domain ?>">
-                        <td>
-                            <label>
-                                <span style="float:left;"><?php echo $domain; ?></span>
-                                <span style="float:right;">
-                                    <input type='checkbox' name="deldomain[]" value="<?php echo $domain; ?>"/>
-                                </span>
-                            </label>
-                        </td>
-                    </tr>
+                        <tr title='<?php echo $domain; ?>'>
+                            <td style="float:right;">
+                                <input type="checkbox" id="<?php echo $check; ?>" name="deldomain[]" value="<?php echo $domain; ?>"/>
+                                <label for="<?php echo $check; ?>">
+                                    <?php echo $domain; ?>
+                                </label>
+                            </td>
+                        </tr>
  <?php
 }
-?>
-                    <tr title="Remove Domain">
-                        <td>
-                            <label>
-                                <span style="float:left;">
-                                    <?php echo $error ?>
-                                </span>
-                                <span style="float:right;">
-                                    <input type="submit" value="Remove" />
-                                </span>
-                            </label>
-                        </td>
-                    </tr>
-                </table>
-                <input type='hidden' name='formid' value='delform' />
-        </form>
-    </div>
-    <div id="tabs-add">
-        <form method='post' action='confedit.php'>
-            <table>
-                <tr title="New Domain">
-                    <td>
-                        <label>
-                            <span style='float:left;'>
-                                Domain Name: 
-                            </span>
-                        </label>
-                    </td>
-                    <td>
-                        <label>
-                            <span style='float:right;'>
-                                <input type='text' maxlength='253' name='newhost' value="" />
-                            </span>
-                        </label>
-                    </td>
-                </tr>
-                <tr title="Add Domain">
-                    <td>
-                        <label>
-                            <span style='float:left;'>
-                                <?php echo $error ?>
-                            </span>
-                        </label>
-                    </td>
-                    <td>
-                        <label>
-                            <span style='float:right;'>
-                                <input type="submit" value="Add" />
-                            </span>
-                        </label>
-                    </td>
-                </tr>
-            </table>
-            <input type='hidden' name='formid' value='addform' />
-        </form>
+    ?>
+                        <tr><td></td></tr>
+                        <tr><td></td></tr>
+                        <tr title='Remove Domain'>
+                            <td style="float:right;">
+                                <input type="submit" value="Remove" />
+                            </td>
+                        </tr>
+                    </table>
+                        <input type='hidden' name='formid' value='delform' />
+                </form>
+            </div>
+        </div>
     </div>
     <div id="tabs-cookie">
         <form method="post" action="confedit.php">
@@ -400,7 +397,7 @@ foreach ($domains as $domain) {
                 <tr title="Pass Cookie">
                     <td>
                         <label>
-                            <span style="float:left;">
+                            <span style="float:left;font-weight:bold;">
                                  Pass Cookie
                             </span>
                         </label>
@@ -424,7 +421,7 @@ foreach ($domains as $domain) {
                     <td>
                         <label>
                             <span style="float:right;">
-                                <input type='text' maxlength='253' name='cookiename' value="" />
+                                <input type='text' maxlength='253' name='cookiename' value="" placeholder="Enter a Rule Name"/>
                             </span>
                         </label>
                     </td>
@@ -440,7 +437,7 @@ foreach ($domains as $domain) {
                     <td>
                         <label>
                             <span style="float:right;">
-                                <input type='text' maxlength='253' name='cookiepath' value="" />
+                                <input type='text' maxlength='253' name='cookiepath' value="" placeholder="Optional: Enter the Directory Path"/>
                             </span>
                         </label>
                     </td>
@@ -456,7 +453,7 @@ foreach ($domains as $domain) {
                     <td>
                         <label>
                             <span style="float:right;">
-                                <input type='text' maxlength='253' name='cookiedomain' value="" />
+                                <input type='text' maxlength='253' name='cookiedomain' value="" placeholder="Enter the Domain or Subdomain"/>
                             </span>
                         </label>
                     </td>
@@ -472,7 +469,7 @@ foreach ($domains as $domain) {
                     <td>
                         <label>
                             <span style="float:right;">
-                                <input type='text' maxlength='253' name='cookieinfo' value="" />
+                                <input type='text' maxlength='253' name='cookieinfo' value="" placeholder="Enter Any Extra Information"/>
                             </span>
                         </label>
                     </td>
@@ -499,37 +496,32 @@ foreach ($domains as $domain) {
     </div>
     <div id="tabs-purge">
         <form method='post' action='confedit.php'>
-                <table>
+            <table>
 <?php
+$y = 1000;
 foreach ($domains as $domain) {
+    $check2 = "check" .++$y;
 ?>
-                    <tr title="<?php echo $domain ?>">
-                        <td>
-                            <label>
-                                <span style="float:left;"><?php echo $domain ?></span>
-                                <span style="float:right;">
-                                    <input type='checkbox' name='purgecache[]' value='<?php echo $domain ?>' />
-                                </span>
-                            </label>
-                        </td>
-                    </tr>
+                <tr title="<?php echo $domain ?>">
+                    <td style="float:right;">
+                        <input type="checkbox" id="<?php echo $check2; ?>" name="purgecache[]" value="<?php echo $domain ?>" />
+                        <label for="<?php echo $check2; ?>">
+                            <?php echo $domain ?>
+                        </label>
+                    </td>
+                </tr>
  <?php
 }
 ?>
-                    <tr title="Purge Cache">
-                        <td>
-                            <label>
-                                <span style="float:left;">
-                                    <?php echo $error ?>
-                                </span>
-                                <span style="float:right;">
-                                    <input type="submit" value="Purge" />
-                                </span>
-                            </label>
-                        </td>
-                    </tr>
-                </table>
-                <input type='hidden' name='formid' value='purgeform' />
+                <tr><td></td></tr>
+                <tr><td></td></tr>
+                <tr title="Purge Cache">
+                    <td style="float:right;">
+                        <input type="submit" value="Purge" />
+                    </td>
+                </tr>
+            </table>
+            <input type='hidden' name='formid' value='purgeform' />
         </form>
     </div>
     <div id="tabs-err">
@@ -584,7 +576,7 @@ foreach ($domains as $domain) {
                     <td>
                         <label>
                             <span style="float:right;">
-                                <input type='text' maxlength='253' name='ssldomain' value="" />
+                                <input type='text' maxlength='253' name='ssldomain' value="" placeholder="Enter SSL Domain"/>
                             </span>
                         </label>
                     </td>
@@ -600,7 +592,7 @@ foreach ($domains as $domain) {
                     <td>
                         <label>
                             <span style="float:right;">
-                                <textarea cols="25" rows="10" name="pem"></textarea>
+                                <textarea cols="25" rows="10" name="pem" placeholder="Please Paste Your PEM Here"></textarea>
                             </span>
                         </label>
                     </td>
