@@ -341,16 +341,16 @@ if (isset($_POST['formid'])) {
                 <form method='post' action='confedit.php'>
                     <table>
                         <tr title="New Domain">
-                            <td>
+                            <td style="float:left;">
                                 Add Domain: 
                             </td>
-                            <td>
+                            <td style="float:right;">
                                 <input type='text' maxlength='253' name='newhost' placeholder="Enter New Domain Name" />
                             </td>
                         </tr>
                         <tr title="Add Domain">
-                            <td> </td>
-                            <td>
+                            <td style="float:left;"> </td>
+                            <td style="float:right;">
                                 <input type="submit" value="Add" />
                             </td>
                         </tr>
