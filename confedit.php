@@ -14,6 +14,7 @@ htmlheader($page, $page, array('
         <script>
             $(function() {
                 $( "#accordion" ).accordion({
+                    collapsible: true,
                     heightStyle: "content"
                 });
             });
@@ -22,6 +23,9 @@ htmlheader($page, $page, array('
             });
             $(function() {
                 $( "input[type=submit], a, button" ).button()
+            });
+            $(function() {
+                $( "input[type=file], a, button" ).button()
             });
             $(function() {
                 $( "#radio" ).buttonset();
@@ -601,7 +605,7 @@ foreach ($domains as $domain) {
                     <td>
                         <label>
                             <span style="float:left;">
-                                <!--<input type="file" name="pemul" />-->
+                                <input type="file" name="pemul" />
                             </span>
                         </label>
                     </td>
