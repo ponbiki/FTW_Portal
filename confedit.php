@@ -25,9 +25,6 @@ htmlheader($page, $page, array('
                 $( "input[type=submit], a, button" ).button()
             });
             $(function() {
-                $( "input[type=file], a, button" ).button()
-            });
-            $(function() {
                 $( "#radio" ).buttonset();
             });
             $(function() {
@@ -605,7 +602,7 @@ foreach ($domains as $domain) {
                     <td>
                         <label>
                             <span style="float:left;">
-                                <input type="file" name="pemul" />
+                                <!--<input type="file" name="pemul" />-->
                             </span>
                         </label>
                     </td>
