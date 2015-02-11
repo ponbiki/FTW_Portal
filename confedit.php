@@ -8,53 +8,6 @@ if (!$loggedin) {
 
 $page = "Configuration Edit";
 
-htmlheader($page, $page, array('
-             <script src="js/jquery.js"></script>
-        <script src="js/jquery-ui.js"></script>
-        <script>
-            $(function() {
-                $( "#accordion" ).accordion({
-                    collapsible: true,
-                    heightStyle: "content"
-                });
-            });
-            $(function() {
-                $( "#tabs" ).tabs();
-            });
-            $(function() {
-                $( "input[type=submit], a, button" ).button()
-            });
-            $(function() {
-                $( "#radio" ).buttonset();
-            });
-            $(function() {
-                $( "input[type=checkbox], a, button" ).button();
-            });
-            $(function() {
-                $( "#dialog" ).dialog({
-                    autoOpen: false,
-                    show: {
-                        effect: "blind",
-                        duration: 1000
-                    },
-                    hide: {
-                        effect: "fold",
-                        duration: 1000
-                    }
-                });
-                $( "#opener" ).click(function() {
-                $( "#dialog" ).dialog( "open" );
-                });
-            });
-        </script>
-'));
-
-echo $navigation;
-
-echo $logo;
-
-bar($page);
-
 $error = $deldomain = $newhost = $cookiename = $cookiepath = $cookiedomain = $cookieinfo = $purgecache = "";
 
 if (!($con = ssh2_connect($server, $port))) {
@@ -87,12 +40,12 @@ if (isset($_POST['formid'])) {
         }
         foreach ($deldomains as $deldomain){
             if (!in_array($deldomain, $domains)) {
-                echo "$delomain is not an exisitng hostname<br />";
+                $error[] = "$delomain is not an exisitng hostname<br />";
             }
         }
         $ini_array['hostname'] = array_diff($ini_array['hostname'], $deldomains);
         if (count($ini_array['hostname']) < 1) {
-            $error = "You must have at least one active domain<br />"
+            $error[] = "You must have at least one active domain<br />"
                     . "If you need assistance, please contact support<br />";
         } else {
             if (!($con = ssh2_connect($server, $port))) {
@@ -342,7 +295,59 @@ if (isset($_POST['formid'])) {
         header('Refresh: 3');
     }
 }
+
+htmlheader($page, $page, array('
+             <script src="js/jquery.js"></script>
+        <script src="js/jquery-ui.js"></script>
+        <script>
+            $(function() {
+                $( "#accordion" ).accordion({
+                    collapsible: true,
+                    heightStyle: "content"
+                });
+            });
+            $(function() {
+                $( "#tabs" ).tabs();
+            });
+            $(function() {
+                $( "input[type=submit], a, button" ).button()
+            });
+            $(function() {
+                $( "#radio" ).buttonset();
+            });
+            $(function() {
+                $( "input[type=checkbox], a, button" ).button();
+            });
+            $(function() {
+                $( "#dialog" ).dialog({
+                    autoOpen: false,
+                    show: {
+                        effect: "blind",
+                        duration: 1000
+                    },
+                    hide: {
+                        effect: "fold",
+                        duration: 1000
+                    }
+                });
+                $( "#opener" ).click(function() {
+                $( "#dialog" ).dialog( "open" );
+                });
+            });
+        </script>
+'));
+
+echo $navigation;
+
+echo $logo;
+
+bar($page);
+
+if ($error != "") {
+    error($error);
+}
 ?>
+
 <div id="tabs">
     <ul>
         <li><a href="#tabs-dom" title="Manage Domains">Manage Domains</a></li>
@@ -644,9 +649,5 @@ foreach ($domains as $domain) {
     </div>
 </div>
 <?php
-
-echo "<br /><br />&nbsp;&nbsp;&nbsp;&nbsp;<span"
-    . " style='color:BurlyWood;font-size:12pt;font-weight:bold'>$error</span><br />";
-
 tail();
 ?>
