@@ -30,6 +30,22 @@ htmlheader($page, $page, array('
             $(function() {
                 $( "input[type=checkbox], a, button" ).button();
             });
+            $(function() {
+                $( "#dialog" ).dialog({
+                    autoOpen: false,
+                    show: {
+                        effect: "blind",
+                        duration: 1000
+                    },
+                    hide: {
+                        effect: "fold",
+                        duration: 1000
+                    }
+                });
+                $( "#opener" ).click(function() {
+                $( "#dialog" ).dialog( "open" );
+                });
+            });
         </script>
 '));
 
@@ -332,7 +348,6 @@ if (isset($_POST['formid'])) {
         <li><a href="#tabs-dom" title="Manage Domains">Manage Domains</a></li>
         <li><a href="#tabs-purge" title="Clear Cache">Clear Cache</a></li>
         <li><a href="#tabs-err" title="Pretty Error Pages">Error Pages</a></li>
-        <li><a href="#tabs-ssl" title="Add SSL Domain">SSL Domains</a>
         <li><a href="#tabs-cookie" title="Cookie Exceptions">Cookie Exceptions</a></li>
     </ul>
     <div id="tabs-dom">
@@ -381,6 +396,8 @@ foreach ($domains as $domain) {
     ?>
                         <tr><td></td></tr>
                         <tr><td></td></tr>
+                        <tr><td></td></tr>
+                        <tr><td></td></tr>
                         <tr title='Remove Domain'>
                             <td style="float:right;">
                                 <input type="submit" value="Remove" />
@@ -388,6 +405,66 @@ foreach ($domains as $domain) {
                         </tr>
                     </table>
                         <input type='hidden' name='formid' value='delform' />
+                </form>
+            </div>
+            <h3 title="Add SSL Domains">Add SSL Domains</h3>
+            <div id="ssladd">
+                <form method="post" action="confedit.php" enctype="multipart/form-data">
+                    <table>
+                        <tr title="Add SSL Domain">
+                            <td>
+                                <label>
+                                    <span style="float:left;">
+                                        Add SSL Domain: 
+                                    </span>
+                                </label>
+                            </td>
+                            <td>
+                                <label>
+                                    <span style="float:right;">
+                                        <input type='text' maxlength='253' name='ssldomain' value="" placeholder="Enter SSL Domain"/>
+                                    </span>
+                                </label>
+                            </td>
+                        </tr>
+                        <tr title="Add PEM">
+                            <td>
+                                <label>
+                                    <span style="float:left;">
+                                        Paste PEM: 
+                                    </span>
+                                </label>
+                            </td>
+                            <td>
+                                <label>
+                                    <span style="float:right;">
+                                        <textarea cols="25" rows="10" name="pem" placeholder="Please Paste Your PEM Here"></textarea>
+                                    </span>
+                                </label>
+                            </td>
+                        </tr>
+                        <tr title="Add SSL Domain">
+                            <td>
+                                <!--<label>-->
+                                    <!---<span style="float:left;">-->
+                                        <div id="dialog" title="Upload PEM">
+                                            <p>Upload you PEM file here</p>
+                                            <input type="file" name="pemul" />
+                                        </div>
+                                        <button type="button" id="opener">PEM Uploader</button>
+                                    <!--</span>-->
+                                <!--</label>-->
+                            </td>
+                            <td>
+                                <label>
+                                    <span style="float:right;">
+                                        <input type="submit" value="Submit" />
+                                    </span>
+                                </label>
+                            </td>
+                        </tr>
+                    </table>
+                    <input type="hidden" name="formid" value="sslform" />
                 </form>
             </div>
         </div>
@@ -516,6 +593,8 @@ foreach ($domains as $domain) {
 ?>
                 <tr><td></td></tr>
                 <tr><td></td></tr>
+                <tr><td></td></tr>
+                <tr><td></td></tr>
                 <tr title="Purge Cache">
                     <td style="float:right;">
                         <input type="submit" value="Purge" />
@@ -561,61 +640,6 @@ foreach ($domains as $domain) {
                 </tr>
             </table>
             <input type="hidden" name="formid" value="errform" />
-        </form>
-    </div>
-    <div id="tabs-ssl">
-        <form method="post" action="confedit.php" enctype="multipart/form-data">
-            <table>
-                <tr title="Add SSL Domain">
-                    <td>
-                        <label>
-                            <span style="float:left;">
-                                Add SSL Domain: 
-                            </span>
-                        </label>
-                    </td>
-                    <td>
-                        <label>
-                            <span style="float:right;">
-                                <input type='text' maxlength='253' name='ssldomain' value="" placeholder="Enter SSL Domain"/>
-                            </span>
-                        </label>
-                    </td>
-                </tr>
-                <tr title="Add PEM">
-                    <td>
-                        <label>
-                            <span style="float:left;">
-                                Paste PEM: 
-                            </span>
-                        </label>
-                    </td>
-                    <td>
-                        <label>
-                            <span style="float:right;">
-                                <textarea cols="25" rows="10" name="pem" placeholder="Please Paste Your PEM Here"></textarea>
-                            </span>
-                        </label>
-                    </td>
-                </tr>
-                <tr title="Add SSL Domain">
-                    <td>
-                        <label>
-                            <span style="float:left;">
-                                <!--<input type="file" name="pemul" />-->
-                            </span>
-                        </label>
-                    </td>
-                    <td>
-                        <label>
-                            <span style="float:right;">
-                                <input type="submit" value="Submit" />
-                            </span>
-                        </label>
-                    </td>
-                </tr>
-            </table>
-            <input type="hidden" name="formid" value="sslform" />
         </form>
     </div>
 </div>
