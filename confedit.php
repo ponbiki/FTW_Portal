@@ -392,11 +392,11 @@ $x =0;
 foreach ($domains as $domain) {
     $check = "check" .++$x;
 ?>
-                        <tr title='<?php echo $domain; ?>'>
+                        <tr title='<?=$domain?>'>
                             <td style="float:right;">
-                                <input type="checkbox" id="<?php echo $check; ?>" name="deldomain[]" value="<?php echo $domain; ?>"/>
-                                <label for="<?php echo $check; ?>">
-                                    <?php echo $domain; ?>
+                                <input type="checkbox" id="<?=$check?>" name="deldomain[]" value="<?=$domain?>"/>
+                                <label for="<?=$check?>">
+                                    <?=$domain?>
                                 </label>
                             </td>
                         </tr>
@@ -565,7 +565,6 @@ foreach ($domains as $domain) {
                     <td>
                         <label>
                             <span style='float:left;'>
-                                <?php echo $error ?>
                             </span>
                         </label>
                     </td>
