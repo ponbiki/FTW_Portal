@@ -8,28 +8,6 @@ if (!$loggedin) {
 
 $page = "Configuration Selection";
 
-htmlheader($page, $page, array('
-             <script src="js/jquery.js"></script>
-        <script src="js/jquery-ui.js"></script>
-        <script>
-            $(function() {
-                $( "#tabs" ).tabs();
-            });
-            $(function() {
-                $( "input[type=submit], a, button" )
-                .button()
-            });
-            $(function() {
-                $( "#conf" ).selectmenu();
-            });
-        </script>'
-    ));
-
-echo $navigation;
-
-echo $logo;
-
-bar($page);
 
 $error = $conf = "";
 
@@ -77,6 +55,47 @@ foreach ($dbiniarray as $dbia) {
 
 $confavail = array_intersect($dbini, $ini);
 
+if (isset($_POST['conf'])) {
+    $conf = filter_input(INPUT_POST, 'conf', FILTER_SANITIZE_STRING);
+    if (!in_array($conf, $confavail)) {
+        $error[] = "You must select a valid configuration!";
+    } else {
+        $_SESSION['confpath'] = "$dir/$conf.ini";
+        $_SESSION['conffile'] = "$conf.ini";
+        header('Location: confedit.php');
+    }
+}
+
+htmlheader($page, $page, array('
+             <script src="js/jquery.js"></script>
+        <script src="js/jquery-ui.js"></script>
+        <script>
+            $(function() {
+                $( "#tabs" ).tabs();
+            });
+            $(function() {
+                $( "input[type=submit], a, button" )
+                .button()
+            });
+            $(function() {
+                $( "#conf" ).selectmenu();
+            });
+        </script>'
+    ));
+
+echo $navigation;
+
+echo $logo;
+
+bar($page);
+
+if ($info != "") {
+    info($info);
+}
+
+if ($error != "") {
+    error($error);
+}
 ?>
 <div id="tabs">
     <ul>
@@ -105,7 +124,7 @@ foreach ($confavail as $choice) {
                 </tr>
                 <tr title="Select">
                     <td>
-                        <span style="float:left;"><?php echo $error ?></span>
+                        <span style="float:left;"></span>
                     </td>
                     <td>
                         <span style="float:right;">
@@ -119,19 +138,6 @@ foreach ($confavail as $choice) {
 </div>
 
 <?php
-if (isset($_POST['conf'])) {
-    $conf = filter_input(INPUT_POST, 'conf', FILTER_SANITIZE_STRING);
-    if (!in_array($conf, $confavail)) {
-        echo "You must select a valid configuration!<br />";
-    } else {
-        $_SESSION['confpath'] = "$dir/$conf.ini";
-        $_SESSION['conffile'] = "$conf.ini";
-        header('Location: confedit.php');
-    }
-}
-
-echo "<br /><br />&nbsp;&nbsp;&nbsp;&nbsp;<span"
-    . " style='color:BurlyWood;font-size:12pt;font-weight:bold'>$error</span><br />";
 
 tail();
 ?>
