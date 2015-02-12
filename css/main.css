@@ -243,8 +243,8 @@ ul {
     margin-top: -3px;
     margin-bottom: -3px;
     /*padding: .5em;*/
-    -webkit-animation: rotateInTop 3s; /*Chrome Safari Opera*/
-    animation: rotateInTop 3s;
+    -webkit-animation: rotateInLeft 3s; /*Chrome Safari Opera*/
+    animation: rotateInLeft 3s;
 }
 .pagebar {
     /*background: #D86D26;*/

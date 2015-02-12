@@ -48,8 +48,8 @@ if (isset($_POST['formid'])) {
         if (empty($errors)) {
             $ini_array['hostname'] = array_diff($ini_array['hostname'], $deldomains);
             if (count($ini_array['hostname']) < 1) {
-                $error[] = "You must have at least one active domain."
-                        . "If you need assistance, please contact support";
+                $error[] = "You must have at least one active domain. "
+                        . "If you require assistance, please contact support";
             } else {
                 if (!($con = ssh2_connect($server, $port))) {
                     die('Failed to establish connection');
