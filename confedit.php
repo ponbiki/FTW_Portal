@@ -8,7 +8,7 @@ if (!$loggedin) {
 
 $page = "Configuration Edit";
 
-$error = $deldomain = $newhost = $cookiename = $cookiepath = $cookiedomain = $cookieinfo = $purgecache = "";
+$error = $info = $deldomain = $newhosts = $cookiename = $cookiepath = $cookiedomain = $cookieinfo = $purgecache = "";
 
 if (!($con = ssh2_connect($server, $port))) {
     die('Failed to establish connection');
@@ -40,13 +40,13 @@ if (isset($_POST['formid'])) {
         }
         foreach ($deldomains as $deldomain){
             if (!in_array($deldomain, $domains)) {
-                $error[] = "$delomain is not an exisitng hostname<br />";
+                $error[] = "$delomain is not an exisitng hostname";
             }
         }
         $ini_array['hostname'] = array_diff($ini_array['hostname'], $deldomains);
         if (count($ini_array['hostname']) < 1) {
-            $error[] = "You must have at least one active domain<br />"
-                    . "If you need assistance, please contact support<br />";
+            $error[] = "You must have at least one active domain."
+                    . "If you need assistance, please contact support";
         } else {
             if (!($con = ssh2_connect($server, $port))) {
                 die('Failed to establish connection');
@@ -107,7 +107,7 @@ if (isset($_POST['formid'])) {
                     die('Could not clean up temp file');
                 }
                 foreach ($deldomains as $deldomain) {
-                    echo "$deldomain has been deleted.<br />";
+                    $info[] = "$deldomain has been deleted.";
                 }
                 unset($_POST);
             }
@@ -138,74 +138,57 @@ if (isset($_POST['formid'])) {
     } elseif ($_POST['formid'] === 'addform') {
         $newhost = filter_input(INPUT_POST, 'newhost', FILTER_SANITIZE_STRING);
         $host_validate = '/([0-9a-z-]+\.)?[0-9a-z-]+\.[a-z]{2,7}/';
-        if (!preg_match($host_validate, $newhost)) {
-            echo "$newhost is not a valid domain name<br />";
+        if ($newhost == "") {
+            $error[] = "No domain name was entered";
+        } elseif (!preg_match($host_validate, $newhost)) {
+            $error[] = "$newhost is not a valid domain name";
+        } elseif (in_array($newhost, $domains)) {
+            $error[] = "This domain is already being accelerated by FTW!";
         } else {
-            if (in_array($newhost, $domains)) {
-                $error = "This domain is already being accelerated by FTW!<br />";
+            if (!($con = ssh2_connect($server, $port))) {
+                die('Failed to establish connection');
             } else {
-                if (!($con = ssh2_connect($server, $port))) {
-                    die('Failed to establish connection');
+                if (!(ssh2_auth_password($con, $ssh_user, $ssh_pass))) {
+                    die('Failed to authenticate');
                 } else {
-                    if (!(ssh2_auth_password($con, $ssh_user, $ssh_pass))) {
-                        die('Failed to authenticate');
+                    $dir = "/home/ftwportal/conf";
+                    $time = mktime();
+                    $command = "cp $dir/{$_SESSION['conffile']} $dir/{$_SESSION['conffile']}.bak";
+                    if (!($stream = ssh2_exec($con, $command))) {
+                        die('Unable to execute command');
                     } else {
-                        $dir = "/home/ftwportal/conf";
-                        $time = mktime();
-                        $command = "cp $dir/{$_SESSION['conffile']} $dir/{$_SESSION['conffile']}.bak";
-                        if (!($stream = ssh2_exec($con, $command))) {
-                            die('Unable to execute command');
-                        } else {
-                            stream_set_blocking($stream, true);
-                            $data ='';
-                            while ($buf = fread($stream,4096)) {
-                                $data .= $buf;
-                            }
-                            fclose($stream);
+                        stream_set_blocking($stream, true);
+                        $data ='';
+                        while ($buf = fread($stream,4096)) {
+                            $data .= $buf;
                         }
+                        fclose($stream);
                     }
                 }
-                array_push($ini_array['hostname'], $newhost);
-                if(!unlink("tmp/{$_SESSION['conffile']}")) {
-                    die('Unable to delete temp file');
-                } else {
-                    $fh = fopen("tmp/{$_SESSION['conffile']}", 'w') or die('Cannot create file');
-                    $text = '';
-                    foreach ($ini_array as $key => $value) {
-                        if (!is_array($value)) {
-                            $text .= "$key = $value\n";
-                        } else {
-                            foreach ($value as $key2 => $value2) {
-                                if (!is_array($value2)) {
-                                    $text .= $key."[] = $value2\n";
-                                } else {
-                                    foreach ($value2 as $key3 => $value3) {
-                                        $text .= $key."[".$key2."][] = $value3\n";
-                                    }
+            }
+            array_push($ini_array['hostname'], $newhost);
+            if(!unlink("tmp/{$_SESSION['conffile']}")) {
+                die('Unable to delete temp file');
+            } else {
+                $fh = fopen("tmp/{$_SESSION['conffile']}", 'w') or die('Cannot create file');
+                $text = '';
+                foreach ($ini_array as $key => $value) {
+                    if (!is_array($value)) {
+                        $text .= "$key = $value\n";
+                    } else {
+                        foreach ($value as $key2 => $value2) {
+                            if (!is_array($value2)) {
+                                $text .= $key."[] = $value2\n";
+                            } else {
+                                foreach ($value2 as $key3 => $value3) {
+                                    $text .= $key."[".$key2."][] = $value3\n";
                                 }
                             }
                         }
                     }
-                    fwrite($fh, $text) or die('Could not write file');
-                    fclose($fh);
                 }
-                if(!($con = ssh2_connect($server, $port))) {
-                    die('Failed to establish connection');
-                } else {
-                    if(!(ssh2_auth_password($con, $ssh_user, $ssh_pass))) {
-                        die('Failed to authenticate');
-                    } else {
-                        if(!(ssh2_scp_send($con, "tmp/{$_SESSION['conffile']}", "$dir/"
-                                . "{$_SESSION['conffile']}", 0644))) {
-                            die('Unable to send file');
-                        }
-                    }
-                }
-                if (!unlink("tmp/{$_SESSION['conffile']}")) {
-                    die('Could not clean up temp file');
-                }
-                echo "$newhost has been added.<br />";
-                unset($_POST);
+                fwrite($fh, $text) or die('Could not write file');
+                fclose($fh);
             }
             if(!($con = ssh2_connect($server, $port))) {
                 die('Failed to establish connection');
@@ -213,20 +196,37 @@ if (isset($_POST['formid'])) {
                 if(!(ssh2_auth_password($con, $ssh_user, $ssh_pass))) {
                     die('Failed to authenticate');
                 } else {
-                    // $command1 = "sudo lbconfig";
-                    // $command2 = "sudo lbsync local";
-                    // $command3 = "sudo lbsync";
-                    $command1 = "touch $dir/stinkypinky"; /* temp placeholder */
-                    if(!($stream1 = ssh2_exec($con, $command1))) {
-                        die('Unable to execute command');
-                    } else {
-                        stream_set_blocking($stream, true);
-                        $data = '';
-                        while ($buf = fread($stream,4096)) {
-                            $data .= $buf;
-                        }
-                        fclose($stream1); //repeat 2 more times
+                    if(!(ssh2_scp_send($con, "tmp/{$_SESSION['conffile']}", "$dir/"
+                            . "{$_SESSION['conffile']}", 0644))) {
+                        die('Unable to send file');
                     }
+                }
+            }
+            if (!unlink("tmp/{$_SESSION['conffile']}")) {
+                die('Could not clean up temp file');
+            }
+            $info[] = "$newhost has been added.";
+            unset($_POST);
+        }
+        if(!($con = ssh2_connect($server, $port))) {
+            die('Failed to establish connection');
+        } else {
+            if(!(ssh2_auth_password($con, $ssh_user, $ssh_pass))) {
+                die('Failed to authenticate');
+            } else {
+                // $command1 = "sudo lbconfig";
+                // $command2 = "sudo lbsync local";
+                // $command3 = "sudo lbsync";
+                $command1 = "touch $dir/stinkypinky"; /* temp placeholder */
+                if(!($stream1 = ssh2_exec($con, $command1))) {
+                    die('Unable to execute command');
+                } else {
+                    stream_set_blocking($stream, true);
+                    $data = '';
+                    while ($buf = fread($stream,4096)) {
+                        $data .= $buf;
+                    }
+                    fclose($stream1); //repeat 2 more times
                 }
             }
             header('Refresh: 3');
@@ -237,7 +237,7 @@ if (isset($_POST['formid'])) {
         $cookiedomain = filter_input(INPUT_POST, 'cookiedomain', FILTER_SANITIZE_STRING);
         $cookieinfo = filter_input(INPUT_POST, 'cookieinfo', FILTER_SANITIZE_STRING);
         if ($cookiename == "" || $cookiedomain == "") {
-            echo "At a minimum, rule name and cookie domain need to be enetered.<br />";
+            $error[] = "At a minimum, rule name and cookie domain need to be enetered.";
         } else {
             $to = 'supportteam@nyi.net';
             $subject = "New caching exception request for {$_SESSION['user']}";
@@ -246,7 +246,7 @@ if (isset($_POST['formid'])) {
                     . " \n\nExtra Info: $cookieinfo \n\nYour friendly neighborhood FTWPortal\n";
             $from = "From: ftwportal@nyi.net\r";
             mail($to, $subject, $message, $from);
-            echo "Request sent!";
+            $info[] = "Request sent!";
             unset($_POST);
             header('Refresh: 3');
         }
@@ -256,7 +256,7 @@ if (isset($_POST['formid'])) {
         }
         foreach ($purgecachearr as $purgecache) {
             if (!in_array($purgecache, $domains)) {
-                echo "$purgecache is not an existing hostname<br />";
+                $error[] = "$purgecache is not an existing hostname";
             }
         }
         if (!($con = ssh2_connect($server, $port))) {
@@ -279,18 +279,18 @@ if (isset($_POST['formid'])) {
                     fclose($stream);
                 }
                 foreach ($purgecachearr as $purgecache) {
-                    echo "The cache for $purgecache is being cleared<br />";
+                    $info[] = "The cache for $purgecache is being cleared";
                 }
                 unset($_POST);
             }
             header('Refresh: 3');
         }
     } elseif ($_POST['formid'] === 'errform') {
-        echo "You matter to us!<br />";
+        $info[] = "You matter to us!";
         unset($_POST);
         header('Refresh: 3');
     } elseif ($_POST['formid'] === 'sslform') {
-        echo "Secure is the way to go!<br />";
+        $info[] = "Secure is the way to go!";
         unset($_POST);
         header('Refresh: 3');
     }
@@ -342,6 +342,10 @@ echo $navigation;
 echo $logo;
 
 bar($page);
+
+if ($info != "") {
+    info($info);
+}
 
 if ($error != "") {
     error($error);
@@ -585,10 +589,10 @@ $y = 1000;
 foreach ($domains as $domain) {
     $check2 = "check" .++$y;
 ?>
-                <tr title="<?php echo $domain ?>">
+                <tr title="<?=$domain?>">
                     <td style="float:right;">
-                        <input type="checkbox" id="<?php echo $check2; ?>" name="purgecache[]" value="<?php echo $domain ?>" />
-                        <label for="<?php echo $check2; ?>">
+                        <input type="checkbox" id="<?=$check2?>" name="purgecache[]" value="<?=$domain?>" />
+                        <label for="<?=$check2?>">
                             <?php echo $domain ?>
                         </label>
                     </td>
@@ -631,7 +635,6 @@ foreach ($domains as $domain) {
                     <td>
                         <label>
                             <span style='float:left;'>
-                                <?php echo $error ?>
                             </span>
                         </label>
                     </td>
