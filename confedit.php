@@ -410,9 +410,9 @@ if ($error != "") {
                         <tr title="Add Domain">
                             <td style="float:left;">
                                 <div id="dialog2" title="Tip">
-                                    <p>Multiple whitespace separated domains may be added at one time (e.g. spaces, tabs, newlines, etc.).</p>
+                                    <p>Multiple whitespace separated domains may be added at the same time (e.g. spaces, tabs, newlines, etc.).</p>
                                 </div>
-                                <a id="opener2" class="ui-state-default ui-corner-all" title=".ui-icon-help" style="width:19px;height:19px;padding:0px;margin:0px;font-size:1pt;">
+                                <a id="opener2" class="ui-state-default ui-corner-all" title="Add Domain Help" style="width:19px;height:19px;padding:0px;margin:0px;font-size:1pt;">
                                     <span class="ui-icon ui-icon-help"></span>
                                 </a>
                             </td>
