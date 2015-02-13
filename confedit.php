@@ -38,14 +38,14 @@ if (isset($_POST['formid'])) {
         foreach ($_POST['deldomain'] as $deldomain_dirty) {
             $deldomains[] = filter_var($deldomain_dirty, FILTER_SANITIZE_STRING);
         }
-        foreach ($deldomains as $deldomain){
+        foreach ($deldomains as $deldomain) {
             if (!in_array($deldomain, $domains)) {
-                $error[] = "$delomain is not an exisitng hostname";
+                $error[] = "$deldomain is not an exisitng hostname";
                 break;
             }
         }
         $errors = array_filter($error);
-        if (empty($errors)) {
+        if (empty($error)) {
             $ini_array['hostname'] = array_diff($ini_array['hostname'], $deldomains);
             if (count($ini_array['hostname']) < 1) {
                 $error[] = "You must have at least one active domain. "
@@ -475,7 +475,7 @@ foreach ($domains as $domain) {
                                 <!--<label>-->
                                     <!---<span style="float:left;">-->
                                         <div id="dialog" title="Upload PEM">
-                                            <p>Upload you PEM file here</p>
+                                            <p>Upload your PEM file here</p>
                                             <input type="file" name="pemul" />
                                         </div>
                                         <button type="button" id="opener">PEM Uploader</button>
