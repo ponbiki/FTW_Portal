@@ -352,6 +352,22 @@ htmlheader($page, $page, array('
                 $( "#dialog" ).dialog( "open" );
                 });
             });
+            $(function() {
+                $( "#dialog2" ).dialog({
+                    autoOpen: false,
+                    show: {
+                        effect: "blind",
+                        duration: 1000
+                    },
+                    hide: {
+                        effect: "fold",
+                        duration: 1000
+                    }
+                });
+                $( "#opener2" ).click(function() {
+                    $( "#dialog2" ).dialog( "open" );
+                });
+            });;
         </script>
 '));
 
@@ -392,7 +408,14 @@ if ($error != "") {
                             </td>
                         </tr>
                         <tr title="Add Domain">
-                            <td style="float:left;"> </td>
+                            <td style="float:left;">
+                                <div id="dialog2" title="Tip">
+                                    <p>Multiple whitespace separated domains may be added at one time (e.g. spaces, tabs, newlines, etc.).</p>
+                                </div>
+                                <a id="opener2" class="ui-state-default ui-corner-all" title=".ui-icon-help" style="width:19px;height:19px;padding:0px;margin:0px;font-size:1pt;">
+                                    <span class="ui-icon ui-icon-help"></span>
+                                </a>
+                            </td>
                             <td style="float:right;">
                                 <input type="submit" value="Add" />
                             </td>
@@ -411,7 +434,7 @@ foreach ($domains as $domain) {
     $check = "check" .++$x;
 ?>
                         <tr title='<?=$domain?>'>
-                            <td style="float:right;">
+                            <td style="float:left;">
                                 <input type="checkbox" id="<?=$check?>" name="deldomain[]" value="<?=$domain?>"/>
                                 <label for="<?=$check?>">
                                     <?=$domain?>
@@ -607,7 +630,7 @@ foreach ($domains as $domain) {
     $check2 = "check" .++$y;
 ?>
                 <tr title="<?=$domain?>">
-                    <td style="float:right;">
+                    <td style="float:left;">
                         <input type="checkbox" id="<?=$check2?>" name="purgecache[]" value="<?=$domain?>" />
                         <label for="<?=$check2?>">
                             <?php echo $domain ?>
