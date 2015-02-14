@@ -140,9 +140,9 @@ if (isset($_POST['formid'])) {
                             if(!($stream1 = ssh2_exec($con, $command1))) {
                                 die('Unable to execute command');
                             } else {
-                                stream_set_blocking($stream, true);
+                                stream_set_blocking($stream1, true);
                                 $data = '';
-                                while ($buf = fread($stream,4096)) {
+                                while ($buf = fread($stream1,4096)) {
                                     $data .= $buf;
                                 }
                                 fclose($stream1); //repeat 2 more times
@@ -255,9 +255,9 @@ if (isset($_POST['formid'])) {
                     if(!($stream1 = ssh2_exec($con, $command1))) {
                         die('Unable to execute command');
                     } else {
-                        stream_set_blocking($stream, true);
+                        stream_set_blocking($stream1, true);
                         $data = '';
-                        while ($buf = fread($stream,4096)) {
+                        while ($buf = fread($stream1,4096)) {
                             $data .= $buf;
                         }
                         fclose($stream1); //repeat 2 more times
