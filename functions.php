@@ -18,16 +18,17 @@ if ($mysqli->connect_errno) {
 function error($error) {
     foreach ($error as $alert) {
         echo <<<_END
-<br />
-<div class="ui-widget">
-    <div class="ui-state-error ui-corner-all" style="padding:0 .7em;">
-        <p>
-            <span class="ui-icon ui-icon-alert" style="float:left;margin-right:.3em;"></span>
-            <strong>Alert:</strong>
-            $alert
-        </p>
+<div class="notify"><br />
+    <div class="ui-widget">
+        <div class="ui-state-error ui-corner-all" style="padding:0 .7em;">
+            <p>
+                <span class="ui-icon ui-icon-alert" style="float:left;margin-right:.3em;"></span>
+                <strong>Alert:</strong>
+                $alert
+            </p>
+        </div>
     </div>
-</div><br />
+<br /></div>
 _END;
     }
 }
@@ -35,16 +36,17 @@ _END;
 function info($info) {
     foreach ($info as $hilite) {
         echo <<<_END
-<br />
-<div class="ui-widget">
-    <div class="ui-state-highlight ui-corner-all" style="padding:0 .7em;">
-        <p>
-            <span class="ui-icon ui-icon-info" style="float:left;margin-right:.3em;"></span>
-            <strong>Info:</strong>
-            $hilite
-        </p>
+<div class="notify"><br />
+    <div class="ui-widget">
+        <div class="ui-state-highlight ui-corner-all" style="padding:0 .7em;">
+            <p>
+                <span class="ui-icon ui-icon-info" style="float:left;margin-right:.3em;"></span>
+                <strong>Info:</strong>
+                $hilite
+            </p>
+        </div>
     </div>
-</div><br />
+<br /></div>
 _END;
     }
 }

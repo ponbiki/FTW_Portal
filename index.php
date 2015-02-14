@@ -17,7 +17,9 @@ if ($loggedin) {
 
 $page = "FTW Log In";
 
-htmlheader($page, $page, array());
+htmlheader($page, $page, array(
+    
+));
 
 $error = $user = $pass = '';
 ?>

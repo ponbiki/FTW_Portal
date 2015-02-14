@@ -138,7 +138,6 @@ if (isset($_POST['formid'])) {
                 }
             }
         }
-        header('Refresh: 3');
     } elseif ($_POST['formid'] === 'addform') {
         $newhostclean = filter_input(INPUT_POST, 'newhost', FILTER_SANITIZE_STRING);
         $host_validate = '/([0-9a-z-]+\.)?[0-9a-z-]+\.[a-z]{2,7}/';
@@ -248,7 +247,6 @@ if (isset($_POST['formid'])) {
                 }
             }
         }
-        header('Refresh: 3');
     } elseif ($_POST['formid'] === 'exceptform') {
         $cookiename = filter_input(INPUT_POST, 'cookiename', FILTER_SANITIZE_STRING);
         $cookiepath = filter_input(INPUT_POST, 'cookiepath', FILTER_SANITIZE_STRING);
@@ -267,7 +265,6 @@ if (isset($_POST['formid'])) {
             $info[] = "Request for $cookiename sent!";
             unset($_POST);
         }
-        header('Refresh: 3');
     } elseif ($_POST['formid'] === 'purgeform') {
         foreach ($_POST['purgecache'] as $purgecache_dirty) {
             $purgecachearr[] = filter_var($purgecache_dirty, FILTER_SANITIZE_STRING);
@@ -302,15 +299,12 @@ if (isset($_POST['formid'])) {
                 unset($_POST);
             }
         }
-        header('Refresh: 3');
     } elseif ($_POST['formid'] === 'errform') {
         $info[] = "You matter to us!";
         unset($_POST);
-        header('Refresh: 3');
     } elseif ($_POST['formid'] === 'sslform') {
         $info[] = "Secure is the way to go!";
         unset($_POST);
-        header('Refresh: 3');
     }
 }
 
@@ -368,6 +362,15 @@ htmlheader($page, $page, array('
                     $( "#dialog2" ).dialog( "open" );
                 });
             });;
+            //$(window).load(function() {
+            $(document).ready(function() {
+                setTimeout(function() {
+                    $( ".notify" ).fadeOut(400, function () {
+                        //$( ".notify" ).remove();
+                        $( ".notify" ).css({"visibility":"hidden",display:"block"}).slideUp();
+                    });
+                }, 3500);
+            });
         </script>
 '));
 
