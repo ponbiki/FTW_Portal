@@ -76,6 +76,8 @@ body {
     margin: 20px;
     margin-top: 20px;
     background: #999;
+    background-image: url(../img/NYIsmall.png);
+    background-repeat: repeat;
     /*transform-origin: 50% 100%;*/
     /*transform: rotateX(25deg);*/
 }
