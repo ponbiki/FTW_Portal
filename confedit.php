@@ -421,7 +421,7 @@ if (!empty($error)) {
                 <form method='post' action='confedit.php'>
                     <table>
                         <tr title="New Domain">
-                            <td style="float:left;">
+                            <td style="float:left;padding-top:.75em;padding-right:.75em;">
                                 Add Domain: 
                             </td>
                             <td style="float:right;">
@@ -429,7 +429,7 @@ if (!empty($error)) {
                             </td>
                         </tr>
                         <tr title="Add Domain">
-                            <td style="float:left;">
+                            <td style="float:left;padding-top:.75em;">
                                 <div id="dialog2" title="Tip">
                                     <p>Multiple whitespace separated domains may be added at the same time (e.g. spaces, tabs, newlines, etc.).</p>
                                 </div>

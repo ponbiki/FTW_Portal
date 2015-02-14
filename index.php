@@ -15,45 +15,20 @@ if ($loggedin) {
     }
 }
 
-$page = "FTW Log In";
-
-htmlheader($page, $page, array());
-
 $error = $user = $pass = '';
-?>
-    <div style="clear: both;">
-        <form method='post' action='index.php' class='nyicp'>
-            <h1><img src='img/NYI.png' class='nyiloginlogo' alt='NYI' title='NYI' />
-                <img src='img/ftw_logo.png' class='ftwloginlogo' alt='NYI' title='FTW Portal' />
-                <span><?php echo $error; ?></span>
-            </h1>
-            <label title="Username">
-                <span>Username: </span>
-                <input id='user' type='text' maxlength='24' name='user' value='' />
-            </label>
-            <label title="Password">
-                <span>Password: </span>
-                <input id='pass' type='password' maxlength='24' name='pass' value='' />
-            </label>
-            <label class="nyicp" title="Login">
-                <span>&nbsp;</span>
-                <input type='submit' value='Login' id="button" />
-            </label>
-        </form>
-    </div>
-<?php
+
 if (isset($_POST['user'])) {
     $user = filter_input(INPUT_POST, 'user', FILTER_SANITIZE_STRING);
     $pass = filter_input(INPUT_POST, 'pass', FILTER_SANITIZE_STRING);
     if ($user == "" || $pass == "") {
-        $error = "Not all fields were entered";
+        $error[] = "Not all fields were entered";
     } else {
         $token = hash('sha512', "$salt1$pass$salt2");
         $res = $mysqli->query("SELECT username,password,admin,company FROM users "
                 . "WHERE username='$user' AND password='$token'");
         if ($res->num_rows < 1) {
             $res->free();
-            $error = "Username/Password invalid";
+            $error[] = "Username/Password invalid";
         } else {
             $_SESSION['user'] = $user;
             $_SESSION['pass'] = $token;
@@ -71,8 +46,57 @@ if (isset($_POST['user'])) {
     $mysqli->close();
 }
 
-echo "<br /><br />&nbsp;&nbsp;&nbsp;&nbsp;<span"
-    . " style='color:BurlyWood;font-size:12pt;font-weight:bold'>$error</span><br />";
+htmlheader($page, $page, array('
+             <script src="js/jquery.js"></script>
+        <script src="js/jquery-ui.js"></script>
+        <script>
+            $(function() {
+                $( "input[type=submit], a, .jbutton" ).button()
+            });
+            $(document).ready(function() {
+                setTimeout(function() {
+                    $( ".notify" ).fadeOut(400, function () {
+                        //$( ".notify" ).remove();
+                        $( ".notify" ).css({"visibility":"hidden",display:"block"}).slideUp();
+                    });
+                }, 3500);
+            });
+        </script>
+'));
+
+
+$page = "FTW Log In";
+
+?>
+    <div style="clear: both;">
+        <form method='post' action='index.php' class='nyicp'>
+            <h1><img src='img/NYI.png' class='nyiloginlogo' alt='NYI' title='NYI' />
+                <img src='img/ftw_logo.png' class='ftwloginlogo' alt='NYI' title='FTW Portal' />
+            </h1>
+            <label title="Username">
+                <span>Username: </span>
+                <input id='user' type='text' maxlength='24' name='user' value='' />
+            </label>
+            <label title="Password">
+                <span>Password: </span>
+                <input id='pass' type='password' maxlength='24' name='pass' value='' />
+            </label>
+            <label title="Login">
+                <span>&nbsp;</span>
+                <input type='submit' value='Login' id="jbutton" />
+            </label>
+        </form>
+        <div style='display:auto;width:auto;margin-left:31%;margin-right:30%;'>
+<?php
+if (!empty($error)) {
+    error($error);
+}
+?>
+        </div>
+    </div>
+
+<?php
 
 tail();
+
 ?>
