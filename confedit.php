@@ -8,7 +8,12 @@ if (!$loggedin) {
 
 $page = "Configuration Edit";
 
-$error = $info = $deldomain = $newhosts = $cookiename = $cookiepath = $cookiedomain = $cookieinfo = $purgecache = "";
+unset($info);
+$info = array();
+unset($error);
+$error = array();
+
+$deldomain = $newhosts = $cookiename = $cookiepath = $cookiedomain = $cookieinfo = $purgecache = "";
 
 if (!($con = ssh2_connect($server, $port))) {
     die('Failed to establish connection');
@@ -35,64 +40,92 @@ foreach ($ini_array as $category => $value) {
 
 if (isset($_POST['formid'])) {
     if ($_POST['formid'] === 'delform') {
-        foreach ($_POST['deldomain'] as $deldomain_dirty) {
-            $deldomains[] = filter_var($deldomain_dirty, FILTER_SANITIZE_STRING);
-        }
-        foreach ($deldomains as $deldomain) {
-            if (!in_array($deldomain, $domains)) {
-                $error[] = "$deldomain is not an exisitng hostname";
-                break;
+        if (isset($_POST['deldomain'])) {        
+            foreach ($_POST['deldomain'] as $deldomain_dirty) {
+                $deldomains[] = filter_var($deldomain_dirty, FILTER_SANITIZE_STRING);
             }
         }
-        $errors = array_filter($error);
-        if (empty($error)) {
-            $ini_array['hostname'] = array_diff($ini_array['hostname'], $deldomains);
-            if (count($ini_array['hostname']) < 1) {
-                $error[] = "You must have at least one active domain. "
-                        . "If you require assistance, please contact support";
-            } else {
-                if (!($con = ssh2_connect($server, $port))) {
-                    die('Failed to establish connection');
+        if (empty($deldomains)) {
+            $error[] = "No domain was selected for deletion.";
+        } else {
+            foreach ($deldomains as $deldomain) {
+                if (!in_array($deldomain, $domains)) {
+                    $error[] = "$deldomain is not an exisitng hostname";
+                    break;
+                }
+            }
+            $errors = array_filter($error);
+            if (empty($error)) {
+                $domains = array_diff(array_merge($domains, $deldomains),
+                        array_intersect($domains, $deldomains));
+                sort($domains);
+                $ini_array['hostname'] = array_diff($ini_array['hostname'], $deldomains);
+                if (count($ini_array['hostname']) < 1) {
+                    $error[] = "You must have at least one active domain. "
+                            . "If you require assistance, please contact support";
                 } else {
-                    if(!(ssh2_auth_password($con, $ssh_user, $ssh_pass))) {
-                        die('Failed to authenticate');
+                    if (!($con = ssh2_connect($server, $port))) {
+                        die('Failed to establish connection');
                     } else {
-                        $dir = "/home/ftwportal/conf";
-                        $time = mktime();
-                        $command = "cp $dir/{$_SESSION['conffile']} $dir/{$_SESSION['conffile']}.bak";
-                        if (!($stream = ssh2_exec($con, $command))) {
-                            die('Unable to execute command');
+                        if(!(ssh2_auth_password($con, $ssh_user, $ssh_pass))) {
+                            die('Failed to authenticate');
                         } else {
-                            stream_set_blocking($stream, true);
-                            $data = '';
-                            while ($buf = fread($stream, 4096)) {
-                                $data .= $buf;
-                            }
-                            fclose($stream);
-                        }
-                    }
-                    if (!unlink("tmp/{$_SESSION['conffile']}")) {
-                        die('Unable to delete temp file');
-                    } else {
-                        $fh = fopen("tmp/{$_SESSION['conffile']}", 'w') or die('Cannot create file');
-                        $text = '';
-                        foreach ($ini_array as $key => $value) {
-                            if (!is_array($value)) {
-                                $text .= "$key = $value\n";
+                            $dir = "/home/ftwportal/conf";
+                            $time = mktime();
+                            $command = "cp $dir/{$_SESSION['conffile']} $dir/{$_SESSION['conffile']}.bak";
+                            if (!($stream = ssh2_exec($con, $command))) {
+                                die('Unable to execute command');
                             } else {
-                                foreach ($value as $key2 => $value2) {
-                                    if (!is_array($value2)) {
-                                        $text .= $key."[] = $value2\n";
-                                    } else {
-                                        foreach ($value2 as $key3 => $value3) { // 3rd iteration untested, and not currently used
-                                            $text .= $key."[".$key2."][] = $value3\n";
+                                stream_set_blocking($stream, true);
+                                $data = '';
+                                while ($buf = fread($stream, 4096)) {
+                                    $data .= $buf;
+                                }
+                                fclose($stream);
+                            }
+                        }
+                        if (!unlink("tmp/{$_SESSION['conffile']}")) {
+                            die('Unable to delete temp file');
+                        } else {
+                            $fh = fopen("tmp/{$_SESSION['conffile']}", 'w') or die('Cannot create file');
+                            $text = '';
+                            foreach ($ini_array as $key => $value) {
+                                if (!is_array($value)) {
+                                    $text .= "$key = $value\n";
+                                } else {
+                                    foreach ($value as $key2 => $value2) {
+                                        if (!is_array($value2)) {
+                                            $text .= $key."[] = $value2\n";
+                                        } else {
+                                            foreach ($value2 as $key3 => $value3) { // 3rd iteration untested, and not currently used
+                                                $text .= $key."[".$key2."][] = $value3\n";
+                                            }
                                         }
                                     }
                                 }
                             }
+                            fwrite($fh, $text) or die('Could not write to temp file');
+                            fclose($fh);
                         }
-                        fwrite($fh, $text) or die('Could not write to temp file');
-                        fclose($fh);
+                        if(!($con = ssh2_connect($server, $port))) {
+                            die('Failed to establish connection');
+                        } else {
+                            if(!(ssh2_auth_password($con, $ssh_user, $ssh_pass))) {
+                                die('Failed to authenticate');
+                            } else {
+                                if(!(ssh2_scp_send($con, "tmp/{$_SESSION['conffile']}", "$dir/"
+                                        . "{$_SESSION['conffile']}", 0644))) {
+                                    die('Unable to send file');
+                                }
+                            }
+                        }
+                        if (!unlink("tmp/{$_SESSION['conffile']}")) {
+                            die('Could not clean up temp file');
+                        }
+                        foreach ($deldomains as $deldomain) {
+                            $info[] = "$deldomain has been deleted.";
+                        }
+                        unset($_POST);
                     }
                     if(!($con = ssh2_connect($server, $port))) {
                         die('Failed to establish connection');
@@ -100,39 +133,20 @@ if (isset($_POST['formid'])) {
                         if(!(ssh2_auth_password($con, $ssh_user, $ssh_pass))) {
                             die('Failed to authenticate');
                         } else {
-                            if(!(ssh2_scp_send($con, "tmp/{$_SESSION['conffile']}", "$dir/"
-                                    . "{$_SESSION['conffile']}", 0644))) {
-                                die('Unable to send file');
+                            // $command1 = "sudo lbconfig";
+                            // $command2 = "sudo lbsync local";
+                            // $command3 = "sudo lbsync";
+                            $command1 = "touch $dir/boogieoogie"; /* temp placeholder */
+                            if(!($stream1 = ssh2_exec($con, $command1))) {
+                                die('Unable to execute command');
+                            } else {
+                                stream_set_blocking($stream, true);
+                                $data = '';
+                                while ($buf = fread($stream,4096)) {
+                                    $data .= $buf;
+                                }
+                                fclose($stream1); //repeat 2 more times
                             }
-                        }
-                    }
-                    if (!unlink("tmp/{$_SESSION['conffile']}")) {
-                        die('Could not clean up temp file');
-                    }
-                    foreach ($deldomains as $deldomain) {
-                        $info[] = "$deldomain has been deleted.";
-                    }
-                    unset($_POST);
-                }
-                if(!($con = ssh2_connect($server, $port))) {
-                    die('Failed to establish connection');
-                } else {
-                    if(!(ssh2_auth_password($con, $ssh_user, $ssh_pass))) {
-                        die('Failed to authenticate');
-                    } else {
-                        // $command1 = "sudo lbconfig";
-                        // $command2 = "sudo lbsync local";
-                        // $command3 = "sudo lbsync";
-                        $command1 = "touch $dir/boogieoogie"; /* temp placeholder */
-                        if(!($stream1 = ssh2_exec($con, $command1))) {
-                            die('Unable to execute command');
-                        } else {
-                            stream_set_blocking($stream, true);
-                            $data = '';
-                            while ($buf = fread($stream,4096)) {
-                                $data .= $buf;
-                            }
-                            fclose($stream1); //repeat 2 more times
                         }
                     }
                 }
@@ -180,7 +194,9 @@ if (isset($_POST['formid'])) {
                 }
                 foreach ($newhosts as $newhost) {
                     array_push($ini_array['hostname'], $newhost);
+                    array_push($domains, $newhost);
                 }
+                sort($domains);
                 if(!unlink("tmp/{$_SESSION['conffile']}")) {
                     die('Unable to delete temp file');
                 } else {
@@ -233,6 +249,8 @@ if (isset($_POST['formid'])) {
                     // $command1 = "sudo lbconfig";
                     // $command2 = "sudo lbsync local";
                     // $command3 = "sudo lbsync";
+                    $dir = "/home/ftwportal/conf";
+                    $time = mktime();
                     $command1 = "touch $dir/stinkypinky"; /* temp placeholder */
                     if(!($stream1 = ssh2_exec($con, $command1))) {
                         die('Unable to execute command');
@@ -380,11 +398,11 @@ echo $logo;
 
 bar($page);
 
-if ($info != "") {
+if (!empty($info)) {
     info($info);
 }
 
-if ($error != "") {
+if (!empty($error)) {
     error($error);
 }
 ?>

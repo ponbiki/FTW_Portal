@@ -89,11 +89,11 @@ echo $logo;
 
 bar($page);
 
-if ($info != "") {
+if (!empty($info)) {
     info($info);
 }
 
-if ($error != "") {
+if (!empty($error)) {
     error($error);
 }
 ?>
