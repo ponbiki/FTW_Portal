@@ -454,7 +454,7 @@ if (isset($_POST['formid'])) {
         }
         unset($_POST);
     } elseif ($_POST['formid'] === 'sslform') {
-        $info[] = "Secure is the way to go!";
+        $info[] = "{$_POST['ssldomain']} has been added as an SSL domain.";
         unset($_POST);
     }
 }
