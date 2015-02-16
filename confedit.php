@@ -345,8 +345,113 @@ if (isset($_POST['formid'])) {
             }
         }
     } elseif ($_POST['formid'] === 'errform') {
-        
-        $info[] = "You matter to us!";
+        if (!isset($_POST['errpg'])) {
+            $error[] = "No selection was made.";
+        } else {
+            $errpg_clean = filter_input(INPUT_POST, 'errpg', FILTER_SANITIZE_STRING);
+            if (!($errpg_clean == "1" || $errpg_clean == "0")) {
+                $error[] = "A valid selection was not made.";
+            } else {
+                if ($errpg_clean == $error_page) {
+                    $errpg_clean == "1" ? $error[] = "Pretty error pages are"
+                            . " already on." : $error = "Pretty error pages are"
+                            . " already off";
+                } else {
+                    $ini_array['errpg'] = $errpg_clean;
+                    if(!($con = ssh2_connect($server, $port))) {
+                        die('Failed to establish connection');
+                    } else {
+                        if (!(ssh2_auth_password($con, $ssh_user, $ssh_pass))) {
+                            die('Failed to authenticate');
+                        } else {
+                            $dir ="/home/ftwportal/conf";
+                            $time = mktime();
+                            $command = "cp $dir/{$_SESSION['conffile']} $dir/{$_SESSION['conffile']}.bak";
+                            if (!($stream = ssh2_exec($con, $command))) {
+                                die('Unable to execute command');
+                            } else {
+                                stream_set_blocking($stream, true);
+                                $data = '';
+                                while ($buf = fread($stream, 4096)) {
+                                    $data .= $buf;
+                                }
+                                fclose($stream);
+                            }
+                        }
+                        if (!unlink("tmp/{$_SESSION['conffile']}")) {
+                            die('Unable to delete temp file');
+                        } else {
+                            $fh = fopen("tmp/{$_SESSION['conffile']}", 'w') or die('Cannot create file');
+                            $text = '';
+                            foreach ($ini_array as $key => $value) {
+                                if (!is_array($value)) {
+                                    $text .= "$key = $value\n";
+                                } else {
+                                    foreach ($value as $key2 => $value2) {
+                                        if (!is_array($value2)) {
+                                            $text .= $key."[] = $value2\n";
+                                        } else {
+                                            foreach ($value2 as $key3 => $value3) { // 3rd iteration untested, and not currently used
+                                                $text .= $key."[".$key2."][] = $value3\n";
+                                            }
+                                        }
+                                    }
+                                }
+                            }
+                            fwrite($fh, $text) or die('Could not write to temp file');
+                            fclose($fh);
+                        }
+                        if(!($con = ssh2_connect($server, $port))) {
+                            die('Failed to establish connection');
+                        } else {
+                            if(!(ssh2_auth_password($con, $ssh_user, $ssh_pass))) {
+                                die('Failed to authenticate');
+                            } else {
+                                if (!(ssh2_scp_send($con, "tmp/{$_SESSION['conffile']}", "$dir/"
+                                        . "{$_SESSION['conffile']}", 0644))) {
+                                    die('Unable to send file');
+                                }
+                            }
+                        }
+                        if (!unlink("tmp/{$_SESSION['conffile']}")) {
+                            die('Could not clean up temp file');
+                        }
+                        if ($ini_array['errpg'] === "1"){
+                            $info[] = "Pretty error pages are now on.";
+                            $ckon = $chk;
+                            $ckoff = '';
+                        } else {
+                            $info[] = "Pretty error pages are now off.";
+                            $ckon = '';
+                            $ckoff = $chk;
+                        }
+                        unset($_POST);
+                    }
+                    if(!($con = ssh2_connect($server, $port))) {
+                        die('Failed to establish connection');
+                    } else {
+                        if(!(ssh2_auth_password($con, $ssh_user, $ssh_pass))) {
+                            die('Failed to authenticate');
+                        } else {
+                            // $command1 = "sudo lbconfig";
+                            // $command2 = "sudo lbsync local";
+                            // $command3 = "sudo lbsync";
+                            $command1 = "touch $dir/boogieoogie"; /* temp placeholder */
+                            if(!($stream1 = ssh2_exec($con, $command1))) {
+                                die('Unable to execute command');
+                            } else {
+                                stream_set_blocking($stream1, true);
+                                $data = '';
+                                while ($buf = fread($stream1,4096)) {
+                                    $data .= $buf;
+                                }
+                                fclose($stream1); //repeat 2 more times
+                            }
+                        }
+                    }
+                }
+            }
+        }
         unset($_POST);
     } elseif ($_POST['formid'] === 'sslform') {
         $info[] = "Secure is the way to go!";
@@ -713,9 +818,9 @@ foreach ($domains as $domain) {
                     </td>
                     <td>
                         <div id="radio" style="float:right;">
-                            <input type="radio" id="radio1" name="on" title="On" value="on" <?=$ckon?>>
+                            <input type="radio" id="radio1" name="errpg" title="On" value="1" <?=$ckon?>>
                             <label for="radio1">On</label>
-                            <input type="radio" id="radio2" name="on" title="Off" value="off" <?=$ckoff?>>
+                            <input type="radio" id="radio2" name="errpg" title="Off" value="0" <?=$ckoff?>>
                             <label for="radio2">Off</label>
                         </div>
                     </td>
