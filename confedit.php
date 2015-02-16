@@ -354,7 +354,7 @@ if (isset($_POST['formid'])) {
             } else {
                 if ($errpg_clean == $error_page) {
                     $errpg_clean == "1" ? $error[] = "Pretty error pages are"
-                            . " already on." : $error = "Pretty error pages are"
+                            . " already on." : $error[] = "Pretty error pages are"
                             . " already off";
                 } else {
                     $ini_array['errpg'] = $errpg_clean;
