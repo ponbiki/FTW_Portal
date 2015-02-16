@@ -75,11 +75,11 @@ $page = "FTW Log In";
             </h1>
             <label title="Username">
                 <span>Username: </span>
-                <input id='user' type='text' maxlength='24' name='user' value='' />
+                <input id='user' type='text' maxlength='24' name='user' value='' placeholder='Enter Username'/>
             </label>
             <label title="Password">
                 <span>Password: </span>
-                <input id='pass' type='password' maxlength='24' name='pass' value='' />
+                <input id='pass' type='password' maxlength='24' name='pass' value='' placeholder='Enter Password'/>
             </label>
             <label title="Login">
                 <span>&nbsp;</span>
