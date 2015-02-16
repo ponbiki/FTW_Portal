@@ -8,8 +8,12 @@ if (!$loggedin) {
 
 $page = "Configuration Selection";
 
+unset($info);
+$info = array();
+unset($error);
+$error = array();
 
-$error = $conf = "";
+$conf = "";
 
 $dir = "/home/ftwportal/conf";
 $command = "ls $dir";

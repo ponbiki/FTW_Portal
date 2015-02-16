@@ -30,12 +30,33 @@ if (!($con = ssh2_connect($server, $port))) {
 $ini_array = (parse_ini_file("tmp/{$_SESSION['conffile']}", true));
 
 foreach ($ini_array as $category => $value) {
-    if ($category == "hostname") {
+    if ($category === "hostname") {
         foreach ($value as $domain_name) {
             $domains[] = $domain_name;
         }
         sort($domains);
     }
+    elseif ($category === "sslhostname") {
+        foreach ($value as $ssldomain_name) {
+            $ssldomains[] = $ssldomain_name;
+        }
+    }
+    elseif (array_key_exists('errpg', $ini_array)) {
+        $error_page = $ini_array['errpg'];
+    }
+    elseif (!array_key_exists('errpg', $ini_array)) {
+        $ini_array['errpg'] = 0;
+        $error_page = 0;
+    }
+}
+
+$chk = 'checked="checked"';
+if ($error_page == 1) {
+    $ckon = $chk;
+    $ckoff = '';
+} elseif ($error_page == 0) {
+    $ckoff = $chk;
+    $ckon = '';
 }
 
 if (isset($_POST['formid'])) {
@@ -271,7 +292,7 @@ if (isset($_POST['formid'])) {
         $cookiedomain = filter_input(INPUT_POST, 'cookiedomain', FILTER_SANITIZE_STRING);
         $cookieinfo = filter_input(INPUT_POST, 'cookieinfo', FILTER_SANITIZE_STRING);
         if ($cookiename == "" || $cookiedomain == "") {
-            $error[] = "At a minimum, rule name and cookie domain need to be enetered.";
+            $error[] = "At a minimum, a rule name and a cookie domain need to be entered.";
         } else {
             $to = 'supportteam@nyi.net';
             $subject = "New caching exception request for {$_SESSION['user']}";
@@ -284,40 +305,47 @@ if (isset($_POST['formid'])) {
             unset($_POST);
         }
     } elseif ($_POST['formid'] === 'purgeform') {
-        foreach ($_POST['purgecache'] as $purgecache_dirty) {
-            $purgecachearr[] = filter_var($purgecache_dirty, FILTER_SANITIZE_STRING);
-        }
-        foreach ($purgecachearr as $purgecache) {
-            if (!in_array($purgecache, $domains)) {
-                $error[] = "$purgecache is not an existing hostname";
+        if (isset($_POST['purgecache'])) {
+            foreach ($_POST['purgecache'] as $purgecache_dirty) {
+                $purgecachearr[] = filter_var($purgecache_dirty, FILTER_SANITIZE_STRING);
             }
         }
-        if (!($con = ssh2_connect($server, $port))) {
-            die('Failed to establish connection');
+        if (empty($purgecachearr)) {
+            $error[] = "No domain was selected for cache clearing.";
         } else {
-            if(!(ssh2_auth_password($con, $ssh_user, $ssh_pass))) {
-                die('Failed to authenticate');
+            foreach ($purgecachearr as $purgecache) {
+                if (!in_array($purgecache, $domains)) {
+                    $error[] = "$purgecache is not an existing hostname";
+                }
+            }
+            if (!($con = ssh2_connect($server, $port))) {
+                die('Failed to establish connection');
             } else {
-                $dir = "/home/ftwportal/conf";
-                $command = "sudo touch $dir/muhaha.txt"; // place holder
-                // $command = "sudo lbrun ban host $purgecache"; /* real command needs set for array*/
-                if(!($stream = ssh2_exec($con, $command))) {
-                    die('Unable to execute command');
+                if(!(ssh2_auth_password($con, $ssh_user, $ssh_pass))) {
+                    die('Failed to authenticate');
                 } else {
-                    stream_set_blocking($stream, true);
-                    $data = '';
-                    while ($buf = fread($stream,4096)) {
-                        $data .= $buf;
+                    $dir = "/home/ftwportal/conf";
+                    $command = "sudo touch $dir/muhaha.txt"; // place holder
+                    // $command = "sudo lbrun ban host $purgecache"; /* real command needs set for array*/
+                    if(!($stream = ssh2_exec($con, $command))) {
+                        die('Unable to execute command');
+                    } else {
+                        stream_set_blocking($stream, true);
+                        $data = '';
+                        while ($buf = fread($stream,4096)) {
+                            $data .= $buf;
+                        }
+                        fclose($stream);
                     }
-                    fclose($stream);
+                    foreach ($purgecachearr as $purgecache) {
+                        $info[] = "The cache for $purgecache is being cleared";
+                    }
+                    unset($_POST);
                 }
-                foreach ($purgecachearr as $purgecache) {
-                    $info[] = "The cache for $purgecache is being cleared";
-                }
-                unset($_POST);
             }
         }
     } elseif ($_POST['formid'] === 'errform') {
+        
         $info[] = "You matter to us!";
         unset($_POST);
     } elseif ($_POST['formid'] === 'sslform') {
@@ -685,10 +713,10 @@ foreach ($domains as $domain) {
                     </td>
                     <td>
                         <div id="radio" style="float:right;">
-                            <input type="radio" id="radio1" name="on"
-                                   title="On"><label for="radio1">On</label>
-                            <input type="radio" id="radio2" name="on"
-                                   title="Off" checked="checked"><label for="radio2">Off</label>
+                            <input type="radio" id="radio1" name="on" title="On" value="on" <?=$ckon?>>
+                            <label for="radio1">On</label>
+                            <input type="radio" id="radio2" name="on" title="Off" value="off" <?=$ckoff?>>
+                            <label for="radio2">Off</label>
                         </div>
                     </td>
                 </tr>
