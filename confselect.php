@@ -6,7 +6,7 @@ if (!$loggedin) {
     header("Location: index.php");
 }
 
-$page = "Configuration Selection";
+$page = "Menu";
 
 unset($info);
 $info = array();
