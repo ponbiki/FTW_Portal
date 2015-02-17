@@ -529,6 +529,54 @@ htmlheader($page, $page, array('
                     $( "#dialog3" ).dialog( "open" );
                 });
             });
+            $(function() {
+                $( "#dialog4" ).dialog({
+                    autoOpen: false,
+                    show: {
+                        effect: "blind",
+                        duration: 1000
+                    },
+                    hide: {
+                        effect: "fold",
+                        duration: 1000
+                    }
+                });
+                $( "#opener4" ).click(function() {
+                    $( "#dialog4" ).dialog( "open" );
+                });
+            });
+            $(function() {
+                $( "#dialog5" ).dialog({
+                    autoOpen: false,
+                    show: {
+                        effect: "blind",
+                        duration: 1000
+                    },
+                    hide: {
+                        effect: "fold",
+                        duration: 1000
+                    }
+                });
+                $( "#opener5" ).click(function() {
+                    $( "#dialog5" ).dialog( "open" );
+                });
+            });
+            $(function() {
+                $( "#dialog6" ).dialog({
+                    autoOpen: false,
+                    show: {
+                        effect: "blind",
+                        duration: 1000
+                    },
+                    hide: {
+                        effect: "fold",
+                        duration: 1000
+                    }
+                });
+                $( "#opener6" ).click(function() {
+                    $( "#dialog6" ).dialog( "open" );
+                });
+            });
             $(document).ready(function() {
                 setTimeout(function() {
                     $( ".notify" ).fadeOut(1000, function () {
@@ -778,10 +826,12 @@ foreach ($domains as $domain) {
                 </tr>
                 <tr title="Request">
                     <td>
-                        <label>
-                            <span style='float:left;'>
-                            </span>
-                        </label>
+                        <div id="dialog6" title="Tip">
+                            <p>Specify session cookies to not cache (e.g. login cookies). At a minimum, specify a rule name, and domain name for the exception.</p>
+                        </div>
+                        <a id="opener6" class="ui-state-default ui-corner-all tip" title="Add Domain Help" style="width:19px;height:19px;padding:0px;margin:0px;font-size:1pt;">
+                            <span class="ui-icon ui-icon-help"></span>
+                        </a>
                     </td>
                     <td>
                         <label>
@@ -809,16 +859,24 @@ foreach ($domains as $domain) {
                         <label for="<?=$check2?>">
                             <?php echo $domain ?>
                         </label>
-                    </td>
+                    </td><td></td>
                 </tr>
  <?php
 }
 ?>
-                <tr><td></td></tr>
-                <tr><td></td></tr>
-                <tr><td></td></tr>
-                <tr><td></td></tr>
+                <tr><td></td><td></td></tr>
+                <tr><td></td><td></td></tr>
+                <tr><td></td><td></td></tr>
+                <tr><td></td><td></td></tr>
                 <tr title="Purge Cache">
+                    <td>
+                        <div id="dialog4" title="Tip">
+                            <p>Select one or more domains that will have their cache cleared.</p>
+                        </div>
+                        <a id="opener4" class="ui-state-default ui-corner-all tip" title="Add Domain Help" style="width:19px;height:19px;padding:0px;margin:0px;font-size:1pt;">
+                            <span class="ui-icon ui-icon-help"></span>
+                        </a>
+                    </td>
                     <td style="float:right;">
                         <input type="submit" value="Purge" />
                     </td>
@@ -846,11 +904,13 @@ foreach ($domains as $domain) {
                     </td>
                 </tr>
                 <tr title="Set Error Pages">
-                    <td>
-                        <label>
-                            <span style='float:left;'>
-                            </span>
-                        </label>
+                    <td style="float:left;padding-top:.75em;">
+                        <div id="dialog5" title="Tip">
+                            <p>Set Pretty Error Pages to On to enable descriptive HTTP Error Code pages.</p>
+                        </div>
+                        <a id="opener5" class="ui-state-default ui-corner-all tip" title="Add Domain Help" style="width:19px;height:19px;padding:0px;margin:0px;font-size:1pt;">
+                            <span class="ui-icon ui-icon-help"></span>
+                        </a>
                     </td>
                     <td>
                         <label>
