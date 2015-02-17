@@ -80,11 +80,20 @@ if (isset($_POST['formid'])) {
                 $domains = array_diff(array_merge($domains, $deldomains),
                         array_intersect($domains, $deldomains));
                 sort($domains);
-                $ini_array['hostname'] = array_diff($ini_array['hostname'], $deldomains);
-                if (count($ini_array['hostname']) < 1) {
+                $temp_ini_array['hostname'] = array_diff($ini_array['hostname'], $deldomains);
+                if (count($temp_ini_array['hostname']) < 1) {
                     $error[] = "You must have at least one active domain. "
                             . "If you require assistance, please contact support";
+                    foreach ($ini_array as $category => $value) {
+                        if ($category === "hostname") {
+                            foreach ($value as $domain_name) {
+                                $domains[] = $domain_name;
+                            }
+                        sort($domains);
+                        }
+                    }
                 } else {
+                    $ini_array['hostname'] = $temp_ini_array['hostname'];
                     if (!($con = ssh2_connect($server, $port))) {
                         die('Failed to establish connection');
                     } else {
