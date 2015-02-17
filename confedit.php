@@ -482,7 +482,7 @@ htmlheader($page, $page, array('
                 $( "input[type=checkbox], a, button" ).button();
             });
             $(function() {
-                $( "#dialog" ).dialog({
+                $( "#dialog1" ).dialog({
                     autoOpen: false,
                     show: {
                         effect: "blind",
@@ -493,8 +493,8 @@ htmlheader($page, $page, array('
                         duration: 1000
                     }
                 });
-                $( "#opener" ).click(function() {
-                $( "#dialog" ).dialog( "open" );
+                $( "#opener1" ).click(function() {
+                $( "#dialog1" ).dialog( "open" );
                 });
             });
             $(function() {
@@ -512,7 +512,23 @@ htmlheader($page, $page, array('
                 $( "#opener2" ).click(function() {
                     $( "#dialog2" ).dialog( "open" );
                 });
-            });;
+            });
+            $(function() {
+                $( "#dialog3" ).dialog({
+                    autoOpen: false,
+                    show: {
+                        effect: "blind",
+                        duration: 1000
+                    },
+                    hide: {
+                        effect: "fold",
+                        duration: 1000
+                    }
+                });
+                $( "#opener3" ).click(function() {
+                    $( "#dialog3" ).dialog( "open" );
+                });
+            });
             $(document).ready(function() {
                 setTimeout(function() {
                     $( ".notify" ).fadeOut(1000, function () {
@@ -565,7 +581,7 @@ if (!empty($error)) {
                                 <div id="dialog2" title="Tip">
                                     <p>Multiple whitespace separated domains may be added at the same time (e.g. spaces, tabs, newlines, etc.).</p>
                                 </div>
-                                <a id="opener2" class="ui-state-default ui-corner-all" title="Add Domain Help" style="width:19px;height:19px;padding:0px;margin:0px;font-size:1pt;">
+                                <a id="opener2" class="ui-state-default ui-corner-all tip" title="Add Domain Help" style="width:19px;height:19px;padding:0px;margin:0px;font-size:1pt;">
                                     <span class="ui-icon ui-icon-help"></span>
                                 </a>
                             </td>
@@ -592,16 +608,24 @@ foreach ($domains as $domain) {
                                 <label for="<?=$check?>">
                                     <?=$domain?>
                                 </label>
-                            </td>
+                            </td><td></td>
                         </tr>
  <?php
 }
     ?>
-                        <tr><td></td></tr>
-                        <tr><td></td></tr>
-                        <tr><td></td></tr>
-                        <tr><td></td></tr>
+                        <tr><td></td><td></td></tr>
+                        <tr><td></td><td></td></tr>
+                        <tr><td></td><td></td></tr>
+                        <tr><td></td><td></td></tr>
                         <tr title='Remove Domain'>
+                            <td>
+                                <div id="dialog3" title="Tip">
+                                    <p>Select one or more domains to remove from FTW services.</p>
+                                </div>
+                                <a id="opener3" class="ui-state-default ui-corner-all tip" title="Add Domain Help" style="width:19px;height:19px;padding:0px;margin:0px;font-size:1pt;">
+                                    <span class="ui-icon ui-icon-help"></span>
+                                </a>
+                            </td>
                             <td style="float:right;">
                                 <input type="submit" value="Remove" />
                             </td>
@@ -648,15 +672,12 @@ foreach ($domains as $domain) {
                         </tr>
                         <tr title="Add SSL Domain">
                             <td>
-                                <!--<label>-->
-                                    <!---<span style="float:left;">-->
-                                        <div id="dialog" title="Upload PEM">
-                                            <p>Upload your PEM file here</p>
-                                            <input type="file" name="pemul" />
-                                        </div>
-                                        <button type="button" id="opener">PEM Uploader</button>
-                                    <!--</span>-->
-                                <!--</label>-->
+                                <div id="dialog1" title="Tip">
+                                    <p>Enter a domain name to be handled via HTTPS in the first field, and paste your SSL PEM file in the second field.</p>
+                                </div>
+                                <a id="opener1" class="ui-state-default ui-corner-all tip" title="Add Domain Help" style="width:19px;height:19px;padding:0px;margin:0px;font-size:1pt;">
+                                    <span class="ui-icon ui-icon-help"></span>
+                                </a>
                             </td>
                             <td>
                                 <label>
