@@ -84,6 +84,14 @@ htmlheader($page, $page, array('
             $(function() {
                 $( "#conf" ).selectmenu();
             });
+            $(document).ready(function() {
+                setTimeout(function() {
+                    $( ".notify" ).fadeOut(1000, function () {
+                        //$( ".notify" ).remove();
+                        $( ".notify" ).css({"visibility":"hidden",display:"block"}).slideUp();
+                    });
+                }, 3500);
+            });
         </script>'
     ));
 

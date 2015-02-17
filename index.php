@@ -55,7 +55,7 @@ htmlheader($page, $page, array('
             });
             $(document).ready(function() {
                 setTimeout(function() {
-                    $( ".notify" ).fadeOut(400, function () {
+                    $( ".notify" ).fadeOut(1000, function () {
                         //$( ".notify" ).remove();
                         $( ".notify" ).css({"visibility":"hidden",display:"block"}).slideUp();
                     });
