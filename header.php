@@ -30,7 +30,7 @@ function htmlheader($title, $meta, $scripts = array()) {
 
         <title>$title</title>
 
-        <meta name="robots" content="FTW, FTW Portal, $meta">
+        <meta name="keywords" content="FTW, FTW Portal, $meta">
             
         <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
@@ -73,7 +73,7 @@ function tail() {
 _END;
 }
 
-$logo = "<div class='logo'><img class='logo' src='img/ftw_logo.png' title='FTW Logo' name='FTW Logo' /></div>";
+$logo = "<div class='logo'><img class='logo' src='img/ftw_logo.png' title='FTW Logo' /></div>";
 
 if (($loggedin)&&(!$admin)) {
     $navigation = "<div class='navbar'>
