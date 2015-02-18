@@ -86,7 +86,7 @@ $page = "FTW Log In";
                 <input type='submit' value='Login' id="jbutton" />
             </label>
         </form>
-        <div style='display:auto;width:auto;margin-left:31%;margin-right:30%;'>
+        <div style='display:block;width:auto;margin-left:20%;margin-right:20%;'>
 <?php
 if (!empty($error)) {
     error($error);
