@@ -84,6 +84,9 @@ htmlheader($page, $page, array('
             $(function() {
                 $( "#conf" ).selectmenu();
             });
+            $(function() {
+                $( "#user" ).selectmenu();
+            });
             $(document).ready(function() {
                 setTimeout(function() {
                     $( ".notify" ).fadeOut(1000, function () {
@@ -112,36 +115,53 @@ if (!empty($error)) {
 <div id="tabs">
     <ul>
         <li><a href="#tabs-conf" title="Select Configuration File">Select Conf File</a></li>
+        <li><a href="#tabs-usr" title="User Options">User Options</a></li>
     </ul>
     <div id="tabs-conf">
         <form method='post' action='menu.php'>
             <table>
                 <tr title="Configuration File">
-                    <td>
-                        <span style="float:left;">
-                            Edit: 
-                        </span>
+                    <td style="float:left;margin-top:8px;margin-right:8px;">
+                        Edit: 
                     </td>
-                    <td>
-                        <span style="float:right;">
-                            <select name='conf' id="conf" style="width:200px;">
+                    <td style="float:right;">
+                        <select name='conf' id="conf" style="width:200px;">
 <?php
 foreach ($confavail as $choice) {
     echo "<option>$choice</option>\n";
 }
 ?>
-                            </select>
-                        </span>
+                        </select>
                      </td>
                 </tr>
                 <tr title="Select">
-                    <td>
-                        <span style="float:left;"></span>
+                    <td style="float:left;">
                     </td>
-                    <td>
-                        <span style="float:right;">
-                            <input type="submit" value="Select" />
-                        </span>
+                    <td style="float:right;">
+                        <input type="submit" value="Select" />
+                    </td>
+                </tr>
+            </table>
+        </form>
+    </div>
+    <div id="tabs-usr">
+        <form method="post" action="menu.php">
+            <table>
+                <tr title="User">
+                    <td style="float:left;margin-top:8px;margin-right:8px;">
+                        User: 
+                    </td>
+                    <td style="float:right;">
+                        <select name="user" id="user" style="width:200px;">
+                            <option><?=$_SESSION['user']?></option>
+                        </select>
+                    </td>
+                </tr>
+                <tr title="select">
+                    <td style="float:left;">
+                    </td>
+                    <td style="float:right;">
+                        <input type="submit" value="Go" />
                     </td>
                 </tr>
             </table>

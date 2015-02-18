@@ -59,7 +59,7 @@ echo <<<_END
         <link rel="stylesheet" href="css/jquery-ui.theme.css" type="text/css" />\n
     </head>
 
-    <body>
+    <body background="img/rms.jpg">
 
 _END;
 }
