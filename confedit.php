@@ -780,7 +780,7 @@ foreach ($domains as $domain) {
                     <td>
                         <label>
                             <span style="float:right;">
-                                <input type='text' maxlength='253' name='cookiename' value="" placeholder="Enter a Rule Name"/>
+                                <input type='text' maxlength='253' name='cookiename' value="" placeholder="Enter a Cookie Name"/>
                             </span>
                         </label>
                     </td>
@@ -836,7 +836,7 @@ foreach ($domains as $domain) {
                 <tr title="Request">
                     <td>
                         <div id="dialog6" title="Tip">
-                            <p>Specify session cookies to not cache (e.g. login cookies). At a minimum, specify a rule name, and domain name for the exception.</p>
+                            <p>Specify session cookies to not cache (e.g. login cookies). At a minimum, specify a cookie name, and domain name for the exception.</p>
                         </div>
                         <a id="opener6" class="ui-state-default ui-corner-all tip" title="Add Domain Help" style="width:19px;height:19px;padding:0px;margin:0px;font-size:1pt;">
                             <span class="ui-icon ui-icon-help"></span>

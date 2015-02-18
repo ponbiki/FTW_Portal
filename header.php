@@ -31,10 +31,20 @@ function htmlheader($title, $meta, $scripts = array()) {
         <title>$title</title>
 
         <meta name="keywords" content="FTW, FTW Portal, $meta">
-            
+
         <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
-        <link rel="icon" href="img/favicon.ico" type="image/x-icon">
+        <meta name="mobile-web-app-capable" content="yes">
+
+        <meta name="apple-mobile-web-app-capable" content="yes">
+
+        <meta name="application-name" content="FTWPortal">
+            
+        <link rel="shortcut icon" sizes="192x192" href="img/applogo.png">
+
+        <link rel="apple-touch-icon" sizes="192x192" href="img/applogo.png">
+   
+        <!--<link rel="icon" href="img/favicon.ico" type="image/x-icon">-->
 
 END;
 
