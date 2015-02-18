@@ -77,7 +77,7 @@ $logo = "<div class='logo'><img class='logo' src='img/ftw_logo.png' title='FTW L
 
 if (($loggedin)&&(!$admin)) {
     $navigation = "<div class='navbar'>
-        <a href='confselect.php' title='Menu'>Menu</a>
+        <a href='menu.php' title='Menu'>Menu</a>
         <a href='logout.php' title='Logout'>Logout</a>
         </div>\n";
 } else {

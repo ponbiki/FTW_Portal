@@ -35,7 +35,7 @@ if (isset($_POST['user'])) {
             $row = $res->fetch_array(MYSQLI_ASSOC);
             if ($row['admin'] !== 'Y') {
                 $_SESSION['company'] = $row['company'];
-                header('Location: confselect.php');
+                header('Location: menu.php');
             } else {
                 $res->free();
                 $_SESSION['admin'] = $user;

@@ -114,7 +114,7 @@ if (!empty($error)) {
         <li><a href="#tabs-conf" title="Select Configuration File">Select Conf File</a></li>
     </ul>
     <div id="tabs-conf">
-        <form method='post' action='confselect.php'>
+        <form method='post' action='menu.php'>
             <table>
                 <tr title="Configuration File">
                     <td>
