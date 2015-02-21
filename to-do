@@ -8,7 +8,31 @@ We'll also need a parser for the PEM file to, at a minimum, check for the approp
 Also within domain edit, the check-boxes should be toggles and not single entry, so that for example, multiple domains can be deleted or purged.
 
 
+Hi Jeremiah,
 
+I have one more fix-up for the portal site.  Specifically, the "Cookie Exception" page should only have two fields.
+
+1) Cookie name
+2) Optional URL path  (by which we would restrict this cookie to only be set when the URL matches this path).
+
+Here's an example:
+Cookie: wp-test-cookie
+Path: wp-login
+
+These should be stored in arrays within the customer's config file, and will ultimately be turned into VCL that adds this match to the "should we allow this Set-Cookie through, or strip it out" check in vcl_backend_response()
+
+bereq.url ~ "wp-login" && beresp.Set-Cookie ~ "wp-test-cookie"
+
+Most checks are simply to see if a cookie is being set, for example
+
+beresp.Set-Cookie ~ "uniqcookie"
+
+However, for some sites, restricting the path is the only way to get good caching results while allowing log-ins from the appropriate pages.
+
+It's worthy of note that we may want to make this really fine-tunable, so we should support regex characters in the field.
+
+Cookie "^wp-test"
+Path: "^/wp-admin" 
 
 
 in sudoers
