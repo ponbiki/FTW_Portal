@@ -50,3 +50,6 @@ fclose($stream1);
 
 $stream2 = ssh2_exec($connection, 'command to run 2');
 
+
+
+--install libs for real passwd hashing algo
