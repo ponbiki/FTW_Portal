@@ -11,11 +11,16 @@ if ($loggedin) {
     if ($admin) {
         header('Location: manage.php');
     } else {
-        header('Location: confselect.php');
+        header('Location: menu.php');
     }
 }
 
-$error = $user = $pass = '';
+$page = "FTW Log In";
+
+unset($error);
+$error = array();
+
+$user = $pass = '';
 
 if (isset($_POST['user'])) {
     $user = filter_input(INPUT_POST, 'user', FILTER_SANITIZE_STRING);
@@ -64,9 +69,6 @@ htmlheader($page, $page, array('
         </script>
 '));
 
-
-$page = "FTW Log In";
-
 ?>
     <div style="clear: both;">
         <form method='post' action='index.php' class='nyicp'>
@@ -98,5 +100,3 @@ if (!empty($error)) {
 <?php
 
 tail();
-
-?>

@@ -3,24 +3,39 @@ require 'header.php';
 
 $page = "Log Out";
 
-htmlheader($page, $page, array());
-
-echo $logo;
-
-bar($page);
-
-$error = '';
+unset($error);
+$error = array();
 
 if (isset($_SESSION['user'])) {
     destroySession();
     header("Location: index.php");
 } else {
-    echo "You are not logged in!<br />";
-    echo "Return to <a href='index.php' title='FTW Portal'>the beginning</a>";
+    $error[] = "You are not logged in!<br />Return to <a href='index.php' title='FTW Portal'>the beginning</a>";
 }
 
-echo "<br /><br />&nbsp;&nbsp;&nbsp;&nbsp;<span"
-    . " style='color:BurlyWood;font-size:12pt;font-weight:bold'>$error</span><br />";
+htmlheader($page, $page, array('
+             <script src="js/jquery.js"></script>
+        <script src="js/jquery-ui.js"></script>
+        <script>
+            $(document).ready(function() {
+                setTimeout(function() {
+                    $( ".notify" ).fadeOut(100000, function () {
+                        //$( ".notify" ).remove();
+                        $( ".notify" ).css({"visibility":"hidden",display:"block"}).slideUp();
+                    });
+                }, 3500);
+            });
+        </script>
+'));
+
+
+echo $logo;
+
+bar($page);
+
+if (!empty($error)) {
+    error($error);
+}
 
 tail();
-?>
+
