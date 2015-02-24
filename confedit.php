@@ -41,6 +41,12 @@ foreach ($ini_array as $category => $value) {
             $ssldomains[] = $ssldomain_name;
         }
     }
+    elseif (array_key_exists('cookie', $ini_array)) {
+        for ($x = 0; $x < count($ini_array['cookie']); $x++) {
+            $cookie_name[] = $ini_array['cookie'][$x]['name'];
+            $cookie_path[] = $ini_array['cookie'][$x]['path'];
+        }
+    }
     elseif (array_key_exists('errpg', $ini_array)) {
         $error_page = $ini_array['errpg'];
     }
@@ -298,7 +304,17 @@ if (isset($_POST['formid'])) {
     } elseif ($_POST['formid'] === 'exceptform') {
         $cookiename = filter_input(INPUT_POST, 'cookiename', FILTER_SANITIZE_STRING);
         $cookiepath = filter_input(INPUT_POST, 'cookiepath', FILTER_SANITIZE_STRING);
-        $cookiedomain = filter_input(INPUT_POST, 'cookiedomain', FILTER_SANITIZE_STRING);
+        if ($cookiename == "" || $cookiepath == "") {
+            $error[] = "Not all fields were entered.";
+        } else {
+            if ($cookiename === "expires" || $cookiename === "domain" || $cookiename === "path" || $cookiename === "secure") {
+                $error[] = "$cookiename is a reserved word in cookies, and is not a valid cookie name";
+            } else {
+                $name_validate = '';
+            }
+        }
+        // expires, domain, path, and secure are reserved; A-Z,a-z,0-9, and _ are okay  build a regex
+        /*$cookiedomain = filter_input(INPUT_POST, 'cookiedomain', FILTER_SANITIZE_STRING);
         $cookieinfo = filter_input(INPUT_POST, 'cookieinfo', FILTER_SANITIZE_STRING);
         if ($cookiename == "" || $cookiedomain == "") {
             $error[] = "At a minimum, a rule name and a cookie domain need to be entered.";
@@ -312,7 +328,7 @@ if (isset($_POST['formid'])) {
             mail($to, $subject, $message, $from);
             $info[] = "Request for $cookiename sent!";
             unset($_POST);
-        }
+        }*/
     } elseif ($_POST['formid'] === 'purgeform') {
         if (isset($_POST['purgecache'])) {
             foreach ($_POST['purgecache'] as $purgecache_dirty) {
@@ -503,7 +519,7 @@ htmlheader($page, $page, array('
                     }
                 });
                 $( "#opener1" ).click(function() {
-                $( "#dialog1" ).dialog( "open" );
+                    $( "#dialog1" ).dialog( "open" );
                 });
             });
             $(function() {
@@ -773,7 +789,7 @@ foreach ($domains as $domain) {
                     <td>
                         <label>
                             <span style="float:left;">
-                                Name: 
+                                Cookie Name: 
                             </span>
                         </label>
                     </td>
@@ -789,19 +805,19 @@ foreach ($domains as $domain) {
                     <td>
                         <label>
                             <span style="float:left;">
-                                Path: 
+                               Path: 
                             </span>
                         </label>
                     </td>
                     <td>
                         <label>
                             <span style="float:right;">
-                                <input type='text' maxlength='253' name='cookiepath' value="" placeholder="Optional: Enter the Directory Path"/>
+                                <input type='text' maxlength='253' name='cookiepath' value="" placeholder="Enter the Directory Path"/>
                             </span>
                         </label>
                     </td>
                 </tr>
-                <tr title="Cookie Domain">
+                <!--<tr title="Cookie Domain">
                     <td>
                         <label>
                             <span style="float:left;">
@@ -832,11 +848,11 @@ foreach ($domains as $domain) {
                             </span>
                         </label>
                     </td>
-                </tr>
+                </tr>-->
                 <tr title="Request">
                     <td>
                         <div id="dialog6" title="Tip">
-                            <p>Specify session cookies to not cache (e.g. login cookies). At a minimum, specify a cookie name, and domain name for the exception.</p>
+                            <p>For cookies that shouldn't be cached, specify a cookie name and path (e.g. wordpress_test_cookie and /wordpress/.</p>
                         </div>
                         <a id="opener6" class="ui-state-default ui-corner-all tip" title="Add Domain Help" style="width:19px;height:19px;padding:0px;margin:0px;font-size:1pt;">
                             <span class="ui-icon ui-icon-help"></span>
