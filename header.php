@@ -53,10 +53,10 @@ END;
     }
 
 echo <<<_END
-        <link rel="stylesheet" href="css/main.css" type="text/css" />\n
-        <link rel="stylesheet" href="css/jquery-ui.css" type="text/css" />\n
-        <link rel="stylesheet" href="css/jquery-ui.structure.css" type="text/css" />\n
-        <link rel="stylesheet" href="css/jquery-ui.theme.css" type="text/css" />\n
+        <link rel="stylesheet" href="css/main.css" type="text/css" />
+        <link rel="stylesheet" href="css/jquery-ui.css" type="text/css" />
+        <link rel="stylesheet" href="css/jquery-ui.structure.css" type="text/css" />
+        <link rel="stylesheet" href="css/jquery-ui.theme.css" type="text/css" />
     </head>
 
     <body background="img/rms.jpg">

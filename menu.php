@@ -71,7 +71,7 @@ if (isset($_POST['conf'])) {
 }
 
 htmlheader($page, $page, array('
-             <script src="js/jquery.js"></script>
+        <script src="js/jquery.js"></script>
         <script src="js/jquery-ui.js"></script>
         <script>
             $(function() {
@@ -170,6 +170,5 @@ foreach ($confavail as $choice) {
 </div>
 
 <?php
-
 tail();
 ?>
