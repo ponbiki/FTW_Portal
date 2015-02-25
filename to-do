@@ -53,3 +53,46 @@ $stream2 = ssh2_exec($connection, 'command to run 2');
 
 
 --install libs for real passwd hashing algo
+
+<?php
+
+$cookie_array = array(
+	'cookie' => array(
+		array(
+			'name' => 'some_cookie0',
+			'path' => '/path0/'),
+		array(
+			'name' => 'some_cookie1',
+			'path' => '/path1/')
+		),
+	'hostname' => array(
+		'leroy.com')
+	);
+
+print_r($cookie_array);
+
+ponbiki@beryllium ~/Documents $ php -e array.php 
+Array
+(
+    [cookie] => Array
+        (
+            [0] => Array
+                (
+                    [name] => some_cookie0
+                    [path] => /path0/
+                )
+
+            [1] => Array
+                (
+                    [name] => some_cookie1
+                    [path] => /path1/
+                )
+
+        )
+
+    [hostname] => Array
+        (
+            [0] => leroy.com
+        )
+
+)

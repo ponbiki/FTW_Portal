@@ -41,10 +41,9 @@ foreach ($ini_array as $category => $value) {
             $ssldomains[] = $ssldomain_name;
         }
     }
-    elseif (array_key_exists('cookie', $ini_array)) {
-        for ($x = 0; $x < count($ini_array['cookie']); $x++) {
-            $cookie_name[] = $ini_array['cookie'][$x]['name'];
-            $cookie_path[] = $ini_array['cookie'][$x]['path'];
+    elseif ($category === "cookie") {
+        foreach($value as $cookiearray) {
+            
         }
     }
     elseif (array_key_exists('errpg', $ini_array)) {
@@ -314,11 +313,43 @@ if (isset($_POST['formid'])) {
                 if(!preg_match($name_validate, $cookiename)) {
                     $error[] = "$cookiename is not a valid cookie name.";
                 } else {
-                    $path_validate = "";
+                    $path_validate = "#/\w#";
+                    if (!preg_match($path_validate, $cookiepath)) {
+                        $error[] = "$cookiepath is not a valid path format.";
+                    } else {
+                        if (in_array($cookiename, $cookie_name)) {
+                            $error[] = "$cookiename is already set as an exception.";
+                        } else {
+                            if (!($con = ssh2_connect($server, $port))) {
+                                die('Failed to establish connection');
+                            } else {
+                                if (!(ssh2_auth_password($con, $ssh_user, $ssh_pass))) {
+                                    die('Failed to authenticate');
+                                } else {
+                                    $dir = "/home/ftwportal/conf";
+                                    $time = mktime();
+                                    $command = "cp $dir/{$_SESSION['conffile']} $dir/{$_SESSION['conffile']}.bak";
+                                    if (!($stream = ssh2_exec($con, $command))) {
+                                        die('Unable to execute command');
+                                    } else {
+                                        stream_set_blocking($stream, true);
+                                        $data ='';
+                                        while ($buf = fread($stream,4096)) {
+                                            $data .= $buf;
+                                        }
+                                        fclose($stream);
+                                    }
+                                }
+                            }
+                            array_push($ini_array['cookie']['name'], $cookiename);
+                            array_push($ini_array['cookie']['name']['path'], $cookiepath);
+                            array_push($cookie_name, $cookiename);
+                            array_push($cookie_path, $cookiepath);
+                        }
+                    }
                 }
             }
         }
-        // expires, domain, path, and secure are reserved; A-Z,a-z,0-9, and _ are okay  build a regex
         /*$cookiedomain = filter_input(INPUT_POST, 'cookiedomain', FILTER_SANITIZE_STRING);
         $cookieinfo = filter_input(INPUT_POST, 'cookieinfo', FILTER_SANITIZE_STRING);
         if ($cookiename == "" || $cookiedomain == "") {
