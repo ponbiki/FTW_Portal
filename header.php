@@ -26,7 +26,7 @@ function htmlheader($title, $meta, $scripts = array()) {
 <!DOCTYPE html>
 <html>
     <head>
-        <meta http-equiv="Content-Type" content="text/html" charset=UTF-8">
+        <meta http-equiv="Content-Type" content="text/html" charset="UTF-8">
 
         <title>$title</title>
 
@@ -39,11 +39,11 @@ function htmlheader($title, $meta, $scripts = array()) {
         <meta name="apple-mobile-web-app-capable" content="yes">
 
         <meta name="application-name" content="FTWPortal">
-            
+
         <link rel="shortcut icon" sizes="192x192" href="img/applogo.png">
 
         <link rel="apple-touch-icon" sizes="192x192" href="img/applogo.png">
-   
+
         <!--<link rel="icon" href="img/favicon.ico" type="image/x-icon">-->
 
 END;

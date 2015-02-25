@@ -310,7 +310,12 @@ if (isset($_POST['formid'])) {
             if ($cookiename === "expires" || $cookiename === "domain" || $cookiename === "path" || $cookiename === "secure") {
                 $error[] = "$cookiename is a reserved word in cookies, and is not a valid cookie name";
             } else {
-                $name_validate = '';
+                $name_validate = '/\w/';
+                if(!preg_match($name_validate, $cookiename)) {
+                    $error[] = "$cookiename is not a valid cookie name.";
+                } else {
+                    $path_validate = "";
+                }
             }
         }
         // expires, domain, path, and secure are reserved; A-Z,a-z,0-9, and _ are okay  build a regex
