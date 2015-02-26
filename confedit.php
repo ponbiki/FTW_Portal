@@ -42,8 +42,10 @@ foreach ($ini_array as $category => $value) {
         }
     }
     elseif ($category === "cookie") {
-        foreach($value as $cookiearray) {
-            
+        foreach ($value as $cookiearray) {
+            foreach ($cookiearray as $key => $val) {
+                
+            }
         }
     }
     elseif (array_key_exists('errpg', $ini_array)) {
