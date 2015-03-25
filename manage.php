@@ -69,7 +69,7 @@ if (isset($_POST['formid'])) {
                     $res = $mysqli->query("INSERT INTO users (username, password)"
                             . " VALUES ('$addusername', '$token')");
                     if (!$res) {
-                        throw new Exception('Error: ('.$mysqli->errno.') '.$mysqli->error);
+                        die('Error: ('.$mysqli->errno.') '.$mysqli->error);
                     } else {
                         echo "$addusername has been added!<br />";
                         unset($_POST);
@@ -95,7 +95,7 @@ if (isset($_POST['formid'])) {
                     $res = $mysqli->query("UPDATE users SET password='$token'"
                             . " WHERE username='$cguserpost'");
                     if (!$res) {
-                        throw new Exception('Error: ('.$mysqli->errno.') '.$mysqli->error);
+                        die('Error: ('.$mysqli->errno.') '.$mysqli->error);
                     } else {
                         echo "Password for $cguserpost has been changed!<br />";
                         unset($_POST);
@@ -115,7 +115,7 @@ if (isset($_POST['formid'])) {
                 $res = $mysqli->query("DELETE FROM users WHERE"
                         . " username='$delusername'");
                 if (!$res) {
-                    throw new Exception('Error: ('.$mysqli->errno.') '.$mysqli->error);
+                    die('Error: ('.$mysqli->errno.') '.$mysqli->error);
                 } else {
                     echo "$delusername has been deleted!<br />";
                     unset($_POST);
