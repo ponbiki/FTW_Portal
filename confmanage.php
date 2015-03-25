@@ -40,13 +40,13 @@ $dir = "/home/ftwportal/conf";
 $command = "ls $dir";
 
 if (!($con = ssh2_connect($server, $port))) {
-    die('Failed to establish connection');
+    throw new Exception('Failed to establish connection');
 } else {
     if (!ssh2_auth_password($con, $ssh_user, $ssh_pass)) {
-        die('Failed to authenticate');
+        throw new Exception('Failed to authenticate');
     } else {
         if (!($stream = ssh2_exec($con, $command))) {
-            die('Unable to execute command');
+            throw new Exception('Unable to execute command');
         } else {
             stream_set_blocking($stream, true);
             $data = "";

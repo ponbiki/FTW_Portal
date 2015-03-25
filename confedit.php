@@ -16,13 +16,13 @@ $error = array();
 $deldomain = $newhosts = $cookiename = $cookiepath = $cookiedomain = $cookieinfo = $purgecache = "";
 
 if (!($con = ssh2_connect($server, $port))) {
-    die('Failed to establish connection');
+    throw new Exception('Failed to establish connection');
 } else {
     if (!ssh2_auth_password($con, $ssh_user, $ssh_pass)) {
-        die('Failed to authenticate');
+        throw new Exception('Failed to authenticate');
     } else {
         if (!($inifile = ssh2_scp_recv($con, $_SESSION['confpath'], "tmp/{$_SESSION['conffile']}" ))) {
-            die('Unable to get file');
+            throw new Exception('Unable to get file');
         }
     }
 }
@@ -102,16 +102,16 @@ if (isset($_POST['formid'])) {
                 } else {
                     $ini_array['hostname'] = $temp_ini_array['hostname'];
                     if (!($con = ssh2_connect($server, $port))) {
-                        die('Failed to establish connection');
+                        throw new Exception('Failed to establish connection');
                     } else {
                         if(!(ssh2_auth_password($con, $ssh_user, $ssh_pass))) {
-                            die('Failed to authenticate');
+                            throw new Exception('Failed to authenticate');
                         } else {
                             $dir = "/home/ftwportal/conf";
                             $time = mktime();
                             $command = "cp $dir/{$_SESSION['conffile']} $dir/{$_SESSION['conffile']}.bak";
                             if (!($stream = ssh2_exec($con, $command))) {
-                                die('Unable to execute command');
+                                throw new Exception('Unable to execute command');
                             } else {
                                 stream_set_blocking($stream, true);
                                 $data = '';
@@ -122,9 +122,9 @@ if (isset($_POST['formid'])) {
                             }
                         }
                         if (!unlink("tmp/{$_SESSION['conffile']}")) {
-                            die('Unable to delete temp file');
+                            throw new Exception('Unable to delete temp file');
                         } else {
-                            $fh = fopen("tmp/{$_SESSION['conffile']}", 'w') or die('Cannot create file');
+                            $fh = fopen("tmp/{$_SESSION['conffile']}", 'w') or throw new Exception('Cannot create file');
                             $text = '';
                             foreach ($ini_array as $key => $value) {
                                 if (!is_array($value)) {
@@ -141,23 +141,23 @@ if (isset($_POST['formid'])) {
                                     }
                                 }
                             }
-                            fwrite($fh, $text) or die('Could not write to temp file');
+                            fwrite($fh, $text) or throw new Exception('Could not write to temp file');
                             fclose($fh);
                         }
                         if(!($con = ssh2_connect($server, $port))) {
-                            die('Failed to establish connection');
+                            throw new Exception('Failed to establish connection');
                         } else {
                             if(!(ssh2_auth_password($con, $ssh_user, $ssh_pass))) {
-                                die('Failed to authenticate');
+                                throw new Exception('Failed to authenticate');
                             } else {
                                 if(!(ssh2_scp_send($con, "tmp/{$_SESSION['conffile']}", "$dir/"
                                         . "{$_SESSION['conffile']}", 0644))) {
-                                    die('Unable to send file');
+                                    throw new Exception('Unable to send file');
                                 }
                             }
                         }
                         if (!unlink("tmp/{$_SESSION['conffile']}")) {
-                            die('Could not clean up temp file');
+                            throw new Exception('Could not clean up temp file');
                         }
                         foreach ($deldomains as $deldomain) {
                             $info[] = "$deldomain has been deleted.";
@@ -165,17 +165,17 @@ if (isset($_POST['formid'])) {
                         unset($_POST);
                     }
                     if(!($con = ssh2_connect($server, $port))) {
-                        die('Failed to establish connection');
+                        throw new Exception('Failed to establish connection');
                     } else {
                         if(!(ssh2_auth_password($con, $ssh_user, $ssh_pass))) {
-                            die('Failed to authenticate');
+                            throw new Exception('Failed to authenticate');
                         } else {
                             // $command1 = "sudo lbconfig";
                             // $command2 = "sudo lbsync local";
                             // $command3 = "sudo lbsync";
                             $command1 = "touch $dir/boogieoogie"; /* temp placeholder */
                             if(!($stream1 = ssh2_exec($con, $command1))) {
-                                die('Unable to execute command');
+                                throw new Exception('Unable to execute command');
                             } else {
                                 stream_set_blocking($stream1, true);
                                 $data = '';
@@ -209,16 +209,16 @@ if (isset($_POST['formid'])) {
             $errors = array_filter($error);
             if (empty($errors)) {
                 if (!($con = ssh2_connect($server, $port))) {
-                    die('Failed to establish connection');
+                    throw new Exception('Failed to establish connection');
                 } else {
                     if (!(ssh2_auth_password($con, $ssh_user, $ssh_pass))) {
-                        die('Failed to authenticate');
+                        throw new Exception('Failed to authenticate');
                     } else {
                         $dir = "/home/ftwportal/conf";
                         $time = mktime();
                         $command = "cp $dir/{$_SESSION['conffile']} $dir/{$_SESSION['conffile']}.bak";
                         if (!($stream = ssh2_exec($con, $command))) {
-                            die('Unable to execute command');
+                            throw new Exception('Unable to execute command');
                         } else {
                             stream_set_blocking($stream, true);
                             $data ='';
@@ -235,9 +235,9 @@ if (isset($_POST['formid'])) {
                 }
                 sort($domains);
                 if(!unlink("tmp/{$_SESSION['conffile']}")) {
-                    die('Unable to delete temp file');
+                    throw new Exception('Unable to delete temp file');
                 } else {
-                    $fh = fopen("tmp/{$_SESSION['conffile']}", 'w') or die('Cannot create file');
+                    $fh = fopen("tmp/{$_SESSION['conffile']}", 'w') or throw new Exception('Cannot create file');
                     $text = '';
                     foreach ($ini_array as $key => $value) {
                         if (!is_array($value)) {
@@ -254,23 +254,23 @@ if (isset($_POST['formid'])) {
                             }
                         }
                     }
-                    fwrite($fh, $text) or die('Could not write file');
+                    fwrite($fh, $text) or throw new Exception('Could not write file');
                     fclose($fh);
                 }
                 if(!($con = ssh2_connect($server, $port))) {
-                    die('Failed to establish connection');
+                    throw new Exception('Failed to establish connection');
                 } else {
                     if(!(ssh2_auth_password($con, $ssh_user, $ssh_pass))) {
-                        die('Failed to authenticate');
+                        throw new Exception('Failed to authenticate');
                     } else {
                         if(!(ssh2_scp_send($con, "tmp/{$_SESSION['conffile']}", "$dir/"
                                 . "{$_SESSION['conffile']}", 0644))) {
-                            die('Unable to send file');
+                            throw new Exception('Unable to send file');
                         }
                     }
                 }
                 if (!unlink("tmp/{$_SESSION['conffile']}")) {
-                    die('Could not clean up temp file');
+                    throw new Exception('Could not clean up temp file');
                 }
                 foreach ($newhosts as $newhost) {
                     $info[] = "$newhost has been added.";
@@ -278,10 +278,10 @@ if (isset($_POST['formid'])) {
                 unset($_POST);
             }
             if(!($con = ssh2_connect($server, $port))) {
-                die('Failed to establish connection');
+                throw new Exception('Failed to establish connection');
             } else {
                 if(!(ssh2_auth_password($con, $ssh_user, $ssh_pass))) {
-                    die('Failed to authenticate');
+                    throw new Exception('Failed to authenticate');
                 } else {
                     // $command1 = "sudo lbconfig";
                     // $command2 = "sudo lbsync local";
@@ -290,7 +290,7 @@ if (isset($_POST['formid'])) {
                     $time = mktime();
                     $command1 = "touch $dir/stinkypinky"; /* temp placeholder */
                     if(!($stream1 = ssh2_exec($con, $command1))) {
-                        die('Unable to execute command');
+                        throw new Exception('Unable to execute command');
                     } else {
                         stream_set_blocking($stream1, true);
                         $data = '';
@@ -382,16 +382,16 @@ if (isset($_POST['formid'])) {
                 }
             }
             if (!($con = ssh2_connect($server, $port))) {
-                die('Failed to establish connection');
+                throw new Exception('Failed to establish connection');
             } else {
                 if(!(ssh2_auth_password($con, $ssh_user, $ssh_pass))) {
-                    die('Failed to authenticate');
+                    throw new Exception('Failed to authenticate');
                 } else {
                     $dir = "/home/ftwportal/conf";
                     $command = "sudo touch $dir/muhaha.txt"; // place holder
                     // $command = "sudo lbrun ban host $purgecache"; /* real command needs set for array*/
                     if(!($stream = ssh2_exec($con, $command))) {
-                        die('Unable to execute command');
+                        throw new Exception('Unable to execute command');
                     } else {
                         stream_set_blocking($stream, true);
                         $data = '';
@@ -422,16 +422,16 @@ if (isset($_POST['formid'])) {
                 } else {
                     $ini_array['errpg'] = $errpg_clean;
                     if(!($con = ssh2_connect($server, $port))) {
-                        die('Failed to establish connection');
+                        throw new Exception('Failed to establish connection');
                     } else {
                         if (!(ssh2_auth_password($con, $ssh_user, $ssh_pass))) {
-                            die('Failed to authenticate');
+                            throw new Exception('Failed to authenticate');
                         } else {
                             $dir ="/home/ftwportal/conf";
                             $time = mktime();
                             $command = "cp $dir/{$_SESSION['conffile']} $dir/{$_SESSION['conffile']}.bak";
                             if (!($stream = ssh2_exec($con, $command))) {
-                                die('Unable to execute command');
+                                throw new Exception('Unable to execute command');
                             } else {
                                 stream_set_blocking($stream, true);
                                 $data = '';
@@ -442,9 +442,9 @@ if (isset($_POST['formid'])) {
                             }
                         }
                         if (!unlink("tmp/{$_SESSION['conffile']}")) {
-                            die('Unable to delete temp file');
+                            throw new Exception('Unable to delete temp file');
                         } else {
-                            $fh = fopen("tmp/{$_SESSION['conffile']}", 'w') or die('Cannot create file');
+                            $fh = fopen("tmp/{$_SESSION['conffile']}", 'w') or throw new Exception('Cannot create file');
                             $text = '';
                             foreach ($ini_array as $key => $value) {
                                 if (!is_array($value)) {
@@ -461,23 +461,23 @@ if (isset($_POST['formid'])) {
                                     }
                                 }
                             }
-                            fwrite($fh, $text) or die('Could not write to temp file');
+                            fwrite($fh, $text) or throw new Exception('Could not write to temp file');
                             fclose($fh);
                         }
                         if(!($con = ssh2_connect($server, $port))) {
-                            die('Failed to establish connection');
+                            throw new Exception('Failed to establish connection');
                         } else {
                             if(!(ssh2_auth_password($con, $ssh_user, $ssh_pass))) {
-                                die('Failed to authenticate');
+                                throw new Exception('Failed to authenticate');
                             } else {
                                 if (!(ssh2_scp_send($con, "tmp/{$_SESSION['conffile']}", "$dir/"
                                         . "{$_SESSION['conffile']}", 0644))) {
-                                    die('Unable to send file');
+                                    throw new Exception('Unable to send file');
                                 }
                             }
                         }
                         if (!unlink("tmp/{$_SESSION['conffile']}")) {
-                            die('Could not clean up temp file');
+                            throw new Exception('Could not clean up temp file');
                         }
                         if ($ini_array['errpg'] === "1"){
                             $info[] = "Pretty error pages are now on.";
@@ -491,17 +491,17 @@ if (isset($_POST['formid'])) {
                         unset($_POST);
                     }
                     if(!($con = ssh2_connect($server, $port))) {
-                        die('Failed to establish connection');
+                        throw new Exception('Failed to establish connection');
                     } else {
                         if(!(ssh2_auth_password($con, $ssh_user, $ssh_pass))) {
-                            die('Failed to authenticate');
+                            throw new Exception('Failed to authenticate');
                         } else {
                             // $command1 = "sudo lbconfig";
                             // $command2 = "sudo lbsync local";
                             // $command3 = "sudo lbsync";
                             $command1 = "touch $dir/boogieoogie"; /* temp placeholder */
                             if(!($stream1 = ssh2_exec($con, $command1))) {
-                                die('Unable to execute command');
+                                throw new Exception('Unable to execute command');
                             } else {
                                 stream_set_blocking($stream1, true);
                                 $data = '';
