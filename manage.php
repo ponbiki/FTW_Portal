@@ -64,7 +64,7 @@ if (isset($_POST['formid'])) {
             } else {
                 if (in_array($addusername, $cgusers_array)) {
                     $error = "This username is already in use!<br />";
-                } else {    
+                } else {
                     $token = hash('sha512', "$salt1$pass1$salt2");
                     $res = $mysqli->query("INSERT INTO users (username, password)"
                             . " VALUES ('$addusername', '$token')");
