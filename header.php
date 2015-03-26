@@ -22,7 +22,7 @@ if (isset($_SESSION['admin'])) {
 }
 
 function htmlheader($title, $meta, $scripts = array()) {
-    echo <<<END
+    echo <<<_END
 <!DOCTYPE html>
 <html>
     <head>
@@ -46,7 +46,7 @@ function htmlheader($title, $meta, $scripts = array()) {
 
         <!--<link rel="icon" href="img/favicon.ico" type="image/x-icon">-->
 
-END;
+_END;
 
     foreach ($scripts as $x) {
         echo "$x\n\n";
