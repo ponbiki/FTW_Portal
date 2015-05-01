@@ -9,7 +9,7 @@ class Ssh2
     protected $ssh_user = 'blah';
     protected $ssh_pass = 'blah';
     public $con;
-    protected $file_perm;
+    protected $file_perm = 0644;
 
     public function __construct()
     {
