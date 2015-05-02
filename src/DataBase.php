@@ -30,4 +30,9 @@ class DataBase
             throw new \Exception('Database connection problem');
         }
     }
+    
+    public function DBAuth()
+    {
+                
+    }
 }
