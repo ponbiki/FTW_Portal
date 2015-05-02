@@ -15,7 +15,7 @@ class DataBase
     
     protected $pdo;
     
-    public function construct()
+    protected function construct()
     {
         if (!$this->pdo = new PDO(
             sprintf(
