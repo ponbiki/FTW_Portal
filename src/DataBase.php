@@ -31,8 +31,5 @@ class DataBase
         }
     }
     
-    public function DBAuth()
-    {
-                
-    }
+    
 }
