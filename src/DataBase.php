@@ -30,6 +30,4 @@ class DataBase
             throw new \Exception('Database connection problem');
         }
     }
-    
-    
 }
