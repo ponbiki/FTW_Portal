@@ -21,14 +21,36 @@ if (!($con = ssh2_connect($server, $port))) {
     if (!ssh2_auth_password($con, $ssh_user, $ssh_pass)) {
         die('Failed to authenticate');
     } else {
-        if (!($inifile = ssh2_scp_recv($con, $_SESSION['confpath'], "tmp/{$_SESSION['conffile']}" ))) {
+        //if (!($inifile = ssh2_scp_recv($con, $_SESSION['confpath'], "tmp/{$_SESSION['conffile']}" ))) {
+        if (!($phpfile = ssh2_scp_recv($con, $_SESSION['confpath'], "tmp/{$_SESSION['conffile']}" ))) {
             die('Unable to get file');
         }
     }
 }
 
-$ini_array = (parse_ini_file("tmp/{$_SESSION['conffile']}", true));
+//$ini_array = (parse_ini_file("tmp/{$_SESSION['conffile']}", true));
+$php_conf = file_get_contents("tmp/{$_SESSION['conffile']}");
+$php_array = explode("\n", $php_conf);
 
+foreach ($php_array as $element => $value) {
+    if (preg_match('/^\$hostname\[\]=+/', $value)) {
+        preg_match('/\'(.*)\'/', $value, $domain);
+        $domains[] = str_replace("'", "", $domain[0]);
+        sort($domains);
+    }
+    elseif (preg_match('/^\$sslhostname\[\]=+/', $value)) {
+        preg_match('/\'(.*)\'/', $value, $ssldomain);
+        $ssldomains[] = str_replace("'", "", $ssldomain[0]);
+        sort($ssldomains);
+    }
+    elseif (preg_match('/^\$cookie\[\]=+', $value)) {
+        preg_match('/\'(.*)\'/', $value, $cookie);
+        $cookies[] = str_replace("'", "", $cookie[0]);
+        sort($cookies);
+    }
+}
+
+/*    
 foreach ($ini_array as $category => $value) {
     if ($category === "hostname") {
         foreach ($value as $domain_name) {
@@ -56,6 +78,7 @@ foreach ($ini_array as $category => $value) {
         $error_page = 0;
     }
 }
+*/
 
 $chk = 'checked="checked"';
 if ($error_page == 1) {
