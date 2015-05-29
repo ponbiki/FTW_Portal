@@ -29,6 +29,7 @@ if (!($con = ssh2_connect($server, $port))) {
 }
 
 //$ini_array = (parse_ini_file("tmp/{$_SESSION['conffile']}", true));
+
 $php_conf = file_get_contents("tmp/{$_SESSION['conffile']}");
 $php_array = explode("\n", $php_conf);
 
