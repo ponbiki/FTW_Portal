@@ -10,7 +10,7 @@ class DataBase
         'db_name' => 'blah',
         'db_user' => 'blah',
         'db_pass' => 'blah',
-        'db_charset' => 'utf8'        
+        'db_charset' => 'utf8'
     ];
     
     protected $pdo;
