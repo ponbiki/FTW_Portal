@@ -1,0 +1,141 @@
+<?php
+
+/**
+ * @file
+ * FTW Purge signals the NYI FTW Accelerated CDN when your content is updated, preventing visitors from getting out-of-date content, and removing deleted content from the cache.
+ */
+
+/**
+ * Implements hook_menu().
+ *
+ * Set up admin settings callbacks, etc.
+ */
+function purge_menu() {
+  $items = array();
+  $items['admin/config/development/performance/purge'] = array(
+    'title' => 'Purge settings',
+    'description' => 'Configure proxy cache purges.',
+    'page callback' => 'drupal_get_form',
+    'type'              => MENU_LOCAL_TASK,
+    'page arguments' => array('purge_admin_settings_form'),
+    'access arguments' => array('administer site configuration'),
+  );
+  return $items;
+}
+
+/**
+ * Menu callback for purge admin settings.
+ */
+function purge_admin_settings_form() {
+  $dmatch=array();
+  preg_match('/(https?:..)?(www.)?(?P<domain>.*)\/?/',$GLOBALS['base_url'],$dmatch);
+  $form = array();
+  //$form['purge_proxy_urls'] = array(
+    //'#type' => 'textfield',
+    //'#title' => t('Proxy Url'),
+    //'#default_value' => variable_get('purge_proxy_urls', 'http://localhost:80'),
+    //'#description' => t('Set this to the server IP or hostname that your proxy server(s) runs on (e.g. http://127.0.0.1:80). Use the optional method parameter for nginx support like http://192.168.1.76:8080/purge?purge_method=get For Acquia Hosting platforms configure like http://yoursite.com/?purge_method=ah Separate multiple servers with spaces.'),
+    //'#maxlength' => 512,
+  //);
+  $form['purge_domain'] = array(
+    '#type' => 'textfield',
+    '#title' => t('Hostname'),
+    '#default_value' => variable_get('purge_domain', $dmatch['domain']),
+    '#description' => t('Set hostname to purge; must match the domain that visitors go to.  Leave blank (recommended) for the default setting: &ldquo;' . $dmatch['domain'] . '&rdquo;'),
+    '#maxlength' => 512,
+  );
+  return system_settings_form($form);
+}
+
+/**
+ * Validate the Purge settings
+ */
+//function purge_admin_settings_form_validate($form, &$form_state) {
+  //// Fill an array with the proxy server settings
+  //$proxy_urls = explode(' ', $form_state['values']['purge_proxy_urls']);
+  //// Check all proxy server urls
+  //foreach ($proxy_urls as $proxy_url) {
+    //// Check if it's a valid url
+    //if (!valid_url($proxy_url, TRUE)) {
+      //form_set_error('purge_proxy_urls', t('This is not a valid URL: !url.', array('!url' => $proxy_url)));
+    //}
+    //// Check for the Acquia Hosting environment setting
+    //if (strstr(parse_url($proxy_url, PHP_URL_QUERY), 'purge_method=ah')) {
+      //if (!isset($_SERVER['AH_SITE_NAME'])) {
+        //form_set_error('purge_proxy_urls', t('Acquia Hosting environment variable not found.'));
+      //}
+    //}
+  //}
+//}
+
+
+/**
+ * Implements hook_expire_cache().
+ *
+ * Takes an array from expire.module and issues purges.
+ */
+function purge_expire_cache($expire_urls) {
+  module_load_include('inc', 'purge');
+  $results = purge_urls($expire_urls);
+  purge_logging($results);
+}
+
+function purge_form_system_performance_settings_alter(&$form, &$form_state, $form_id) {
+  if ($form_id =='system_performance_settings') {
+	$form['purge_button'] = array(
+		'#type' => 'fieldset',
+		'#title' => 'FTW Site Purge'
+	);
+	$form['purge_button']['purge_entire_site'] = array(
+		'#type' => 'submit',
+		'#value' => 'Purge Entire Site',
+		'#submit' => array('purge_everything_submit_form')
+	);
+  }
+}
+
+function purge_everything_submit_form(&$form, &$form_state) {
+	$purge_output = purge_everything();
+	// Find out how many failed
+	$count=0;
+	$success=0;
+	foreach ($purge_output as $purge_result) {
+		$count++;
+		$code = '';
+		$code = $purge_result['http_code'];
+		if ( $code == 200 ) {
+		  $success++;
+		}
+	}
+	$failed = ( $count - $success );
+	if ( $failed > 0 ) {
+	  $status = 'error';
+	  if ( $count == $failed ) {
+	  	$output = 'Site purge has failed';
+	  } else {
+	  	$output = 'Site purge may have failed';
+	  }
+	} else {
+	  $output = 'Purge complete';
+	  $status = 'status';
+	}
+	drupal_set_message($output, $status);
+	return;
+}
+
+function purge_everything() {
+  	module_load_include('inc', 'purge');
+
+   	$purgedomain = variable_get('purge_domain', '');
+   	if ($purgedomain == '') {
+	  // if we don't have a hard-coded value, use the current domain.
+  	  $dmatch=array();
+  	  preg_match('/(https?:..)?(www.)?(?P<domain>.*)\/?/',$GLOBALS['base_url'],$dmatch);
+	  $purgedomain = $dmatch['domain'];
+   	}
+	watchdog('purge', 'FTW: Purging all content for ' . $purgedomain);
+	$target = array('http://' . $purgedomain . '/(.*)');
+  	$results = purge_urls($target);
+  	purge_logging($results);
+	return ($results);
+}
