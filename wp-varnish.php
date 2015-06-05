@@ -238,7 +238,7 @@ class WPVarnish {
 
           ?><div class="updated"><p><?php echo __('Settings Saved!','wp-varnish' ); ?></p></div><?php
        } else {
-          ?><div class="updated"><p><?php echo __('You do not have the privileges.','wp-varnish' ); ?></p></div><?php
+          ?><div class="error"><p><?php echo __('You do not have the privileges.','wp-varnish' ); ?></p></div><?php //changed class from update to error
        }
     }
 
