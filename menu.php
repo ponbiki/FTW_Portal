@@ -41,31 +41,40 @@ $list = explode("\n",$data);
 
 foreach($list as $file) {
     $extension = pathinfo($file);
-    if (@$extension['extension'] === "ini") {
-        $ini[] = $extension['filename'];
+    //if (@$extension['extension'] === "ini") {
+    if (@$extension['extension'] === "cfg") {
+        //$ini[] = $extension['filename'];
+        $cfg[] =$extension['filename'];
     }
 }
-
+echo "<pre>";print_r($cfg);echo "</pre>";
 $res = $mysqli->query("SELECT conf FROM confs WHERE username='{$_SESSION['user']}'");
-$dbiniarray = $res->fetch_all();
+//$dbiniarray = $res->fetch_all();
+$dbcfgarray = $res->fetch_all();
 $res->free();
 $mysqli->close();
 
-foreach ($dbiniarray as $dbia) {
-    foreach ($dbia as $ia) {
-        $dbini[] = $ia;
+//foreach ($dbiniarray as $dbia) {
+foreach ($dbcfgarray as $dbca) {
+    //foreach ($dbia as $ia) {
+    foreach ($dbca as $ca) {
+        //$dbini[] = $ia;
+        $dbcg[] = $ca;
     }
 }
 
-$confavail = array_intersect($dbini, $ini);
+//$confavail = array_intersect($dbini, $ini);
+$confavail = array_intersect($dbcfg, $cfg);
 
 if (isset($_POST['conf'])) {
     $conf = filter_input(INPUT_POST, 'conf', FILTER_SANITIZE_STRING);
     if (!in_array($conf, $confavail)) {
         $error[] = "You must select a valid configuration!";
     } else {
-        $_SESSION['confpath'] = "$dir/$conf.ini";
-        $_SESSION['conffile'] = "$conf.ini";
+        //$_SESSION['confpath'] = "$dir/$conf.ini";
+        $_SESSION['confpath'] = "$dir/$conf.cfg";
+        //$_SESSION['conffile'] = "$conf.ini";
+        $_SESSION['conffile'] = "$conf.cfg";
         header('Location: confedit.php');
     }
 }
