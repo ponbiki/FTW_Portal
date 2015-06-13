@@ -47,7 +47,7 @@ foreach($list as $file) {
         $cfg[] =$extension['filename'];
     }
 }
-echo "<pre>";print_r($cfg);echo "</pre>";
+
 $res = $mysqli->query("SELECT conf FROM confs WHERE username='{$_SESSION['user']}'");
 //$dbiniarray = $res->fetch_all();
 $dbcfgarray = $res->fetch_all();
@@ -59,13 +59,12 @@ foreach ($dbcfgarray as $dbca) {
     //foreach ($dbia as $ia) {
     foreach ($dbca as $ca) {
         //$dbini[] = $ia;
-        $dbcg[] = $ca;
+        $dbcfg[] = $ca;
     }
 }
 
 //$confavail = array_intersect($dbini, $ini);
 $confavail = array_intersect($dbcfg, $cfg);
-
 if (isset($_POST['conf'])) {
     $conf = filter_input(INPUT_POST, 'conf', FILTER_SANITIZE_STRING);
     if (!in_array($conf, $confavail)) {
