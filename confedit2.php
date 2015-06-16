@@ -44,14 +44,14 @@ foreach ($php_array as $element => $value) {
         $ssldomains[] = str_replace("'", "", $ssldomain[0]);
         sort($ssldomains);
     }
-    elseif (preg_match('/^\$cookie\[\]=+', $value)) {
+    elseif (preg_match('/^\$cookie\[\]=+/', $value)) {
         preg_match('/\'(.*)\'/', $value, $cookie);
         $cookies[] = str_replace("'", "", $cookie[0]);
         sort($cookies);
     }
 }
 
-/*    
+/*
 foreach ($ini_array as $category => $value) {
     if ($category === "hostname") {
         foreach ($value as $domain_name) {
@@ -67,7 +67,7 @@ foreach ($ini_array as $category => $value) {
     elseif ($category === "cookie") {
         foreach ($value as $cookiearray) {
             foreach ($cookiearray as $key => $val) {
-                
+
             }
         }
     }
@@ -79,9 +79,9 @@ foreach ($ini_array as $category => $value) {
         $error_page = 0;
     }
 }
-*/
 
-$chk = 'checked="checked"';
+ $chk = 'checked="checked"';
+ 
 if ($error_page == 1) {
     $ckon = $chk;
     $ckoff = '';
@@ -89,10 +89,11 @@ if ($error_page == 1) {
     $ckoff = $chk;
     $ckon = '';
 }
+*/
 
 if (isset($_POST['formid'])) {
     if ($_POST['formid'] === 'delform') {
-        if (isset($_POST['deldomain'])) {        
+        if (isset($_POST['deldomain'])) {
             foreach ($_POST['deldomain'] as $deldomain_dirty) {
                 $deldomains[] = filter_var($deldomain_dirty, FILTER_SANITIZE_STRING);
             }
@@ -102,7 +103,7 @@ if (isset($_POST['formid'])) {
         } else {
             foreach ($deldomains as $deldomain) {
                 if (!in_array($deldomain, $domains)) {
-                    $error[] = "$deldomain is not an exisitng hostname";
+                    $error[] = "$deldomain is not an existing hostname";
                     break;
                 }
             }
@@ -111,6 +112,7 @@ if (isset($_POST['formid'])) {
                 $domains = array_diff(array_merge($domains, $deldomains),
                         array_intersect($domains, $deldomains));
                 sort($domains);
+                /*
                 $temp_ini_array['hostname'] = array_diff($ini_array['hostname'], $deldomains);
                 if (count($temp_ini_array['hostname']) < 1) {
                     $error[] = "You must have at least one active domain. "
@@ -123,8 +125,22 @@ if (isset($_POST['formid'])) {
                         sort($domains);
                         }
                     }
+                */
+                if (count($domains) < 1) {
+                    $error[] = "You must have at least one active domain. "
+                            . "If you require assistance, please contact support";
                 } else {
-                    $ini_array['hostname'] = $temp_ini_array['hostname'];
+                    //$ini_array['hostname'] = $temp_ini_array['hostname'];
+                    foreach ($domains as $domain) {
+                        $out_domain[] = "\$hostname[]='". $domain ."'";
+                    }
+                    foreach ($php_array as $element => $value) {
+                        if (preg_match('/^\$hostname\[\]=+/', $value)) {
+                            unset($php_array["$element"]);
+                        }
+                    }
+                    $php_array = array_merge($php_array, $out_domain);
+                    natsort($php_array);
                     if (!($con = ssh2_connect($server, $port))) {
                         die('Failed to establish connection');
                     } else {
@@ -149,6 +165,7 @@ if (isset($_POST['formid'])) {
                             die('Unable to delete temp file');
                         } else {
                             $fh = fopen("tmp/{$_SESSION['conffile']}", 'w') or die('Cannot create file');
+                            /*
                             $text = '';
                             foreach ($ini_array as $key => $value) {
                                 if (!is_array($value)) {
@@ -165,6 +182,9 @@ if (isset($_POST['formid'])) {
                                     }
                                 }
                             }
+                             */
+                            $text = implode("\n", $php_array);
+                            $text .= "\n";
                             fwrite($fh, $text) or die('Could not write to temp file');
                             fclose($fh);
                         }
