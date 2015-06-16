@@ -132,7 +132,7 @@ if (isset($_POST['formid'])) {
                 } else {
                     //$ini_array['hostname'] = $temp_ini_array['hostname'];
                     foreach ($domains as $domain) {
-                        $out_domain[] = "\$hostname[]='". $domain ."'";
+                        $out_domain[] = "\$hostname[]='". $domain ."';";
                     }
                     foreach ($php_array as $element => $value) {
                         if (preg_match('/^\$hostname\[\]=+/', $value)) {
