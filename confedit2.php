@@ -446,8 +446,11 @@ if (isset($_POST['formid'])) {
                     die('Failed to authenticate');
                 } else {
                     $dir = "/home/ftwportal/conf";
-                    $command = "sudo touch $dir/muhaha.txt"; // place holder
-                    // $command = "sudo lbrun ban host $purgecache"; /* real command needs set for array*/
+                    foreach ($purgecachearr as $purgecache) {
+                        $command .= "sudo touch $dir/$purgecache.txt;";//placeholder
+                        // $command = "sudo lbrun ban host $purgecache;"; /* real command needs set for array*/
+                    }
+                    
                     if(!($stream = ssh2_exec($con, $command))) {
                         die('Unable to execute command');
                     } else {
