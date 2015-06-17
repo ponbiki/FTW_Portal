@@ -182,7 +182,7 @@ if (isset($_POST['formid'])) {
                                     }
                                 }
                             }
-                             */
+                            */
                             $text = implode("\n", $php_array);
                             $text .= "\n";
                             fwrite($fh, $text) or die('Could not write to temp file');
@@ -274,14 +274,25 @@ if (isset($_POST['formid'])) {
                     }
                 }
                 foreach ($newhosts as $newhost) {
-                    array_push($ini_array['hostname'], $newhost);
+                    //array_push($ini_array['hostname'], $newhost);
                     array_push($domains, $newhost);
                 }
-                sort($domains);
+                foreach ($domains as $domain) {
+                    $out_domain[] = "\$hostname[]='". $domain ."';";
+                }
+                foreach ($php_array as $element => $value) {
+                    if (preg_match('/^\$hostname\[\]=+/', $value)) {
+                        unset($php_array["$element"]);
+                    }
+                }
+                $php_array = array_merge($php_array, $out_domain);
+                natsort($php_array);
+                //sort($domains);
                 if(!unlink("tmp/{$_SESSION['conffile']}")) {
                     die('Unable to delete temp file');
                 } else {
                     $fh = fopen("tmp/{$_SESSION['conffile']}", 'w') or die('Cannot create file');
+                    /*
                     $text = '';
                     foreach ($ini_array as $key => $value) {
                         if (!is_array($value)) {
@@ -298,6 +309,9 @@ if (isset($_POST['formid'])) {
                             }
                         }
                     }
+                     */
+                    $text = implode("\n", $php_array);
+                    $text .="\n";
                     fwrite($fh, $text) or die('Could not write file');
                     fclose($fh);
                 }
