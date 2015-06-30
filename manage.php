@@ -4,9 +4,11 @@ require_once 'conninfo.php';
 
 if (!$loggedin) {
     header("Location: index.php");
+    exit();
 }
 if (!$admin) {
     header("Location: index.php");
+    exit();
 }
 
 $page = "User Management";
@@ -77,6 +79,7 @@ if (isset($_POST['formid'])) {
                 }
             }
             header('Refresh: 3');
+            exit();
         }
     } elseif ($_POST['formid'] === 'changepass') {
         $cguserpost = filter_input(INPUT_POST, 'cguser', FILTER_SANITIZE_STRING);
@@ -103,6 +106,7 @@ if (isset($_POST['formid'])) {
                 }
             }
             header('Refresh: 3');
+            exit();
         }
     } elseif ($_POST['formid'] === 'delusr') {
         $delusername = filter_input(INPUT_POST, 'delusername', FILTER_SANITIZE_STRING);
@@ -122,6 +126,7 @@ if (isset($_POST['formid'])) {
                 }
             }
             header('Refresh: 3');
+            exit();
         }
     }
 }

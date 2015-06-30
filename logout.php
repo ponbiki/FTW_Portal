@@ -9,6 +9,7 @@ $error = array();
 if (isset($_SESSION['user'])) {
     destroySession();
     header("Location: index.php");
+    exit();
 } else {
     $error[] = "You are not logged in!<br />Return to <a href='index.php' title='FTW Portal'>the beginning</a>";
 }

@@ -4,6 +4,7 @@ require_once 'header.php';
 
 if (!$loggedin) {
     header("Location: index.php");
+    exit();
 }
 
 $page = "Menu";
@@ -75,6 +76,7 @@ if (isset($_POST['conf'])) {
         //$_SESSION['conffile'] = "$conf.ini";
         $_SESSION['conffile'] = "$conf.cfg";
         header('Location: confedit.php');
+        exit();
     }
 }
 

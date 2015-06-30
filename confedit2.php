@@ -4,6 +4,7 @@ require_once 'header.php';
 
 if (!$loggedin) {
     header("Location: index.php");
+    exit();
 }
 
 $page = "Configuration Edit";

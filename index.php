@@ -10,8 +10,10 @@ require_once 'conninfo.php';
 if ($loggedin) {
     if ($admin) {
         header('Location: manage.php');
+        exit();
     } else {
         header('Location: menu.php');
+        exit();
     }
 }
 
@@ -41,10 +43,12 @@ if (isset($_POST['user'])) {
             if ($row['admin'] !== 'Y') {
                 $_SESSION['company'] = $row['company'];
                 header('Location: menu.php');
+                exit();
             } else {
                 $res->free();
                 $_SESSION['admin'] = $user;
                 header('Location: manage.php');
+                exit();
             }
         }
     }

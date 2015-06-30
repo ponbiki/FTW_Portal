@@ -4,9 +4,11 @@ require_once 'conninfo.php';
 
 if (!$loggedin) {
     header("Location: index.php");
+    exit();
 }
 if (!$admin) {
     header("Location: index.php");
+    exit();
 }
 
 $page = "Config File Management";
@@ -77,6 +79,7 @@ if (isset($_POST['formid'])) {
             $_SESSION['confpath'] = "$dir/$conf.ini";
             $_SESSION['conffile'] = "$conf.ini";
             header('Location: adminconfedit.php');
+            exit();
         }
     }
 }

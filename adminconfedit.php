@@ -4,11 +4,11 @@ require_once 'conninfo.php';
 
 if (!$loggedin) {
     header("Location: index.php");
-    exit;
+    exit();
 }
 if (!$admin) {
     header("Location: index.php");
-    exit;
+    exit();
 }
 
 $page = "Configuration Edit";
@@ -160,6 +160,7 @@ if (isset($_POST['formid'])) {
                 }
             }
             header('Refresh: 3');
+            exit();
         }
     } elseif ($_POST['formid'] === 'addform') {
         $newhost = filter_input(INPUT_POST, 'newhost', FILTER_SANITIZE_STRING);
@@ -254,6 +255,7 @@ if (isset($_POST['formid'])) {
                 }
             }
             header('Refresh: 3');
+            exit();
         }
     } elseif ($_POST['formid'] === 'purgeform') {
         foreach ($_POST['purgecache'] as $purgecache_dirty) {
@@ -289,6 +291,7 @@ if (isset($_POST['formid'])) {
                 unset($_POST);
             }
             header('Refresh: 3');
+            exit();
         }
     }
 }
