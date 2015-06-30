@@ -4,9 +4,11 @@ require_once 'conninfo.php';
 
 if (!$loggedin) {
     header("Location: index.php");
+    exit;
 }
 if (!$admin) {
     header("Location: index.php");
+    exit;
 }
 
 $page = "Configuration Edit";
