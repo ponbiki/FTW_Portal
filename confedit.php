@@ -991,4 +991,3 @@ foreach ($domains as $domain) {
 </div>
 <?php
 tail();
-?>

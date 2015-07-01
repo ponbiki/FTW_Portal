@@ -50,4 +50,3 @@ function info($info) {
 _END;
     }
 }
-?>

@@ -181,4 +181,3 @@ foreach ($confavail as $choice) {
 
 <?php
 tail();
-?>

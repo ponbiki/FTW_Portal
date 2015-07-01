@@ -1052,30 +1052,3 @@ foreach ($domains as $domain) {
 </div>
 <?php
 tail();
-?>
-
-
-
-<?php
-/*
-$conf = file_get_contents('ibtimes.cfg');
-echo $conf;
-$array = explode("\n", $conf);
-print_r($array);
-foreach($array as $element => $value) {
-	if (preg_match('/^\$hostname\[\]=+/', $value)) {
-		preg_match('/\'(.*)\'/', $value, $match);
-		$hosts[] = str_replace("'", "", $match[0]);
-	}
-}
-print_r($hosts);
-$new_host = 'eeyore.com';
-$new_host_element = "\$hostname[]='". $new_host ."'";
-$array[] = $new_host_element;
-natsort($array);
-$conf = implode("\n", $array);
-$conf .= "\n";
-file_put_contents('ibtimes.cfg', $conf);
-
-*/
-?>

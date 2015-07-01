@@ -99,4 +99,3 @@ if (($loggedin)&&(!$admin)) {
             </div>\n";
     }
 }
-?>
