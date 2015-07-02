@@ -44,7 +44,7 @@ function htmlheader($title, $meta, $scripts = array()) {
 
         <link rel="apple-touch-icon" sizes="192x192" href="img/applogo.png">
 
-        <!--<link rel="icon" href="img/favicon.ico" type="image/x-icon">-->
+        <link rel="icon" href="img/favicon.ico" type="image/x-icon">
 
 _END;
 
