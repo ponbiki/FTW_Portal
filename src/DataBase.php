@@ -14,10 +14,12 @@ class DataBase
     ];
     
     protected $pdo;
-    
+    public $error;
+
     protected function __construct()
     {
-        if (!$this->pdo = new PDO(
+        try {
+            $this->pdo = new PDO(
             sprintf(
                 'mysql:host=%s;dbname=%s;port=%s;charset=%s',
                 $this->settings['db_host'],
@@ -25,9 +27,10 @@ class DataBase
                 $this->settings['db_port'],
                 $this->settings['db_charset']),
             $this->settings['db_user'],
-            $this->settings['db_pass'])
-        ) {
-            throw new \Exception('Database connection problem');
+            $this->settings['db_pass']);
+                
+        } catch (PDOException $e) {
+            $this->error = 'Database Connection Failed: ' . $e->getMessage;
         }
     }
 }
