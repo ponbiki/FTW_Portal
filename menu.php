@@ -89,7 +89,7 @@ htmlheader($page, $page, array('
             });
             $(function() {
                 $( "input[type=submit], a, button" )
-                .button()
+                .button();
             });
             $(function() {
                 $( "#conf" ).selectmenu();
