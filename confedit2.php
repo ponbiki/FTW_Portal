@@ -451,7 +451,7 @@ if (isset($_POST['formid'])) {
                         $command .= "sudo touch $dir/$purgecache.txt;";//placeholder
                         // $command = "sudo lbrun ban host $purgecache;"; /* real command needs set for array*/
                     }
-                    
+
                     if(!($stream = ssh2_exec($con, $command))) {
                         die('Unable to execute command');
                     } else {
