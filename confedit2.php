@@ -33,20 +33,24 @@ $php_conf = file_get_contents("tmp/{$_SESSION['conffile']}");
 $php_array = explode(PHP_EOL, $php_conf);
 
 foreach ($php_array as $element => $value) {
-    if (preg_match('/^\$hostname\[\]=+/', $value)) {
+    if (preg_match('/^\$hostname\[\]\s*=/', $value)) {
         preg_match('/\'(.*)\'/', $value, $domain);
         $domains[] = str_replace("'", "", $domain[0]);
         sort($domains);
     }
-    elseif (preg_match('/^\$sslhostname\[\]=+/', $value)) {
+    elseif (preg_match('/^\$sslhostname\[\]\s*=/', $value)) {
         preg_match('/\'(.*)\'/', $value, $ssldomain);
         $ssldomains[] = str_replace("'", "", $ssldomain[0]);
         sort($ssldomains);
     }
-    elseif (preg_match('/^\$cookie\[\]=+/', $value)) {
+    elseif (preg_match('/^\$cookie\[\]\s*=/', $value)) {
         preg_match('/\'(.*)\'/', $value, $cookie);
         $cookies[] = str_replace("'", "", $cookie[0]);
         sort($cookies);
+    }
+    elseif (preg_match('/^\$errpg\s*=', $value)) {
+        preg_match('/\=\s*[\'"]?(.*)[\'"]?\s*;/', $value, $errpage);
+        $error_page = $errpage[1];
     }
 }
 
@@ -78,17 +82,18 @@ foreach ($ini_array as $category => $value) {
         $error_page = 0;
     }
 }
+*/
 
  $chk = 'checked="checked"';
  
-if ($error_page == 1) {
+if ($error_page !== 1) {
     $ckon = $chk;
     $ckoff = '';
 } elseif ($error_page == 0) {
     $ckoff = $chk;
     $ckon = '';
 }
-*/
+
 
 if (isset($_POST['formid'])) {
     if ($_POST['formid'] === 'delform') {
