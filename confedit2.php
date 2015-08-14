@@ -15,7 +15,6 @@ unset($error);
 $error = array();
 
 $deldomain = $newhosts = $cookiename = $cookiepath = $cookiedomain = $cookieinfo = $purgecache = "";
-
 if (!($con = ssh2_connect($server, $port))) {
     die('Failed to establish connection');
 } else {
@@ -28,11 +27,10 @@ if (!($con = ssh2_connect($server, $port))) {
         }
     }
 }
-
 //$ini_array = (parse_ini_file("tmp/{$_SESSION['conffile']}", true));
 
 $php_conf = file_get_contents("tmp/{$_SESSION['conffile']}");
-$php_array = explode("\n", $php_conf);
+$php_array = explode(PHP_EOL, $php_conf);
 
 foreach ($php_array as $element => $value) {
     if (preg_match('/^\$hostname\[\]=+/', $value)) {
